@@ -11,55 +11,55 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 ### Project Setup
 
-- [ ] Initialize Next.js 15 + TypeScript + Tailwind CSS
-- [ ] Configure ESLint + Prettier
-- [ ] Install and configure shadcn/ui (core components — to be customized)
-- [ ] Install Framer Motion, next-themes, Zod, date-fns
-- [ ] Set up environment variables (`.env.local` + `.env.local.example`)
-- [ ] Set up Vitest + React Testing Library + Playwright
+- [x] Initialize Next.js 16 + TypeScript + Tailwind CSS
+- [x] Configure ESLint + Prettier
+- [x] Install and configure shadcn/ui (core components — to be customized)
+- [x] Install Framer Motion, next-themes, Zod, date-fns
+- [x] Set up environment variables (`.env.local` + `.env.local.example`)
+- [x] Set up Vitest + React Testing Library + Playwright
 
 ### CI/CD Pipeline (early — build the habit from day one)
 
-- [ ] GitHub Actions: lint + type-check + test on every PR
-- [ ] GitHub Actions: build verification
+- [x] GitHub Actions: lint + type-check + test on every PR
+- [x] GitHub Actions: build verification
 - [ ] Branch protection rules on `main` (require CI pass, require PR review)
 - [ ] Vercel preview deployments (automatic per PR)
-- [ ] `.github/PULL_REQUEST_TEMPLATE.md` for consistent PR descriptions
+- [x] `.github/PULL_REQUEST_TEMPLATE.md` for consistent PR descriptions
 
 ### Internationalization (i18n)
 
-- [ ] Install and configure `next-intl`
-- [ ] Set up locale routing (`[locale]` dynamic segment)
-- [ ] Create translation files (en.json, pt.json, es.json, fr.json)
-- [ ] Middleware for locale detection and redirects
+- [x] Install and configure `next-intl`
+- [x] Set up locale routing (`[locale]` dynamic segment)
+- [x] Create translation files (en.json, pt.json, es.json, fr.json)
+- [x] Middleware for locale detection and redirects
 - [ ] Language switcher component
 
 ### Database
 
-- [ ] Create Supabase project
-- [ ] Migration: enums (`media_type_enum`, `list_type_enum`)
-- [ ] Migration: `profiles` table + RLS policies
-- [ ] Migration: `community_suggestions` table + indexes + RLS
-- [ ] Migration: `suggestion_votes` table + RLS
-- [ ] Migration: `user_lists` table + RLS
-- [ ] Migration: `reviews` table + RLS
-- [ ] Migration: `review_votes` table + RLS
-- [ ] Migration: `media_cache` table
-- [ ] Migration: `activity_log` table
-- [ ] Migration: functions + triggers (profile auto-create, vote_count sync, reputation sync, helpful_count sync, updated_at)
-- [ ] Generate TypeScript types from Supabase schema
+- [x] Create Supabase project
+- [x] Migration: enums (`media_type_enum`, `list_type_enum`)
+- [x] Migration: `profiles` table + RLS policies
+- [x] Migration: `community_suggestions` table + indexes + RLS
+- [x] Migration: `suggestion_votes` table + RLS
+- [x] Migration: `user_lists` table + RLS
+- [x] Migration: `reviews` table + RLS
+- [x] Migration: `review_votes` table + RLS
+- [x] Migration: `media_cache` table
+- [x] Migration: `activity_log` table
+- [x] Migration: functions + triggers (profile auto-create, vote_count sync, reputation sync, helpful_count sync, updated_at)
+- [x] Generate TypeScript types from Supabase schema
 - [ ] Tests: RLS policy tests for all tables
 - [ ] Tests: trigger verification (profile auto-create, vote_count sync, reputation sync)
 
 ### Auth
 
-- [ ] Supabase browser client (`lib/supabase/client.ts`)
-- [ ] Supabase server client (`lib/supabase/server.ts`)
-- [ ] Supabase admin client (`lib/supabase/admin.ts`)
-- [ ] Next.js middleware for auth session refresh + locale handling
-- [ ] Login page + tests
-- [ ] Signup page + tests
-- [ ] OAuth callback route
+- [x] Supabase browser client (`lib/supabase/client.ts`)
+- [x] Supabase server client (`lib/supabase/server.ts`)
+- [x] Supabase admin client (`lib/supabase/admin.ts`)
+- [x] Next.js middleware for auth session refresh + locale handling
+- [x] Login page (tests pending)
+- [x] Signup page (tests pending)
+- [x] OAuth callback route
 - [ ] Auth provider (React context)
 - [ ] Tests: auth flow integration tests
 

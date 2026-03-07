@@ -6,5 +6,22 @@
   "home": {
     "title": "Kristin",
     "subtitle": "Découvrez votre prochain film ou série préféré."
+  },
+  "auth": {
+    "login": "Se connecter",
+    "loginSubtitle": "Entrez vos identifiants pour continuer.",
+    "signUp": "Créer un compte",
+    "signUpSubtitle": "Créez un compte pour commencer.",
+    "email": "E-mail",
+    "emailPlaceholder": "vous@exemple.com",
+    "password": "Mot de passe",
+    "passwordPlaceholder": "••••••••",
+    "loggingIn": "Connexion en cours...",
+    "signingUp": "Création du compte...",
+    "invalidCredentials": "E-mail ou mot de passe incorrect.",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "hasAccount": "Vous avez déjà un compte ?",
+    "checkEmail": "Vérifiez votre e-mail",
+    "confirmationSent": "Nous vous avons envoyé un lien de confirmation. Cliquez dessus pour activer votre compte."
   }
 }

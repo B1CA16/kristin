@@ -6,5 +6,22 @@
   "home": {
     "title": "Kristin",
     "subtitle": "Descobre o teu próximo filme ou série favorita."
+  },
+  "auth": {
+    "login": "Entrar",
+    "loginSubtitle": "Introduz as tuas credenciais para continuar.",
+    "signUp": "Criar conta",
+    "signUpSubtitle": "Cria uma conta para começar.",
+    "email": "Email",
+    "emailPlaceholder": "tu@exemplo.com",
+    "password": "Palavra-passe",
+    "passwordPlaceholder": "••••••••",
+    "loggingIn": "A entrar...",
+    "signingUp": "A criar conta...",
+    "invalidCredentials": "Email ou palavra-passe inválidos.",
+    "noAccount": "Não tens conta?",
+    "hasAccount": "Já tens conta?",
+    "checkEmail": "Verifica o teu email",
+    "confirmationSent": "Enviámos-te um link de confirmação. Clica nele para ativar a tua conta."
   }
 }
