@@ -38,9 +38,7 @@ export function SignupForm() {
     return (
       <div className="w-full max-w-sm space-y-4 text-center">
         <h1 className="text-2xl font-bold">{t('checkEmail')}</h1>
-        <p className="text-muted-foreground text-sm">
-          {t('confirmationSent')}
-        </p>
+        <p className="text-muted-foreground text-sm">{t('confirmationSent')}</p>
       </div>
     );
   }
