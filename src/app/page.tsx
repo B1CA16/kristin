@@ -1,7 +1,6 @@
-export default function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center">
-      <h1 className="text-4xl font-bold">Kristin</h1>
-    </div>
-  );
+import { redirect } from 'next/navigation';
+import { defaultLocale } from '@/i18n/config';
+
+export default function RootPage() {
+  redirect(`/${defaultLocale}`);
 }
