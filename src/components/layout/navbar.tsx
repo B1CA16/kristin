@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ThemeToggle } from './theme-toggle';
 import { LanguageSwitcher } from './language-switcher';
 import { UserMenu } from './user-menu';
+import { MobileNav } from './mobile-nav';
 
 export async function Navbar() {
   const t = await getTranslations('common');
@@ -23,6 +24,10 @@ export async function Navbar() {
     profile = data;
   }
 
+  const mobileProfile = profile
+    ? { username: profile.username, avatarUrl: profile.avatar_url }
+    : null;
+
   return (
     <header className="border-border/50 sticky top-0 z-50 border-b backdrop-blur-lg">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
@@ -30,7 +35,8 @@ export async function Navbar() {
           Kristin
         </Link>
 
-        <div className="flex items-center gap-1">
+        {/* Desktop nav */}
+        <div className="hidden items-center gap-1 md:flex">
           <LanguageSwitcher />
           <ThemeToggle />
           {profile ? (
@@ -49,6 +55,9 @@ export async function Navbar() {
             </>
           )}
         </div>
+
+        {/* Mobile nav */}
+        <MobileNav profile={mobileProfile} />
       </div>
     </header>
   );

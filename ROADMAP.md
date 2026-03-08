@@ -71,7 +71,7 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 - [x] Navbar (logo, search placeholder, theme toggle, language switcher, auth buttons) + tests
 - [x] Footer + tests
 - [x] Dark/light mode toggle
-- [ ] Mobile navigation (Sheet/drawer) + tests
+- [x] Mobile navigation (Sheet/drawer) + tests
 
 ---
 

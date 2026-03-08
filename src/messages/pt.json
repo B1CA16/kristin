@@ -14,7 +14,8 @@
     "changeLanguage": "Mudar idioma",
     "allRightsReserved": "Todos os direitos reservados.",
     "userMenu": "Menu do utilizador",
-    "logout": "Sair"
+    "logout": "Sair",
+    "openMenu": "Abrir menu"
   },
   "auth": {
     "login": "Entrar",
