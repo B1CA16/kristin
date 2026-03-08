@@ -7,6 +7,15 @@
     "title": "Kristin",
     "subtitle": "Découvrez votre prochain film ou série préféré."
   },
+  "common": {
+    "login": "Se connecter",
+    "signUp": "Créer un compte",
+    "toggleTheme": "Changer le thème",
+    "changeLanguage": "Changer de langue",
+    "allRightsReserved": "Tous droits réservés.",
+    "userMenu": "Menu utilisateur",
+    "logout": "Se déconnecter"
+  },
   "auth": {
     "login": "Se connecter",
     "loginSubtitle": "Entrez vos identifiants pour continuer.",
@@ -23,5 +32,10 @@
     "hasAccount": "Vous avez déjà un compte ?",
     "checkEmail": "Vérifiez votre e-mail",
     "confirmationSent": "Nous vous avons envoyé un lien de confirmation. Cliquez dessus pour activer votre compte."
+  },
+  "notFound": {
+    "title": "Page Non Trouvée",
+    "description": "Cette page est introuvable.",
+    "goHome": "Retour à l'accueil"
   }
 }

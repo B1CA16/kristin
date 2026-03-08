@@ -32,7 +32,7 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 - [x] Set up locale routing (`[locale]` dynamic segment)
 - [x] Create translation files (en.json, pt.json, es.json, fr.json)
 - [x] Middleware for locale detection and redirects
-- [ ] Language switcher component
+- [x] Language switcher component
 
 ### Database
 
@@ -65,12 +65,12 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 ### Layout & UI System
 
-- [ ] Define custom design tokens (colors, spacing, typography, radii) — **user approval required**
-- [ ] Customize shadcn/ui theme to match design system
-- [ ] Root layout with ThemeProvider, AuthProvider, ToastProvider, NextIntlProvider
-- [ ] Navbar (logo, search placeholder, theme toggle, language switcher, auth buttons) + tests
-- [ ] Footer + tests
-- [ ] Dark/light mode toggle
+- [x] Define custom design tokens (colors, spacing, typography, radii) — **user approval required**
+- [x] Customize shadcn/ui theme to match design system
+- [x] Root layout with ThemeProvider, AuthProvider, ToastProvider, NextIntlProvider
+- [x] Navbar (logo, search placeholder, theme toggle, language switcher, auth buttons) + tests
+- [x] Footer + tests
+- [x] Dark/light mode toggle
 - [ ] Mobile navigation (Sheet/drawer) + tests
 
 ---

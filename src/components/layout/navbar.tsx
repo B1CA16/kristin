@@ -1,0 +1,55 @@
+import { getTranslations } from 'next-intl/server';
+import { Link } from '@/i18n/navigation';
+import { createClient } from '@/lib/supabase/server';
+import { Button } from '@/components/ui/button';
+import { ThemeToggle } from './theme-toggle';
+import { LanguageSwitcher } from './language-switcher';
+import { UserMenu } from './user-menu';
+
+export async function Navbar() {
+  const t = await getTranslations('common');
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let profile: { username: string; avatar_url: string | null } | null = null;
+  if (user) {
+    const { data } = await supabase
+      .from('profiles')
+      .select('username, avatar_url')
+      .eq('id', user.id)
+      .single();
+    profile = data;
+  }
+
+  return (
+    <header className="border-border/50 sticky top-0 z-50 border-b backdrop-blur-lg">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
+        <Link href="/" className="text-xl font-bold tracking-tight">
+          Kristin
+        </Link>
+
+        <div className="flex items-center gap-1">
+          <LanguageSwitcher />
+          <ThemeToggle />
+          {profile ? (
+            <UserMenu
+              username={profile.username}
+              avatarUrl={profile.avatar_url}
+            />
+          ) : (
+            <>
+              <Button variant="ghost" size="sm" asChild>
+                <Link href="/login">{t('login')}</Link>
+              </Button>
+              <Button size="sm" asChild>
+                <Link href="/signup">{t('signUp')}</Link>
+              </Button>
+            </>
+          )}
+        </div>
+      </div>
+    </header>
+  );
+}

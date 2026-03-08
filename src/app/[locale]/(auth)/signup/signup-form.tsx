@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { createClient } from '@/lib/supabase/client';
 import { Link } from '@/i18n/navigation';
+import { Button } from '@/components/ui/button';
 
 export function SignupForm() {
   const t = useTranslations('auth');
@@ -84,13 +85,9 @@ export function SignupForm() {
 
         {error && <p className="text-destructive text-sm">{error}</p>}
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-primary text-primary-foreground hover:bg-primary/90 w-full rounded-md px-4 py-2 text-sm font-medium disabled:opacity-50"
-        >
+        <Button type="submit" disabled={loading} className="w-full">
           {loading ? t('signingUp') : t('signUp')}
-        </button>
+        </Button>
       </form>
 
       <p className="text-muted-foreground text-center text-sm">
