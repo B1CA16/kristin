@@ -9,10 +9,7 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: {
-    default: 'Kristin',
-    template: '%s | Kristin',
-  },
+  title: 'Kristin',
   description:
     'Discover movies and TV shows through community-driven recommendations.',
 };
