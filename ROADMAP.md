@@ -79,31 +79,31 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 ### TMDB API Layer
 
-- [ ] TMDB API wrapper (`lib/tmdb/client.ts`) with cache + retry logic + tests
-- [ ] TMDB TypeScript types (`lib/tmdb/types.ts`)
-- [ ] Image URL helpers (`lib/tmdb/image.ts`) + tests
-- [ ] TMDB endpoint builders (`lib/tmdb/endpoints.ts`)
-- [ ] Locale-aware TMDB requests (pass user's language for localized data)
+- [x] TMDB API wrapper (`lib/tmdb/client.ts`) with cache + retry logic + tests
+- [x] TMDB TypeScript types (`lib/tmdb/types.ts`)
+- [x] Image URL helpers (`lib/tmdb/image.ts`) + tests
+- [x] TMDB config (image sizes, cache TTLs, locale mapping)
+- [x] Locale-aware TMDB requests (pass user's language for localized data)
 
 ### API Routes
 
-- [ ] `GET /api/tmdb/search` — proxied multi-search
-- [ ] `GET /api/tmdb/trending` — trending (day/week)
-- [ ] `GET /api/tmdb/discover` — discover with genre/year/sort filters
+- [x] `GET /api/tmdb/search` — proxied multi-search
+- [x] `GET /api/tmdb/trending` — trending (day/week)
+- [x] `GET /api/tmdb/discover` — discover with genre/year/sort filters
 
 ### Search UI
 
-- [ ] `SearchBar` component with debounced autocomplete (300ms) + tests
-- [ ] Search results page (`/search`) with infinite scroll
-- [ ] `MediaCard` component (poster, title, year, rating, hover animation) + tests — **design approval required**
-- [ ] `MediaGrid` responsive grid layout
-- [ ] Search filter tabs (All / Movies / TV Shows)
-- [ ] Skeleton loading states for search
+- [x] `SearchBar` component with debounced autocomplete (300ms) + tests
+- [x] Search results page (`/search`) with infinite scroll
+- [x] `MediaCard` component (poster, title, year, rating, hover animation) + tests — **design approval required**
+- [x] `MediaGrid` responsive grid layout
+- [x] Search filter tabs (All / Movies / TV Shows)
+- [x] Skeleton loading states for search
 
 ### Hooks
 
-- [ ] `useDebounce` hook + tests
-- [ ] `useInfiniteScroll` hook (IntersectionObserver) + tests
+- [x] `useDebounce` hook + tests
+- [x] `useInfiniteScroll` hook (IntersectionObserver) + tests
 
 ---
 

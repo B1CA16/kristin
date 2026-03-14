@@ -35,6 +35,20 @@
     "confirmationSent": "Enviámos-te um link de confirmação. Clica nele para ativar a tua conta.",
     "emailAlreadyExists": "Já existe uma conta com este email."
   },
+  "search": {
+    "placeholder": "Pesquisar filmes e séries...",
+    "title": "Pesquisa",
+    "emptyPrompt": "Pesquisa filmes e séries",
+    "noResults": "Nenhum resultado encontrado.",
+    "noResultsFor": "Nenhum resultado encontrado para \"{query}\".",
+    "filterAll": "Todos",
+    "filterMovies": "Filmes",
+    "filterTV": "Séries",
+    "resultsFor": "Resultados para \"{query}\""
+  },
+  "media": {
+    "noImage": "Sem imagem"
+  },
   "notFound": {
     "title": "Página Não Encontrada",
     "description": "Esta página não foi encontrada.",

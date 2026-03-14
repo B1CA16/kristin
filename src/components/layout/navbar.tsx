@@ -2,6 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { Button } from '@/components/ui/button';
+import { SearchBar } from '@/components/search/search-bar';
 import { ThemeToggle } from './theme-toggle';
 import { LanguageSwitcher } from './language-switcher';
 import { UserMenu } from './user-menu';
@@ -34,6 +35,9 @@ export async function Navbar() {
         <Link href="/" className="text-xl font-bold tracking-tight">
           Kristin
         </Link>
+
+        {/* Desktop search */}
+        <SearchBar className="hidden w-full max-w-sm md:block" />
 
         {/* Desktop nav */}
         <div className="hidden items-center gap-1 md:flex">

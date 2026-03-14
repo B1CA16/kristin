@@ -1,5 +1,6 @@
 'use client';
 
+import { useSearchParams } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { locales, localeNames, type Locale } from '@/i18n/config';
@@ -16,10 +17,13 @@ export function LanguageSwitcher() {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const t = useTranslations('common');
 
   function handleSelect(loc: Locale) {
-    router.replace(pathname, { locale: loc });
+    const search = searchParams.toString();
+    const href = search ? `${pathname}?${search}` : pathname;
+    router.replace(href, { locale: loc });
   }
 
   return (

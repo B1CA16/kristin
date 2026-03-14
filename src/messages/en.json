@@ -35,6 +35,20 @@
     "confirmationSent": "We sent you a confirmation link. Click it to activate your account.",
     "emailAlreadyExists": "An account with this email already exists."
   },
+  "search": {
+    "placeholder": "Search movies and TV shows...",
+    "title": "Search",
+    "emptyPrompt": "Search for movies and TV shows",
+    "noResults": "No results found.",
+    "noResultsFor": "No results found for \"{query}\".",
+    "filterAll": "All",
+    "filterMovies": "Movies",
+    "filterTV": "TV Shows",
+    "resultsFor": "Results for \"{query}\""
+  },
+  "media": {
+    "noImage": "No image"
+  },
   "notFound": {
     "title": "Page Not Found",
     "description": "This page could not be found.",
