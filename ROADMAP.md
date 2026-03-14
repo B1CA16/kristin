@@ -344,7 +344,7 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 - [ ] Session expiration and refresh token rotation review
 - [ ] OAuth state parameter verification
-- [ ] Account enumeration prevention (login/signup error messages)
+- [ ] Account enumeration prevention — replace client-side duplicate detection with custom email flow (existing users receive "you already have an account" email instead of UI error)
 - [ ] Password strength requirements (if using email/password)
 
 ### Security Testing

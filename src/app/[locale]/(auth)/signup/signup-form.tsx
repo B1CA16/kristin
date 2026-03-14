@@ -20,13 +20,21 @@ export function SignupForm() {
     setLoading(true);
 
     const supabase = createClient();
-    const { error: authError } = await supabase.auth.signUp({
+    const { data, error: authError } = await supabase.auth.signUp({
       email,
       password,
     });
 
     if (authError) {
       setError(authError.message);
+      setLoading(false);
+      return;
+    }
+
+    // Supabase returns a user with empty identities for existing emails
+    // (fake success to prevent account enumeration)
+    if (data.user?.identities?.length === 0) {
+      setError(t('emailAlreadyExists'));
       setLoading(false);
       return;
     }

@@ -32,7 +32,8 @@
     "noAccount": "Não tens conta?",
     "hasAccount": "Já tens conta?",
     "checkEmail": "Verifica o teu email",
-    "confirmationSent": "Enviámos-te um link de confirmação. Clica nele para ativar a tua conta."
+    "confirmationSent": "Enviámos-te um link de confirmação. Clica nele para ativar a tua conta.",
+    "emailAlreadyExists": "Já existe uma conta com este email."
   },
   "notFound": {
     "title": "Página Não Encontrada",
