@@ -67,3 +67,14 @@ export const LOCALE_TO_TMDB_LANG: Record<string, string> = {
   es: 'es-ES',
   fr: 'fr-FR',
 };
+
+/**
+ * Maps our app locales to ISO 3166-1 country codes for watch providers.
+ * TMDB returns provider availability keyed by country code.
+ */
+export const LOCALE_TO_REGION: Record<string, string> = {
+  en: 'US',
+  pt: 'PT',
+  es: 'ES',
+  fr: 'FR',
+};

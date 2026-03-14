@@ -47,7 +47,24 @@
     "resultsFor": "Results for \"{query}\""
   },
   "media": {
-    "noImage": "No image"
+    "noImage": "No image",
+    "cast": "Cast",
+    "recommendations": "Recommendations",
+    "similar": "Similar",
+    "watchProviders": "Where to Watch",
+    "watchProvidersAttribution": "Data provided by JustWatch",
+    "stream": "Stream",
+    "rent": "Rent",
+    "buy": "Buy",
+    "trailer": "Trailer",
+    "playTrailer": "Play Trailer",
+    "closeTrailer": "Close trailer",
+    "runtime": "{hours}h {minutes}m",
+    "seasons": "{count, plural, one {# season} other {# seasons}}",
+    "episodes": "{count, plural, one {# episode} other {# episodes}}",
+    "noOverview": "No overview available.",
+    "director": "Director",
+    "creator": "Creator"
   },
   "notFound": {
     "title": "Page Not Found",

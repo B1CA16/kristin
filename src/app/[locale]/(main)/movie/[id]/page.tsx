@@ -1,0 +1,137 @@
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { getLocale, getTranslations } from 'next-intl/server';
+
+import { getMovieDetails } from '@/lib/tmdb';
+import { LOCALE_TO_REGION } from '@/lib/tmdb/config';
+import { MediaHero } from '@/components/media/media-hero';
+import { CastCarousel } from '@/components/media/cast-carousel';
+import { WatchProviders } from '@/components/media/watch-providers';
+import { MediaCard } from '@/components/media/media-card';
+import { MediaGrid } from '@/components/media/media-grid';
+
+type Props = {
+  params: Promise<{ id: string }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+  const locale = await getLocale();
+
+  try {
+    const movie = await getMovieDetails(parseInt(id, 10), { locale });
+    const year = movie.release_date
+      ? ` (${new Date(movie.release_date).getFullYear()})`
+      : '';
+    return {
+      title: `${movie.title}${year}`,
+      description: movie.overview || undefined,
+    };
+  } catch {
+    return { title: 'Movie' };
+  }
+}
+
+export default async function MoviePage({ params }: Props) {
+  const { id } = await params;
+  const locale = await getLocale();
+  const t = await getTranslations('media');
+
+  const movieId = parseInt(id, 10);
+  if (isNaN(movieId)) notFound();
+
+  let movie;
+  try {
+    movie = await getMovieDetails(movieId, { locale });
+  } catch {
+    notFound();
+  }
+
+  const year = movie.release_date
+    ? new Date(movie.release_date).getFullYear().toString()
+    : '';
+
+  const hours = movie.runtime ? Math.floor(movie.runtime / 60) : 0;
+  const minutes = movie.runtime ? movie.runtime % 60 : 0;
+  const metaLine =
+    movie.runtime && movie.runtime > 0 ? t('runtime', { hours, minutes }) : '';
+
+  // Find director from crew
+  const director = movie.credits?.crew?.find((c) => c.job === 'Director');
+
+  const region = LOCALE_TO_REGION[locale] || 'US';
+  const providers = movie['watch/providers']?.results?.[region];
+
+  const recommendations = movie.recommendations?.results ?? [];
+  const similar = movie.similar?.results ?? [];
+
+  return (
+    <div>
+      <MediaHero
+        title={movie.title}
+        tagline={movie.tagline}
+        overview={movie.overview}
+        posterPath={movie.poster_path}
+        backdropPath={movie.backdrop_path}
+        genres={movie.genres}
+        mediaType="movie"
+        yearDisplay={year}
+        metaLine={metaLine}
+        voteAverage={movie.vote_average}
+        videos={movie.videos?.results}
+        creditLabel={director ? t('director') : undefined}
+        creditName={director?.name}
+      />
+
+      <div className="mx-auto max-w-7xl space-y-10 px-4 py-10 sm:px-6 lg:px-8">
+        {/* Cast */}
+        {movie.credits?.cast && <CastCarousel cast={movie.credits.cast} />}
+
+        {/* Watch Providers */}
+        <WatchProviders providers={providers} />
+
+        {/* Recommendations */}
+        {recommendations.length > 0 && (
+          <section>
+            <h2 className="mb-4 text-lg font-semibold">
+              {t('recommendations')}
+            </h2>
+            <MediaGrid>
+              {recommendations.slice(0, 12).map((rec) => (
+                <MediaCard
+                  key={rec.id}
+                  id={rec.id}
+                  mediaType="movie"
+                  title={rec.title}
+                  posterPath={rec.poster_path}
+                  releaseDate={rec.release_date}
+                  voteAverage={rec.vote_average}
+                />
+              ))}
+            </MediaGrid>
+          </section>
+        )}
+
+        {/* Similar */}
+        {similar.length > 0 && recommendations.length === 0 && (
+          <section>
+            <h2 className="mb-4 text-lg font-semibold">{t('similar')}</h2>
+            <MediaGrid>
+              {similar.slice(0, 12).map((sim) => (
+                <MediaCard
+                  key={sim.id}
+                  id={sim.id}
+                  mediaType="movie"
+                  title={sim.title}
+                  posterPath={sim.poster_path}
+                  releaseDate={sim.release_date}
+                  voteAverage={sim.vote_average}
+                />
+              ))}
+            </MediaGrid>
+          </section>
+        )}
+      </div>
+    </div>
+  );
+}

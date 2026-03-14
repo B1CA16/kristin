@@ -47,7 +47,24 @@
     "resultsFor": "Resultados para \"{query}\""
   },
   "media": {
-    "noImage": "Sem imagem"
+    "noImage": "Sem imagem",
+    "cast": "Elenco",
+    "recommendations": "Recomendações",
+    "similar": "Semelhantes",
+    "watchProviders": "Onde Assistir",
+    "watchProvidersAttribution": "Dados fornecidos por JustWatch",
+    "stream": "Streaming",
+    "rent": "Alugar",
+    "buy": "Comprar",
+    "trailer": "Trailer",
+    "playTrailer": "Ver Trailer",
+    "closeTrailer": "Fechar trailer",
+    "runtime": "{hours}h {minutes}m",
+    "seasons": "{count, plural, one {# temporada} other {# temporadas}}",
+    "episodes": "{count, plural, one {# episódio} other {# episódios}}",
+    "noOverview": "Sem sinopse disponível.",
+    "director": "Realizador",
+    "creator": "Criador"
   },
   "notFound": {
     "title": "Página Não Encontrada",

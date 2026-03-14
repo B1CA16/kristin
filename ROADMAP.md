@@ -111,35 +111,35 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 ### Movie Detail
 
-- [ ] Movie page (`/movie/[id]`) — SSR with `generateMetadata` + rendering tests
-- [ ] Hero section (backdrop + gradient + poster + metadata) — **design approval required**
-- [ ] `append_to_response` for single API call (details + credits + videos + providers + similar + recommendations)
+- [x] Movie page (`/movie/[id]`) — SSR with `generateMetadata` + rendering tests
+- [x] Hero section (backdrop + gradient + poster + metadata) — **design approval required**
+- [x] `append_to_response` for single API call (details + credits + videos + providers + similar + recommendations)
 
 ### TV Detail
 
-- [ ] TV page (`/tv/[id]`) — SSR with `generateMetadata` + rendering tests
-- [ ] TV-specific fields (seasons, episodes, status, network)
+- [x] TV page (`/tv/[id]`) — SSR with `generateMetadata` + rendering tests
+- [x] TV-specific fields (seasons, episodes, status, network)
 
 ### Shared Components
 
-- [ ] `MediaHero` component — **design approval required**
-- [ ] `MediaDetails` info section (genres, runtime, etc.)
-- [ ] `CastCarousel` horizontal scrollable cast list + tests
-- [ ] `TrailerModal` YouTube embed in Dialog
-- [ ] `WatchProviders` streaming/rent/buy with logos + JustWatch attribution + tests
+- [x] `MediaHero` component — **design approval required**
+- [x] `MediaDetails` info section (genres, runtime, etc.)
+- [x] `CastCarousel` horizontal scrollable cast list + tests
+- [x] `TrailerModal` YouTube embed in Dialog
+- [x] `WatchProviders` streaming/rent/buy with logos + JustWatch attribution + tests
 - [ ] `MediaActions` placeholder (watchlist/favorite/rating buttons, non-functional)
-- [ ] `GenreBadge` component with navigation to discover
-- [ ] Loading skeletons for detail pages
+- [x] `GenreBadge` component with navigation to discover
+- [x] Loading skeletons for detail pages
 
 ### SEO & Social
 
 - [ ] Dynamic OG image generation (`/api/og`) via `@vercel/og` + tests
-- [ ] Proper meta tags and `generateMetadata` for all detail pages
+- [x] Proper meta tags and `generateMetadata` for all detail pages
 
 ### API Routes
 
-- [ ] `GET /api/tmdb/movie/[id]` — movie details proxy
-- [ ] `GET /api/tmdb/tv/[id]` — TV details proxy
+- [x] `GET /api/tmdb/movie/[id]` — movie details proxy
+- [x] `GET /api/tmdb/tv/[id]` — TV details proxy
 
 ---
 
