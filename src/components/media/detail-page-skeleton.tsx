@@ -1,5 +1,3 @@
-import { cn } from '@/lib/utils';
-
 /**
  * Skeleton loading state for movie/TV detail pages.
  * Mirrors the MediaHero + content sections layout.
@@ -48,46 +46,66 @@ export function DetailPageSkeleton() {
       </div>
 
       {/* Content sections skeleton */}
-      <div className="mx-auto max-w-7xl space-y-10 px-4 py-10 sm:px-6 lg:px-8">
-        {/* Cast skeleton */}
-        <section>
-          <div className="bg-muted mb-4 h-6 w-20 animate-pulse rounded" />
-          <div className="flex gap-3 overflow-hidden">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="w-[120px] shrink-0 sm:w-[140px]">
-                <div className="bg-muted aspect-2/3 w-full animate-pulse rounded-lg" />
-                <div className="mt-1.5 space-y-1">
-                  <div className="bg-muted h-3.5 w-3/4 animate-pulse rounded" />
-                  <div className="bg-muted h-3 w-1/2 animate-pulse rounded" />
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <div className="lg:grid lg:grid-cols-[1fr_380px] lg:gap-10">
+          {/* Primary column — recommendations skeleton */}
+          <section>
+            {/* Tab header skeleton */}
+            <div className="border-border mb-6 flex gap-4 border-b pb-2">
+              <div className="bg-muted h-5 w-32 animate-pulse rounded" />
+              <div className="bg-muted h-5 w-24 animate-pulse rounded" />
+            </div>
+            {/* Suggestion cards skeleton */}
+            <div className="space-y-2">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="bg-card ring-border flex gap-3 rounded-lg p-3 ring-1"
+                >
+                  <div className="bg-muted size-10 animate-pulse rounded-md" />
+                  <div className="bg-muted h-[72px] w-12 animate-pulse rounded" />
+                  <div className="flex flex-1 flex-col justify-center gap-1.5">
+                    <div className="bg-muted h-4 w-2/3 animate-pulse rounded" />
+                    <div className="bg-muted h-3 w-full animate-pulse rounded" />
+                    <div className="bg-muted h-3 w-1/4 animate-pulse rounded" />
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </section>
+              ))}
+            </div>
+          </section>
 
-        {/* Recommendations skeleton */}
-        <section>
-          <div className="bg-muted mb-4 h-6 w-40 animate-pulse rounded" />
-          <div
-            className={cn(
-              'grid grid-cols-2 gap-3',
-              'min-[475px]:grid-cols-3',
-              'sm:grid-cols-4 sm:gap-4',
-              'md:grid-cols-5',
-              'lg:grid-cols-6',
-            )}
-          >
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i}>
-                <div className="bg-muted aspect-2/3 w-full animate-pulse rounded-lg" />
-                <div className="mt-2 space-y-1">
-                  <div className="bg-muted h-4 w-3/4 animate-pulse rounded" />
-                  <div className="bg-muted h-3 w-1/3 animate-pulse rounded" />
-                </div>
+          {/* Sidebar skeleton */}
+          <aside className="mt-10 space-y-10 lg:mt-0">
+            {/* Cast skeleton */}
+            <section>
+              <div className="bg-muted mb-4 h-6 w-20 animate-pulse rounded" />
+              <div className="flex gap-3 overflow-hidden">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="w-[120px] shrink-0 sm:w-[140px]">
+                    <div className="bg-muted aspect-2/3 w-full animate-pulse rounded-lg" />
+                    <div className="mt-1.5 space-y-1">
+                      <div className="bg-muted h-3.5 w-3/4 animate-pulse rounded" />
+                      <div className="bg-muted h-3 w-1/2 animate-pulse rounded" />
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </section>
+            </section>
+
+            {/* Watch providers skeleton */}
+            <section>
+              <div className="bg-muted mb-4 h-6 w-32 animate-pulse rounded" />
+              <div className="flex gap-2">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="bg-muted size-10 animate-pulse rounded"
+                  />
+                ))}
+              </div>
+            </section>
+          </aside>
+        </div>
       </div>
     </div>
   );

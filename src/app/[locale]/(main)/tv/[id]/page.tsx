@@ -131,61 +131,65 @@ export default async function TVPage({ params }: Props) {
         creditName={creator?.name}
       />
 
-      <div className="mx-auto max-w-7xl space-y-10 px-4 py-10 sm:px-6 lg:px-8">
-        {/* Cast */}
-        {show.credits?.cast && <CastCarousel cast={show.credits.cast} />}
-
-        {/* Watch Providers */}
-        <WatchProviders providers={providers} />
-
-        {/* Recommendations — community + algorithm tabs */}
-        <RecommendationTabs
-          communityContent={
-            <CommunitySuggestions
-              suggestions={suggestions}
-              targetInfo={targetInfo}
-              sourceTmdbId={tvId}
-              sourceMediaType="tv"
-              isLoggedIn={isLoggedIn}
-              currentUserId={user?.id}
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <div className="lg:grid lg:grid-cols-[1fr_380px] lg:gap-10">
+          {/* Primary column — recommendations */}
+          <div>
+            <RecommendationTabs
+              communityContent={
+                <CommunitySuggestions
+                  suggestions={suggestions}
+                  targetInfo={targetInfo}
+                  sourceTmdbId={tvId}
+                  sourceMediaType="tv"
+                  isLoggedIn={isLoggedIn}
+                  currentUserId={user?.id}
+                />
+              }
+              algorithmContent={
+                recommendations.length > 0 ? (
+                  <MediaGrid>
+                    {recommendations.slice(0, 12).map((rec) => (
+                      <MediaCard
+                        key={rec.id}
+                        id={rec.id}
+                        mediaType="tv"
+                        title={rec.name}
+                        posterPath={rec.poster_path}
+                        releaseDate={rec.first_air_date}
+                        voteAverage={rec.vote_average}
+                      />
+                    ))}
+                  </MediaGrid>
+                ) : similar.length > 0 ? (
+                  <MediaGrid>
+                    {similar.slice(0, 12).map((sim) => (
+                      <MediaCard
+                        key={sim.id}
+                        id={sim.id}
+                        mediaType="tv"
+                        title={sim.name}
+                        posterPath={sim.poster_path}
+                        releaseDate={sim.first_air_date}
+                        voteAverage={sim.vote_average}
+                      />
+                    ))}
+                  </MediaGrid>
+                ) : (
+                  <p className="text-muted-foreground py-8 text-center text-sm">
+                    {t('noRecommendations')}
+                  </p>
+                )
+              }
             />
-          }
-          algorithmContent={
-            recommendations.length > 0 ? (
-              <MediaGrid>
-                {recommendations.slice(0, 12).map((rec) => (
-                  <MediaCard
-                    key={rec.id}
-                    id={rec.id}
-                    mediaType="tv"
-                    title={rec.name}
-                    posterPath={rec.poster_path}
-                    releaseDate={rec.first_air_date}
-                    voteAverage={rec.vote_average}
-                  />
-                ))}
-              </MediaGrid>
-            ) : similar.length > 0 ? (
-              <MediaGrid>
-                {similar.slice(0, 12).map((sim) => (
-                  <MediaCard
-                    key={sim.id}
-                    id={sim.id}
-                    mediaType="tv"
-                    title={sim.name}
-                    posterPath={sim.poster_path}
-                    releaseDate={sim.first_air_date}
-                    voteAverage={sim.vote_average}
-                  />
-                ))}
-              </MediaGrid>
-            ) : (
-              <p className="text-muted-foreground py-8 text-center text-sm">
-                {t('noRecommendations')}
-              </p>
-            )
-          }
-        />
+          </div>
+
+          {/* Sidebar — cast + providers */}
+          <aside className="mt-10 space-y-10 lg:mt-0">
+            {show.credits?.cast && <CastCarousel cast={show.credits.cast} />}
+            <WatchProviders providers={providers} />
+          </aside>
+        </div>
       </div>
     </div>
   );

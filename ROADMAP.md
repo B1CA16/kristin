@@ -160,18 +160,9 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 - [x] `unvoteSuggestion` — deletes vote, returns updated count + integration tests
 - [x] `getSuggestionsForMedia` — returns suggestions with vote counts + user vote status
 
-### Real-time
-
-- [ ] Supabase Realtime subscription for vote updates (scoped to visible suggestions)
-- [ ] Animated vote count transitions
-
 ### Hooks
 
 - [x] `useOptimisticVote` hook (optimistic state + rollback on error) + tests
-
-### E2E
-
-- [ ] E2E: full suggestion + voting flow
 
 ---
 
@@ -240,10 +231,19 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 - [ ] Page transitions (AnimatePresence)
 - [ ] Media card hover/entrance animations (staggered grid)
 - [ ] Vote button spring animation + counter animation
+- [ ] Animated vote count transitions
 - [ ] Tab sliding underline indicator
 - [ ] Modal enter/exit (scale + fade)
 - [ ] List item add/remove layout animations
 - [ ] Skeleton pulse animations
+
+### Real-time
+
+- [ ] Supabase Realtime subscription for vote updates (scoped to visible suggestions)
+
+### E2E (deferred from Phase 4)
+
+- [ ] E2E: full suggestion + voting flow
 
 ### Performance
 
