@@ -64,7 +64,26 @@
     "episodes": "{count, plural, one {# episodio} other {# episodios}}",
     "noOverview": "Sin sinopsis disponible.",
     "director": "Director",
-    "creator": "Creador"
+    "creator": "Creador",
+    "noRecommendations": "No hay recomendaciones disponibles."
+  },
+  "suggestions": {
+    "communityPicks": "Selección de la Comunidad",
+    "algorithm": "De TMDB",
+    "addSuggestion": "Sugerir Similar",
+    "noSuggestions": "Aún no hay sugerencias. ¡Sé el primero!",
+    "suggestTitle": "Sugerir un Título Similar",
+    "suggestDescription": "Busca una película o serie que a los fans de este título les gustaría.",
+    "reason": "¿Por qué es similar? (opcional)",
+    "reasonPlaceholder": "Mismo director, temas similares...",
+    "submit": "Enviar Sugerencia",
+    "submitting": "Enviando...",
+    "loginToSuggest": "Inicia sesión para sugerir",
+    "loginToVote": "Inicia sesión para votar",
+    "cannotVoteOwn": "No puedes votar tu propia sugerencia",
+    "alreadyExists": "Esta sugerencia ya existe.",
+    "suggestedBy": "Sugerido por {username}",
+    "votes": "{count, plural, one {# voto} other {# votos}}"
   },
   "notFound": {
     "title": "Página No Encontrada",

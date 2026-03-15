@@ -268,6 +268,29 @@ export async function discoverTV(
   });
 }
 
+/**
+ * Fetch basic info (title + poster) for a media item.
+ * Used to hydrate community suggestion targets without the full details payload.
+ */
+export async function getMediaBasicInfo(
+  id: number,
+  mediaType: 'movie' | 'tv',
+  options: { locale?: string } = {},
+): Promise<{ title: string; posterPath: string | null }> {
+  if (mediaType === 'movie') {
+    const data = await tmdbFetch<{ title: string; poster_path: string | null }>(
+      `/movie/${id}`,
+      { locale: options.locale, cacheTtl: CACHE_TTL.movieDetails },
+    );
+    return { title: data.title, posterPath: data.poster_path };
+  }
+  const data = await tmdbFetch<{ name: string; poster_path: string | null }>(
+    `/tv/${id}`,
+    { locale: options.locale, cacheTtl: CACHE_TTL.tvDetails },
+  );
+  return { title: data.name, posterPath: data.poster_path };
+}
+
 /** Get full movie details with credits, videos, recommendations, and providers. */
 export async function getMovieDetails(
   id: number,

@@ -2,13 +2,17 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getLocale, getTranslations } from 'next-intl/server';
 
-import { getMovieDetails } from '@/lib/tmdb';
+import { getMovieDetails, getMediaBasicInfo } from '@/lib/tmdb';
 import { LOCALE_TO_REGION } from '@/lib/tmdb/config';
+import { createClient } from '@/lib/supabase/server';
+import { getSuggestionsForMedia } from '@/actions/suggestions';
 import { MediaHero } from '@/components/media/media-hero';
 import { CastCarousel } from '@/components/media/cast-carousel';
 import { WatchProviders } from '@/components/media/watch-providers';
 import { MediaCard } from '@/components/media/media-card';
 import { MediaGrid } from '@/components/media/media-grid';
+import { RecommendationTabs } from '@/components/recommendations/recommendation-tabs';
+import { CommunitySuggestions } from '@/components/recommendations/community-suggestions';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -65,6 +69,39 @@ export default async function MoviePage({ params }: Props) {
   const recommendations = movie.recommendations?.results ?? [];
   const similar = movie.similar?.results ?? [];
 
+  // Community suggestions
+  const { data: suggestions } = await getSuggestionsForMedia({
+    tmdbId: movieId,
+    mediaType: 'movie',
+  });
+
+  // Fetch title/poster for each suggestion target
+  const targetInfo: Record<
+    string,
+    { title: string; posterPath: string | null }
+  > = {};
+  await Promise.all(
+    suggestions.map(async (s) => {
+      const key = `${s.targetType}-${s.targetTmdbId}`;
+      try {
+        targetInfo[key] = await getMediaBasicInfo(
+          s.targetTmdbId,
+          s.targetType,
+          { locale },
+        );
+      } catch {
+        targetInfo[key] = { title: 'Unknown', posterPath: null };
+      }
+    }),
+  );
+
+  // Check if user is logged in
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const isLoggedIn = !!user;
+
   return (
     <div>
       <MediaHero
@@ -90,47 +127,54 @@ export default async function MoviePage({ params }: Props) {
         {/* Watch Providers */}
         <WatchProviders providers={providers} />
 
-        {/* Recommendations */}
-        {recommendations.length > 0 && (
-          <section>
-            <h2 className="mb-4 text-lg font-semibold">
-              {t('recommendations')}
-            </h2>
-            <MediaGrid>
-              {recommendations.slice(0, 12).map((rec) => (
-                <MediaCard
-                  key={rec.id}
-                  id={rec.id}
-                  mediaType="movie"
-                  title={rec.title}
-                  posterPath={rec.poster_path}
-                  releaseDate={rec.release_date}
-                  voteAverage={rec.vote_average}
-                />
-              ))}
-            </MediaGrid>
-          </section>
-        )}
-
-        {/* Similar */}
-        {similar.length > 0 && recommendations.length === 0 && (
-          <section>
-            <h2 className="mb-4 text-lg font-semibold">{t('similar')}</h2>
-            <MediaGrid>
-              {similar.slice(0, 12).map((sim) => (
-                <MediaCard
-                  key={sim.id}
-                  id={sim.id}
-                  mediaType="movie"
-                  title={sim.title}
-                  posterPath={sim.poster_path}
-                  releaseDate={sim.release_date}
-                  voteAverage={sim.vote_average}
-                />
-              ))}
-            </MediaGrid>
-          </section>
-        )}
+        {/* Recommendations — community + algorithm tabs */}
+        <RecommendationTabs
+          communityContent={
+            <CommunitySuggestions
+              suggestions={suggestions}
+              targetInfo={targetInfo}
+              sourceTmdbId={movieId}
+              sourceMediaType="movie"
+              isLoggedIn={isLoggedIn}
+              currentUserId={user?.id}
+            />
+          }
+          algorithmContent={
+            recommendations.length > 0 ? (
+              <MediaGrid>
+                {recommendations.slice(0, 12).map((rec) => (
+                  <MediaCard
+                    key={rec.id}
+                    id={rec.id}
+                    mediaType="movie"
+                    title={rec.title}
+                    posterPath={rec.poster_path}
+                    releaseDate={rec.release_date}
+                    voteAverage={rec.vote_average}
+                  />
+                ))}
+              </MediaGrid>
+            ) : similar.length > 0 ? (
+              <MediaGrid>
+                {similar.slice(0, 12).map((sim) => (
+                  <MediaCard
+                    key={sim.id}
+                    id={sim.id}
+                    mediaType="movie"
+                    title={sim.title}
+                    posterPath={sim.poster_path}
+                    releaseDate={sim.release_date}
+                    voteAverage={sim.vote_average}
+                  />
+                ))}
+              </MediaGrid>
+            ) : (
+              <p className="text-muted-foreground py-8 text-center text-sm">
+                {t('noRecommendations')}
+              </p>
+            )
+          }
+        />
       </div>
     </div>
   );

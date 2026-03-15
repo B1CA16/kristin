@@ -5,6 +5,7 @@ export {
   getTrending,
   discoverMovies,
   discoverTV,
+  getMediaBasicInfo,
   getMovieDetails,
   getTVDetails,
   getMovieGenres,

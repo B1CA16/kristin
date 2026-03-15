@@ -64,7 +64,26 @@
     "episodes": "{count, plural, one {# episode} other {# episodes}}",
     "noOverview": "No overview available.",
     "director": "Director",
-    "creator": "Creator"
+    "creator": "Creator",
+    "noRecommendations": "No recommendations available."
+  },
+  "suggestions": {
+    "communityPicks": "Community Picks",
+    "algorithm": "From TMDB",
+    "addSuggestion": "Suggest Similar",
+    "noSuggestions": "No suggestions yet. Be the first!",
+    "suggestTitle": "Suggest a Similar Title",
+    "suggestDescription": "Search for a movie or TV show that fans of this title would enjoy.",
+    "reason": "Why is it similar? (optional)",
+    "reasonPlaceholder": "Same director, similar themes...",
+    "submit": "Submit Suggestion",
+    "submitting": "Submitting...",
+    "loginToSuggest": "Log in to suggest",
+    "loginToVote": "Log in to vote",
+    "cannotVoteOwn": "You cannot vote on your own suggestion",
+    "alreadyExists": "This suggestion already exists.",
+    "suggestedBy": "Suggested by {username}",
+    "votes": "{count, plural, one {# vote} other {# votes}}"
   },
   "notFound": {
     "title": "Page Not Found",

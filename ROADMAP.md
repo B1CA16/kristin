@@ -147,18 +147,18 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 ### Core Components
 
-- [ ] `RecommendationTabs` (Community Picks / Algorithm) — **design approval required**
-- [ ] `CommunitySuggestions` list (sorted by vote_count DESC, pagination)
-- [ ] `SuggestionCard` (poster, title, vote count, upvote button, optimistic UI) + tests — **design approval required**
-- [ ] `AddSuggestionDialog` (search modal, reason text, duplicate prevention) + tests
-- [ ] `AlgorithmRecommendations` (TMDB similar + recommendations grid)
+- [x] `RecommendationTabs` (Community Picks / Algorithm) — **design approval required**
+- [x] `CommunitySuggestions` list (sorted by vote_count DESC, pagination)
+- [x] `SuggestionCard` (poster, title, vote count, upvote button, optimistic UI) + tests — **design approval required**
+- [x] `AddSuggestionDialog` (search modal, reason text, duplicate prevention) + tests
+- [x] `AlgorithmRecommendations` (TMDB similar + recommendations grid)
 
 ### Server Actions
 
-- [ ] `createSuggestion` — validates auth, checks duplicates, inserts, logs activity + integration tests
-- [ ] `voteSuggestion` — validates auth, inserts vote, returns updated count + integration tests
-- [ ] `unvoteSuggestion` — deletes vote, returns updated count + integration tests
-- [ ] `getSuggestionsForMedia` — returns suggestions with vote counts + user vote status
+- [x] `createSuggestion` — validates auth, checks duplicates, inserts, logs activity + integration tests
+- [x] `voteSuggestion` — validates auth, inserts vote, returns updated count + integration tests
+- [x] `unvoteSuggestion` — deletes vote, returns updated count + integration tests
+- [x] `getSuggestionsForMedia` — returns suggestions with vote counts + user vote status
 
 ### Real-time
 
@@ -167,7 +167,7 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 ### Hooks
 
-- [ ] `useOptimisticVote` hook (optimistic state + rollback on error) + tests
+- [x] `useOptimisticVote` hook (optimistic state + rollback on error) + tests
 
 ### E2E
 
