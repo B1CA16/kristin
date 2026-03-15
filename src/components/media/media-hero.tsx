@@ -24,6 +24,8 @@ type MediaHeroProps = {
   /** Director for movies, creator for TV */
   creditLabel?: string;
   creditName?: string;
+  /** Additional action buttons (e.g. watchlist, favorite) rendered alongside trailer */
+  actions?: React.ReactNode;
 };
 
 /**
@@ -44,6 +46,7 @@ export function MediaHero({
   videos = [],
   creditLabel,
   creditName,
+  actions,
 }: MediaHeroProps) {
   const t = useTranslations('media');
   const backdrop = backdropUrl(backdropPath, 'lg');
@@ -168,8 +171,9 @@ export function MediaHero({
             </p>
 
             {/* Actions */}
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-4 flex flex-wrap items-center gap-2">
               <TrailerModal videos={videos} />
+              {actions}
             </div>
           </div>
         </div>

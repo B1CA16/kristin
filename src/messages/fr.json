@@ -85,6 +85,12 @@
     "suggestedBy": "Suggéré par {username}",
     "votes": "{count, plural, one {# vote} other {# votes}}"
   },
+  "lists": {
+    "watchlist": "Liste",
+    "watched": "Vu",
+    "favorite": "Favori",
+    "loginRequired": "Connectez-vous pour sauvegarder"
+  },
   "notFound": {
     "title": "Page Non Trouvée",
     "description": "Cette page est introuvable.",

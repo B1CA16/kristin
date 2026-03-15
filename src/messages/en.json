@@ -85,6 +85,12 @@
     "suggestedBy": "Suggested by {username}",
     "votes": "{count, plural, one {# vote} other {# votes}}"
   },
+  "lists": {
+    "watchlist": "Watchlist",
+    "watched": "Watched",
+    "favorite": "Favorite",
+    "loginRequired": "Log in to save"
+  },
   "notFound": {
     "title": "Page Not Found",
     "description": "This page could not be found.",

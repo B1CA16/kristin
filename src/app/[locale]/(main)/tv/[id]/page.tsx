@@ -6,7 +6,9 @@ import { getTVDetails, getMediaBasicInfo } from '@/lib/tmdb';
 import { LOCALE_TO_REGION } from '@/lib/tmdb/config';
 import { createClient } from '@/lib/supabase/server';
 import { getSuggestionsForMedia } from '@/actions/suggestions';
+import { getListStatus } from '@/actions/lists';
 import { MediaHero } from '@/components/media/media-hero';
+import { MediaActions } from '@/components/media/media-actions';
 import { CastCarousel } from '@/components/media/cast-carousel';
 import { WatchProviders } from '@/components/media/watch-providers';
 import { MediaCard } from '@/components/media/media-card';
@@ -106,12 +108,17 @@ export default async function TVPage({ params }: Props) {
     }),
   );
 
-  // Check if user is logged in
+  // Check if user is logged in + fetch list status
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   const isLoggedIn = !!user;
+
+  const { data: listStatus } = await getListStatus({
+    tmdbId: tvId,
+    mediaType: 'tv',
+  });
 
   return (
     <div>
@@ -129,6 +136,14 @@ export default async function TVPage({ params }: Props) {
         videos={show.videos?.results}
         creditLabel={creator ? t('creator') : undefined}
         creditName={creator?.name}
+        actions={
+          <MediaActions
+            tmdbId={tvId}
+            mediaType="tv"
+            initialStatus={listStatus}
+            isLoggedIn={isLoggedIn}
+          />
+        }
       />
 
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
