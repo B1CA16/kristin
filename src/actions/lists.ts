@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { getLocale } from 'next-intl/server';
 import { createClient, getUser } from '@/lib/supabase/server';
+import { logActivity } from '@/actions/activity';
 import { getMediaBasicInfo } from '@/lib/tmdb';
 
 // ---------------------------------------------------------------------------
@@ -129,6 +130,13 @@ export async function toggleListItem(
   if (error) {
     return { added: false, error: error.message };
   }
+
+  void logActivity({
+    userId: user.id,
+    tmdbId: media.tmdbId,
+    mediaType: media.mediaType,
+    action: `${listType}_added`,
+  });
 
   revalidatePath(`/${media.mediaType}/${media.tmdbId}`);
   return { added: true, error: null };

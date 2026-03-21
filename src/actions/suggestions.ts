@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { createClient, getUser } from '@/lib/supabase/server';
+import { logActivity } from '@/actions/activity';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -139,6 +140,13 @@ export async function createSuggestion(
     return { error: error.message };
   }
 
+  void logActivity({
+    userId: user.id,
+    tmdbId: source.tmdbId,
+    mediaType: source.mediaType,
+    action: 'suggestion_created',
+  });
+
   revalidatePath(`/${source.mediaType}/${source.tmdbId}`);
   return { error: null };
 }
@@ -188,6 +196,13 @@ export async function voteSuggestion(
   }
 
   if (suggestion) {
+    void logActivity({
+      userId: user.id,
+      tmdbId: suggestion.source_tmdb_id,
+      mediaType: suggestion.source_type,
+      action: 'suggestion_voted',
+    });
+
     revalidatePath(`/${suggestion.source_type}/${suggestion.source_tmdb_id}`);
   }
   return { error: null };

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { createClient, getUser } from '@/lib/supabase/server';
+import { logActivity } from '@/actions/activity';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -277,6 +278,13 @@ export async function createReview(
     return { error: error.message };
   }
 
+  void logActivity({
+    userId: user.id,
+    tmdbId: media.tmdbId,
+    mediaType: media.mediaType,
+    action: 'review_created',
+  });
+
   revalidatePath(`/${media.mediaType}/${media.tmdbId}`);
   return { error: null };
 }
@@ -434,6 +442,13 @@ export async function voteReviewHelpful(
     }
     return { error: error.message };
   }
+
+  void logActivity({
+    userId: user.id,
+    tmdbId: review.tmdb_id,
+    mediaType: review.media_type,
+    action: 'review_helpful_voted',
+  });
 
   revalidatePath(`/${review.media_type}/${review.tmdb_id}`);
   return { error: null };

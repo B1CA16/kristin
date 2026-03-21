@@ -173,20 +173,21 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 - [x] Server actions: `toggleListItem`, `getListStatus`, `getUserList` + integration tests
 - [x] `MediaActions` component functional (watchlist/watched/favorite toggles, optimistic UI) + tests
 - [x] Lists page (`/lists`) with tabs (Watchlist / Watched / Favorites) + sort options — **design approval required**
-- [ ] Activity logging for list_add actions
+- [x] Activity logging for list_add actions
 - [ ] E2E: list management flow
 
 ### Reviews
 
-- [ ] Server actions: `createReview`, `updateReview`, `deleteReview`, `getReviewsForMedia`, `getUserReviews` + integration tests
-- [ ] Server actions: `voteReviewHelpful`, `unvoteReviewHelpful` + integration tests
-- [ ] `StarRating` component (interactive + display modes, half-star support) + tests — **design approval required**
-- [ ] `ReviewForm` (star rating + title + body, Zod validation) + tests
-- [ ] `ReviewCard` (avatar, username, stars, date, text, helpful vote) + tests
-- [ ] `ReviewList` (sort: Most Helpful / Newest / Highest / Lowest, pagination)
-- [ ] `RatingDistribution` bar chart (average + total count)
-- [ ] Reviews section on media detail pages
-- [ ] Activity logging for review actions
+- [x] Server actions: `createReview`, `updateReview`, `deleteReview`, `getReviewsForMedia`, `getUserReview`, `getRatingDistribution` + integration tests
+- [x] Server actions: `voteReviewHelpful`, `unvoteReviewHelpful` + integration tests
+- [x] `StarRating` component (interactive + display modes, half-star support) + tests — **design approval required**
+- [x] `ReviewForm` (star rating + title + body, Zod validation) + tests
+- [x] `ReviewCard` (avatar, username, stars, date, text, helpful vote) + tests
+- [x] `ReviewList` (sort: Most Helpful / Newest / Highest / Lowest, pagination)
+- [x] `RatingDistribution` bar chart (average + total count)
+- [x] Reviews section on media detail pages
+- [x] `useOptimisticHelpful` hook for helpful vote optimistic UI
+- [x] Activity logging for review actions
 - [ ] E2E: review creation + editing flow
 
 ---
