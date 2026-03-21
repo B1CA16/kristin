@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { createClient } from '@/lib/supabase/server';
+import { createClient, getUser } from '@/lib/supabase/server';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -37,10 +37,7 @@ export async function getSuggestionsForMedia(
   source: MediaRef,
 ): Promise<{ data: SuggestionWithVoteStatus[]; error: string | null }> {
   const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getUser();
 
   const { data: suggestions, error } = await supabase
     .from('community_suggestions')

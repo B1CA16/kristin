@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { getLocale } from 'next-intl/server';
-import { createClient } from '@/lib/supabase/server';
+import { createClient, getUser } from '@/lib/supabase/server';
 import { getMediaBasicInfo } from '@/lib/tmdb';
 
 // ---------------------------------------------------------------------------
@@ -35,10 +35,7 @@ export async function getListStatus(
   media: MediaRef,
 ): Promise<{ data: ListStatus; error: string | null }> {
   const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getUser();
 
   if (!user) {
     return {

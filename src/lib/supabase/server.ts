@@ -1,3 +1,4 @@
+import type { User } from '@supabase/supabase-js';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import type { Database } from '@/types/database';
@@ -31,4 +32,21 @@ export async function createClient() {
       },
     },
   );
+}
+
+/**
+ * Safe wrapper around supabase.auth.getUser() that returns null
+ * instead of throwing on network timeouts. Prevents Supabase
+ * connectivity issues from crashing server renders.
+ */
+export async function getUser(): Promise<User | null> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    return user;
+  } catch {
+    return null;
+  }
 }

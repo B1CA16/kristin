@@ -1,7 +1,11 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import {
+  getMessages,
+  getTranslations,
+  setRequestLocale,
+} from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { SetHtmlLang } from '@/components/layout/set-html-lang';
 
@@ -37,9 +41,10 @@ export default async function LocaleLayout({ children, params }: Props) {
   }
 
   setRequestLocale(locale);
+  const messages = await getMessages();
 
   return (
-    <NextIntlClientProvider>
+    <NextIntlClientProvider messages={messages}>
       <SetHtmlLang locale={locale} />
       {children}
     </NextIntlClientProvider>

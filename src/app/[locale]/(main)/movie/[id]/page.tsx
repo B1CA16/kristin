@@ -4,9 +4,14 @@ import { getLocale, getTranslations } from 'next-intl/server';
 
 import { getMovieDetails, getMediaBasicInfo } from '@/lib/tmdb';
 import { LOCALE_TO_REGION } from '@/lib/tmdb/config';
-import { createClient } from '@/lib/supabase/server';
+import { getUser } from '@/lib/supabase/server';
 import { getSuggestionsForMedia } from '@/actions/suggestions';
 import { getListStatus } from '@/actions/lists';
+import {
+  getReviewsForMedia,
+  getRatingDistribution,
+  getUserReview,
+} from '@/actions/reviews';
 import { MediaHero } from '@/components/media/media-hero';
 import { MediaActions } from '@/components/media/media-actions';
 import { CastCarousel } from '@/components/media/cast-carousel';
@@ -15,6 +20,8 @@ import { MediaCard } from '@/components/media/media-card';
 import { MediaGrid } from '@/components/media/media-grid';
 import { RecommendationTabs } from '@/components/recommendations/recommendation-tabs';
 import { CommunitySuggestions } from '@/components/recommendations/community-suggestions';
+import { ReviewList } from '@/components/reviews/review-list';
+import { RatingDistribution } from '@/components/reviews/rating-distribution';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -98,16 +105,20 @@ export default async function MoviePage({ params }: Props) {
   );
 
   // Check if user is logged in + fetch list status
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getUser();
   const isLoggedIn = !!user;
 
-  const { data: listStatus } = await getListStatus({
-    tmdbId: movieId,
-    mediaType: 'movie',
-  });
+  const [
+    { data: listStatus },
+    { data: reviews, total: reviewTotal, hasMore: reviewHasMore },
+    { data: userReview },
+    { data: allRatings },
+  ] = await Promise.all([
+    getListStatus({ tmdbId: movieId, mediaType: 'movie' }),
+    getReviewsForMedia({ tmdbId: movieId, mediaType: 'movie' }),
+    getUserReview({ tmdbId: movieId, mediaType: 'movie' }),
+    getRatingDistribution({ tmdbId: movieId, mediaType: 'movie' }),
+  ]);
 
   return (
     <div>
@@ -137,8 +148,8 @@ export default async function MoviePage({ params }: Props) {
 
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="lg:grid lg:grid-cols-[1fr_380px] lg:gap-10">
-          {/* Primary column — recommendations */}
-          <div>
+          {/* Primary column — recommendations + reviews */}
+          <div className="space-y-10">
             <RecommendationTabs
               communityContent={
                 <CommunitySuggestions
@@ -186,6 +197,21 @@ export default async function MoviePage({ params }: Props) {
                 )
               }
             />
+
+            {/* Reviews section */}
+            <div>
+              <RatingDistribution ratings={allRatings} className="mb-6" />
+              <ReviewList
+                tmdbId={movieId}
+                mediaType="movie"
+                initialReviews={reviews}
+                initialTotal={reviewTotal}
+                initialHasMore={reviewHasMore}
+                isLoggedIn={isLoggedIn}
+                currentUserId={user?.id}
+                existingReview={userReview}
+              />
+            </div>
           </div>
 
           {/* Sidebar — cast + providers */}
