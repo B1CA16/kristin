@@ -15,6 +15,7 @@
     "allRightsReserved": "Todos os direitos reservados.",
     "userMenu": "Menu do utilizador",
     "logout": "Sair",
+    "myLists": "As Minhas Listas",
     "openMenu": "Abrir menu"
   },
   "auth": {
@@ -89,7 +90,11 @@
     "watchlist": "Lista",
     "watched": "Visto",
     "favorite": "Favorito",
-    "loginRequired": "Entra para guardar"
+    "loginRequired": "Entra para guardar",
+    "pageTitle": "As Minhas Listas",
+    "emptyWatchlist": "A tua lista está vazia. Explora filmes e séries para adicionar!",
+    "emptyWatched": "Ainda não marcaste nada como visto.",
+    "emptyFavorite": "Sem favoritos ainda. Marca os títulos que adoras!"
   },
   "notFound": {
     "title": "Página Não Encontrada",

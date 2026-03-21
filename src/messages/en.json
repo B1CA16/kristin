@@ -15,6 +15,7 @@
     "allRightsReserved": "All rights reserved.",
     "userMenu": "User menu",
     "logout": "Log out",
+    "myLists": "My Lists",
     "openMenu": "Open menu"
   },
   "auth": {
@@ -89,7 +90,11 @@
     "watchlist": "Watchlist",
     "watched": "Watched",
     "favorite": "Favorite",
-    "loginRequired": "Log in to save"
+    "loginRequired": "Log in to save",
+    "pageTitle": "My Lists",
+    "emptyWatchlist": "Your watchlist is empty. Browse movies and TV shows to add some!",
+    "emptyWatched": "Nothing marked as watched yet.",
+    "emptyFavorite": "No favorites yet. Heart the titles you love!"
   },
   "notFound": {
     "title": "Page Not Found",

@@ -172,7 +172,7 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 - [x] Server actions: `toggleListItem`, `getListStatus`, `getUserList` + integration tests
 - [x] `MediaActions` component functional (watchlist/watched/favorite toggles, optimistic UI) + tests
-- [ ] Lists page (`/lists`) with tabs (Watchlist / Watched / Favorites) + sort options — **design approval required**
+- [x] Lists page (`/lists`) with tabs (Watchlist / Watched / Favorites) + sort options — **design approval required**
 - [ ] Activity logging for list_add actions
 - [ ] E2E: list management flow
 

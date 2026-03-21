@@ -3,8 +3,9 @@
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { User, LogOut } from 'lucide-react';
+import { User, LogOut, Bookmark } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
+import { Link } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -51,6 +52,12 @@ export function UserMenu({ username, avatarUrl }: Props) {
           className="text-muted-foreground font-medium"
         >
           {username}
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/lists">
+            <Bookmark size={16} />
+            {t('myLists')}
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={handleLogout}>
           <LogOut size={16} />
