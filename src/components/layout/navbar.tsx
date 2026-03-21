@@ -41,6 +41,9 @@ export async function Navbar() {
 
         {/* Desktop nav */}
         <div className="hidden items-center gap-1 md:flex">
+          <Button variant="ghost" size="sm" asChild>
+            <Link href="/discover">{t('discover')}</Link>
+          </Button>
           <LanguageSwitcher />
           <ThemeToggle />
           {profile ? (

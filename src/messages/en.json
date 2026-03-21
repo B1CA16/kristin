@@ -16,6 +16,7 @@
     "userMenu": "User menu",
     "logout": "Log out",
     "myLists": "My Lists",
+    "discover": "Discover",
     "openMenu": "Open menu"
   },
   "auth": {
@@ -97,6 +98,17 @@
     "emptyFavorite": "No favorites yet. Heart the titles you love!",
     "loadMore": "Load More",
     "loading": "Loading..."
+  },
+  "discover": {
+    "title": "Discover",
+    "trendingOnKristin": "Trending on Kristin",
+    "trendingOnKristinEmpty": "No trending activity yet. Start exploring!",
+    "trendingOnTMDB": "Trending on TMDB",
+    "day": "Today",
+    "week": "This Week",
+    "popularRecommendations": "Popular Recommendations",
+    "popularRecommendationsEmpty": "No community recommendations yet.",
+    "votes": "{count, plural, one {# vote} other {# votes}}"
   },
   "reviews": {
     "heading": "Reviews",

@@ -16,6 +16,7 @@
     "userMenu": "Menu utilisateur",
     "logout": "Se déconnecter",
     "myLists": "Mes Listes",
+    "discover": "Découvrir",
     "openMenu": "Ouvrir le menu"
   },
   "auth": {
@@ -97,6 +98,17 @@
     "emptyFavorite": "Pas encore de favoris. Marquez les titres que vous adorez !",
     "loadMore": "Charger Plus",
     "loading": "Chargement..."
+  },
+  "discover": {
+    "title": "Découvrir",
+    "trendingOnKristin": "Tendance sur Kristin",
+    "trendingOnKristinEmpty": "Pas encore d'activité. Commencez à explorer !",
+    "trendingOnTMDB": "Tendance sur TMDB",
+    "day": "Aujourd'hui",
+    "week": "Cette Semaine",
+    "popularRecommendations": "Recommandations Populaires",
+    "popularRecommendationsEmpty": "Pas encore de recommandations de la communauté.",
+    "votes": "{count, plural, one {# vote} other {# votes}}"
   },
   "reviews": {
     "heading": "Critiques",

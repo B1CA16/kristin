@@ -87,6 +87,17 @@ export function MobileNav({ profile }: Props) {
           )}
 
           <div className="border-border/50 border-t pt-4">
+            <Button
+              variant="ghost"
+              className="justify-start"
+              asChild
+              onClick={() => setOpen(false)}
+            >
+              <Link href="/discover">{t('discover')}</Link>
+            </Button>
+          </div>
+
+          <div className="border-border/50 border-t pt-4">
             <div className="flex items-center gap-2">
               <LanguageSwitcher />
               <ThemeToggle />

@@ -16,6 +16,7 @@
     "userMenu": "Menú de usuario",
     "logout": "Cerrar sesión",
     "myLists": "Mis Listas",
+    "discover": "Descubrir",
     "openMenu": "Abrir menú"
   },
   "auth": {
@@ -97,6 +98,17 @@
     "emptyFavorite": "Sin favoritos aún. ¡Marca los títulos que te encantan!",
     "loadMore": "Cargar Más",
     "loading": "Cargando..."
+  },
+  "discover": {
+    "title": "Descubrir",
+    "trendingOnKristin": "Tendencia en Kristin",
+    "trendingOnKristinEmpty": "Aún sin actividad. ¡Empieza a explorar!",
+    "trendingOnTMDB": "Tendencia en TMDB",
+    "day": "Hoy",
+    "week": "Esta Semana",
+    "popularRecommendations": "Recomendaciones Populares",
+    "popularRecommendationsEmpty": "Aún sin recomendaciones de la comunidad.",
+    "votes": "{count, plural, one {# voto} other {# votos}}"
   },
   "reviews": {
     "heading": "Reseñas",

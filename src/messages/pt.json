@@ -16,6 +16,7 @@
     "userMenu": "Menu do utilizador",
     "logout": "Sair",
     "myLists": "As Minhas Listas",
+    "discover": "Descobrir",
     "openMenu": "Abrir menu"
   },
   "auth": {
@@ -97,6 +98,17 @@
     "emptyFavorite": "Sem favoritos ainda. Marca os títulos que adoras!",
     "loadMore": "Carregar Mais",
     "loading": "A carregar..."
+  },
+  "discover": {
+    "title": "Descobrir",
+    "trendingOnKristin": "Em Alta no Kristin",
+    "trendingOnKristinEmpty": "Ainda sem atividade. Começa a explorar!",
+    "trendingOnTMDB": "Em Alta no TMDB",
+    "day": "Hoje",
+    "week": "Esta Semana",
+    "popularRecommendations": "Recomendações Populares",
+    "popularRecommendationsEmpty": "Ainda sem recomendações da comunidade.",
+    "votes": "{count, plural, one {# voto} other {# votos}}"
   },
   "reviews": {
     "heading": "Críticas",

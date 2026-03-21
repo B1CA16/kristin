@@ -276,19 +276,44 @@ export async function getMediaBasicInfo(
   id: number,
   mediaType: 'movie' | 'tv',
   options: { locale?: string } = {},
-): Promise<{ title: string; posterPath: string | null }> {
+): Promise<{
+  title: string;
+  posterPath: string | null;
+  releaseDate: string | null;
+  voteAverage: number | null;
+}> {
   if (mediaType === 'movie') {
-    const data = await tmdbFetch<{ title: string; poster_path: string | null }>(
-      `/movie/${id}`,
-      { locale: options.locale, cacheTtl: CACHE_TTL.movieDetails },
-    );
-    return { title: data.title, posterPath: data.poster_path };
+    const data = await tmdbFetch<{
+      title: string;
+      poster_path: string | null;
+      release_date?: string;
+      vote_average?: number;
+    }>(`/movie/${id}`, {
+      locale: options.locale,
+      cacheTtl: CACHE_TTL.movieDetails,
+    });
+    return {
+      title: data.title,
+      posterPath: data.poster_path,
+      releaseDate: data.release_date ?? null,
+      voteAverage: data.vote_average ?? null,
+    };
   }
-  const data = await tmdbFetch<{ name: string; poster_path: string | null }>(
-    `/tv/${id}`,
-    { locale: options.locale, cacheTtl: CACHE_TTL.tvDetails },
-  );
-  return { title: data.name, posterPath: data.poster_path };
+  const data = await tmdbFetch<{
+    name: string;
+    poster_path: string | null;
+    first_air_date?: string;
+    vote_average?: number;
+  }>(`/tv/${id}`, {
+    locale: options.locale,
+    cacheTtl: CACHE_TTL.tvDetails,
+  });
+  return {
+    title: data.name,
+    posterPath: data.poster_path,
+    releaseDate: data.first_air_date ?? null,
+    voteAverage: data.vote_average ?? null,
+  };
 }
 
 /** Get full movie details with credits, videos, recommendations, and providers. */
