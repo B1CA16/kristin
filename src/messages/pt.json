@@ -17,6 +17,7 @@
     "logout": "Sair",
     "myLists": "As Minhas Listas",
     "discover": "Descobrir",
+    "browse": "Explorar",
     "openMenu": "Abrir menu"
   },
   "auth": {
@@ -108,7 +109,19 @@
     "week": "Esta Semana",
     "popularRecommendations": "Recomendações Populares",
     "popularRecommendationsEmpty": "Ainda sem recomendações da comunidade.",
-    "votes": "{count, plural, one {# voto} other {# votos}}"
+    "votes": "{count, plural, one {# voto} other {# votos}}",
+    "browse": "Explorar",
+    "allGenres": "Todos os Géneros",
+    "anyYear": "Qualquer Ano",
+    "sortBy": "Ordenar por",
+    "sortPopularity": "Popularidade",
+    "sortRating": "Mais Bem Avaliados",
+    "sortNewest": "Mais Recentes",
+
+    "movies": "Filmes",
+    "tvShows": "Séries",
+    "noResults": "Nenhum resultado encontrado para estes filtros.",
+    "loadingMore": "A carregar mais..."
   },
   "reviews": {
     "heading": "Críticas",

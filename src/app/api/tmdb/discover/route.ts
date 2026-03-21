@@ -21,6 +21,15 @@ export async function GET(request: NextRequest) {
     ? parseFloat(searchParams.get('voteAverageGte')!)
     : undefined;
 
+  // When sorting by rating, require a minimum vote count to filter out
+  // obscure titles with inflated averages from very few votes.
+  const isRatingSort = sortBy?.startsWith('vote_average');
+  const voteCountGte = searchParams.get('voteCountGte')
+    ? parseInt(searchParams.get('voteCountGte')!, 10)
+    : isRatingSort
+      ? 200
+      : undefined;
+
   try {
     const data =
       type === 'tv'
@@ -31,6 +40,7 @@ export async function GET(request: NextRequest) {
             withGenres,
             firstAirDateYear: year,
             voteAverageGte,
+            voteCountGte,
           })
         : await discoverMovies({
             locale,
@@ -39,6 +49,7 @@ export async function GET(request: NextRequest) {
             withGenres,
             year,
             voteAverageGte,
+            voteCountGte,
           });
 
     return NextResponse.json(data);

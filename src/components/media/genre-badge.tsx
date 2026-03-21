@@ -20,7 +20,7 @@ export function GenreBadge({
 }: GenreBadgeProps) {
   return (
     <Link
-      href={`/discover?type=${mediaType}&withGenres=${id}`}
+      href={`/search?type=${mediaType}&withGenres=${id}`}
       className={cn(
         'bg-secondary text-secondary-foreground hover:bg-secondary/70',
         'inline-block rounded-full px-3 py-1 text-xs font-medium',

@@ -10,12 +10,14 @@ import { useDebounce } from '@/hooks/use-debounce';
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll';
 import { usePathname } from '@/i18n/navigation';
 import type {
+  Genre,
   MovieListResult,
   MultiSearchResult,
   TVListResult,
 } from '@/lib/tmdb/types';
 import { MediaCard } from '@/components/media/media-card';
 import { MediaGrid } from '@/components/media/media-grid';
+import { DiscoverGrid } from '@/components/discover/discover-grid';
 import { SearchResultsSkeleton } from './search-results-skeleton';
 
 type SearchFilter = 'all' | 'movie' | 'tv';
@@ -23,15 +25,22 @@ type SearchFilter = 'all' | 'movie' | 'tv';
 type SearchResultsProps = {
   initialQuery: string;
   initialType: string;
+  initialGenre: string;
+  movieGenres: Genre[];
+  tvGenres: Genre[];
 };
 
 /**
- * Full search results page with filter tabs and infinite scroll.
- * Syncs query and filter to URL search params.
+ * Full search page with two modes:
+ * - No query: browse grid with genre/year/sort filters + infinite scroll
+ * - With query: search results with filter tabs + infinite scroll
  */
 export function SearchResults({
   initialQuery,
   initialType,
+  initialGenre,
+  movieGenres,
+  tvGenres,
 }: SearchResultsProps) {
   const t = useTranslations('search');
   const locale = useLocale();
@@ -51,6 +60,7 @@ export function SearchResults({
 
   const debouncedQuery = useDebounce(query, 300);
   const hasMore = page < totalPages;
+  const isBrowseMode = !debouncedQuery || debouncedQuery.length < 2;
 
   // Fetch results
   const fetchResults = useCallback(
@@ -89,7 +99,7 @@ export function SearchResults({
 
   // Initial search and query/filter changes
   useEffect(() => {
-    if (!debouncedQuery || debouncedQuery.length < 2) {
+    if (isBrowseMode) {
       setResults([]);
       setHasSearched(false);
       router.replace(pathname, { scroll: false });
@@ -128,7 +138,7 @@ export function SearchResults({
     router.replace(`${pathname}?${params}`, { scroll: false });
 
     return () => controller.abort();
-  }, [debouncedQuery, filter, fetchResults, router, pathname]);
+  }, [debouncedQuery, filter, fetchResults, router, pathname, isBrowseMode]);
 
   // Load more pages
   const loadMore = useCallback(async () => {
@@ -191,11 +201,18 @@ export function SearchResults({
         />
       </div>
 
-      {/* Empty prompt when no query */}
-      {!hasSearched && !isLoading ? (
-        <p className="text-muted-foreground py-20 text-center text-lg">
-          {t('emptyPrompt')}
-        </p>
+      {/* Browse mode — no query */}
+      {isBrowseMode ? (
+        <DiscoverGrid
+          movieGenres={movieGenres}
+          tvGenres={tvGenres}
+          initialGenre={initialGenre}
+          initialType={
+            initialType === 'movie' || initialType === 'tv'
+              ? initialType
+              : 'movie'
+          }
+        />
       ) : (
         <>
           {/* Filter tabs */}

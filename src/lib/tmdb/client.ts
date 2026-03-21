@@ -229,6 +229,7 @@ export async function discoverMovies(
     withGenres?: string;
     year?: number;
     voteAverageGte?: number;
+    voteCountGte?: number;
   } = {},
 ) {
   return tmdbFetch<PaginatedResponse<MovieListResult>>('/discover/movie', {
@@ -240,6 +241,7 @@ export async function discoverMovies(
       with_genres: options.withGenres,
       primary_release_year: options.year,
       'vote_average.gte': options.voteAverageGte,
+      'vote_count.gte': options.voteCountGte,
     },
   });
 }
@@ -253,6 +255,7 @@ export async function discoverTV(
     withGenres?: string;
     firstAirDateYear?: number;
     voteAverageGte?: number;
+    voteCountGte?: number;
   } = {},
 ) {
   return tmdbFetch<PaginatedResponse<TVListResult>>('/discover/tv', {
@@ -264,6 +267,7 @@ export async function discoverTV(
       with_genres: options.withGenres,
       first_air_date_year: options.firstAirDateYear,
       'vote_average.gte': options.voteAverageGte,
+      'vote_count.gte': options.voteCountGte,
     },
   });
 }

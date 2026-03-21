@@ -196,11 +196,11 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 ### Discover Page
 
-- [ ] "Trending on Kristin" section (weighted activity_log aggregation, last 7 days) + tests
-- [ ] "Trending on TMDB" section (TMDB trending endpoint, day/week toggle)
-- [ ] "Popular Recommendations" section (highest-voted suggestions across all media)
-- [ ] Genre browsing (scrollable chips + filtered discover grid) — **design approval required**
-- [ ] Discover grid with filters (genre, year, sort) + infinite scroll
+- [x] "Trending on Kristin" section (weighted activity_log aggregation, last 7 days) + tests
+- [x] "Trending on TMDB" section (TMDB trending endpoint, day/week toggle)
+- [x] "Popular Recommendations" section (highest-voted suggestions across all media)
+- [x] Genre browsing (scrollable chips + filtered discover grid) — **design approval required**
+- [x] Discover grid with filters (genre, year, sort) + infinite scroll
 - [ ] E2E: discover page browsing
 
 ### User Profiles

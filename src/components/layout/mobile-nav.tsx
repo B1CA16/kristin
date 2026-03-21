@@ -86,7 +86,7 @@ export function MobileNav({ profile }: Props) {
             </div>
           )}
 
-          <div className="border-border/50 border-t pt-4">
+          <div className="border-border/50 flex flex-col gap-1 border-t pt-4">
             <Button
               variant="ghost"
               className="justify-start"
@@ -94,6 +94,14 @@ export function MobileNav({ profile }: Props) {
               onClick={() => setOpen(false)}
             >
               <Link href="/discover">{t('discover')}</Link>
+            </Button>
+            <Button
+              variant="ghost"
+              className="justify-start"
+              asChild
+              onClick={() => setOpen(false)}
+            >
+              <Link href="/search">{t('browse')}</Link>
             </Button>
           </div>
 

@@ -17,6 +17,7 @@
     "logout": "Cerrar sesión",
     "myLists": "Mis Listas",
     "discover": "Descubrir",
+    "browse": "Explorar",
     "openMenu": "Abrir menú"
   },
   "auth": {
@@ -108,7 +109,19 @@
     "week": "Esta Semana",
     "popularRecommendations": "Recomendaciones Populares",
     "popularRecommendationsEmpty": "Aún sin recomendaciones de la comunidad.",
-    "votes": "{count, plural, one {# voto} other {# votos}}"
+    "votes": "{count, plural, one {# voto} other {# votos}}",
+    "browse": "Explorar",
+    "allGenres": "Todos los Géneros",
+    "anyYear": "Cualquier Año",
+    "sortBy": "Ordenar por",
+    "sortPopularity": "Popularidad",
+    "sortRating": "Mejor Valorados",
+    "sortNewest": "Más Recientes",
+
+    "movies": "Películas",
+    "tvShows": "Series",
+    "noResults": "No se encontraron resultados para estos filtros.",
+    "loadingMore": "Cargando más..."
   },
   "reviews": {
     "heading": "Reseñas",

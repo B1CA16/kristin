@@ -44,6 +44,9 @@ export async function Navbar() {
           <Button variant="ghost" size="sm" asChild>
             <Link href="/discover">{t('discover')}</Link>
           </Button>
+          <Button variant="ghost" size="sm" asChild>
+            <Link href="/search">{t('browse')}</Link>
+          </Button>
           <LanguageSwitcher />
           <ThemeToggle />
           {profile ? (
