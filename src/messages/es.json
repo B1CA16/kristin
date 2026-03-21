@@ -94,7 +94,9 @@
     "pageTitle": "Mis Listas",
     "emptyWatchlist": "Tu lista está vacía. ¡Explora películas y series para añadir!",
     "emptyWatched": "Aún no has marcado nada como visto.",
-    "emptyFavorite": "Sin favoritos aún. ¡Marca los títulos que te encantan!"
+    "emptyFavorite": "Sin favoritos aún. ¡Marca los títulos que te encantan!",
+    "loadMore": "Cargar Más",
+    "loading": "Cargando..."
   },
   "notFound": {
     "title": "Página No Encontrada",

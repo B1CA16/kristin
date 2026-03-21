@@ -7,9 +7,8 @@ import { Bookmark, Eye, Heart } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { getMediaBasicInfo } from '@/lib/tmdb';
 import { getUserList, type UserListItem } from '@/actions/lists';
-import { MediaCard } from '@/components/media/media-card';
-import { MediaGrid } from '@/components/media/media-grid';
 import { ListTabs } from '@/components/lists/list-tabs';
+import { ListGrid } from '@/components/lists/list-grid';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('lists');
@@ -53,6 +52,23 @@ async function resolveListItems(
   return results;
 }
 
+function EmptyState({
+  icon: Icon,
+  message,
+}: {
+  icon: typeof Bookmark;
+  message: string;
+}) {
+  return (
+    <div className="flex flex-col items-center justify-center py-16">
+      <div className="bg-muted mb-4 rounded-full p-4">
+        <Icon className="text-muted-foreground size-8" />
+      </div>
+      <p className="text-muted-foreground text-center text-sm">{message}</p>
+    </div>
+  );
+}
+
 export default async function ListsPage() {
   const locale = await getLocale();
   const t = await getTranslations('lists');
@@ -67,7 +83,7 @@ export default async function ListsPage() {
     redirect(`/${locale}/login`);
   }
 
-  // Fetch all three lists in parallel
+  // Fetch first page of all three lists in parallel
   const [watchlistResult, watchedResult, favoriteResult] = await Promise.all([
     getUserList('watchlist'),
     getUserList('watched'),
@@ -81,50 +97,6 @@ export default async function ListsPage() {
     resolveListItems(favoriteResult.data, locale),
   ]);
 
-  const emptyIcons: Record<string, typeof Bookmark> = {
-    emptyWatchlist: Bookmark,
-    emptyWatched: Eye,
-    emptyFavorite: Heart,
-  };
-
-  function renderGrid(
-    items: {
-      id: number;
-      mediaType: 'movie' | 'tv';
-      title: string;
-      posterPath: string | null;
-    }[],
-    emptyKey: string,
-  ) {
-    if (items.length === 0) {
-      const Icon = emptyIcons[emptyKey] ?? Bookmark;
-      return (
-        <div className="flex flex-col items-center justify-center py-16">
-          <div className="bg-muted mb-4 rounded-full p-4">
-            <Icon className="text-muted-foreground size-8" />
-          </div>
-          <p className="text-muted-foreground text-center text-sm">
-            {t(emptyKey)}
-          </p>
-        </div>
-      );
-    }
-
-    return (
-      <MediaGrid>
-        {items.map((item) => (
-          <MediaCard
-            key={`${item.mediaType}-${item.id}`}
-            id={item.id}
-            mediaType={item.mediaType}
-            title={item.title}
-            posterPath={item.posterPath}
-          />
-        ))}
-      </MediaGrid>
-    );
-  }
-
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <h1 className="mb-6 text-2xl font-bold tracking-tight sm:text-3xl">
@@ -132,13 +104,38 @@ export default async function ListsPage() {
       </h1>
 
       <ListTabs
-        watchlistContent={renderGrid(watchlistItems, 'emptyWatchlist')}
-        watchedContent={renderGrid(watchedItems, 'emptyWatched')}
-        favoriteContent={renderGrid(favoriteItems, 'emptyFavorite')}
+        watchlistContent={
+          <ListGrid
+            listType="watchlist"
+            initialItems={watchlistItems}
+            initialHasMore={watchlistResult.hasMore}
+            emptyState={
+              <EmptyState icon={Bookmark} message={t('emptyWatchlist')} />
+            }
+          />
+        }
+        watchedContent={
+          <ListGrid
+            listType="watched"
+            initialItems={watchedItems}
+            initialHasMore={watchedResult.hasMore}
+            emptyState={<EmptyState icon={Eye} message={t('emptyWatched')} />}
+          />
+        }
+        favoriteContent={
+          <ListGrid
+            listType="favorite"
+            initialItems={favoriteItems}
+            initialHasMore={favoriteResult.hasMore}
+            emptyState={
+              <EmptyState icon={Heart} message={t('emptyFavorite')} />
+            }
+          />
+        }
         counts={{
-          watchlist: watchlistItems.length,
-          watched: watchedItems.length,
-          favorite: favoriteItems.length,
+          watchlist: watchlistResult.total,
+          watched: watchedResult.total,
+          favorite: favoriteResult.total,
         }}
       />
     </div>

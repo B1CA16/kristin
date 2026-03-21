@@ -94,7 +94,9 @@
     "pageTitle": "My Lists",
     "emptyWatchlist": "Your watchlist is empty. Browse movies and TV shows to add some!",
     "emptyWatched": "Nothing marked as watched yet.",
-    "emptyFavorite": "No favorites yet. Heart the titles you love!"
+    "emptyFavorite": "No favorites yet. Heart the titles you love!",
+    "loadMore": "Load More",
+    "loading": "Loading..."
   },
   "notFound": {
     "title": "Page Not Found",

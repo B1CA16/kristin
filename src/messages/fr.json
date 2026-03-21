@@ -94,7 +94,9 @@
     "pageTitle": "Mes Listes",
     "emptyWatchlist": "Votre liste est vide. Explorez des films et séries à ajouter !",
     "emptyWatched": "Rien de marqué comme vu pour le moment.",
-    "emptyFavorite": "Pas encore de favoris. Marquez les titres que vous adorez !"
+    "emptyFavorite": "Pas encore de favoris. Marquez les titres que vous adorez !",
+    "loadMore": "Charger Plus",
+    "loading": "Chargement..."
   },
   "notFound": {
     "title": "Page Non Trouvée",

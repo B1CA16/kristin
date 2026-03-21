@@ -71,8 +71,8 @@ export function ListTabs({
         ))}
       </div>
 
-      {/* Tab content */}
-      {contentMap[tab]}
+      {/* Tab content — key forces remount so useState picks up new initialItems */}
+      <div key={tab}>{contentMap[tab]}</div>
     </div>
   );
 }

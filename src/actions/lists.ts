@@ -1,7 +1,9 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { getLocale } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
+import { getMediaBasicInfo } from '@/lib/tmdb';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -146,33 +148,52 @@ export type UserListItem = {
   createdAt: string;
 };
 
+/** Number of items per page. */
+const LIST_PAGE_SIZE = 20;
+
 /**
- * Get all items in a user's list, sorted by most recently added.
+ * Get a paginated slice of a user's list, sorted by most recently added.
+ * Returns `hasMore` to indicate if additional pages exist.
  */
 export async function getUserList(
   listType: ListType,
-): Promise<{ data: UserListItem[]; error: string | null }> {
+  options: { offset?: number; limit?: number } = {},
+): Promise<{
+  data: UserListItem[];
+  total: number;
+  hasMore: boolean;
+  error: string | null;
+}> {
   const supabase = await createClient();
+  const offset = options.offset ?? 0;
+  const limit = options.limit ?? LIST_PAGE_SIZE;
 
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { data: [], error: 'You must be logged in.' };
+    return {
+      data: [],
+      total: 0,
+      hasMore: false,
+      error: 'You must be logged in.',
+    };
   }
 
-  const { data, error } = await supabase
+  const { data, error, count } = await supabase
     .from('user_lists')
-    .select('id, tmdb_id, media_type, created_at')
+    .select('id, tmdb_id, media_type, created_at', { count: 'exact' })
     .eq('user_id', user.id)
     .eq('list_type', listType)
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: false })
+    .range(offset, offset + limit - 1);
 
   if (error) {
-    return { data: [], error: error.message };
+    return { data: [], total: 0, hasMore: false, error: error.message };
   }
 
+  const total = count ?? 0;
   const mapped: UserListItem[] = data.map((row) => ({
     id: row.id,
     tmdbId: row.tmdb_id,
@@ -180,5 +201,70 @@ export async function getUserList(
     createdAt: row.created_at,
   }));
 
-  return { data: mapped, error: null };
+  return {
+    data: mapped,
+    total,
+    hasMore: offset + limit < total,
+    error: null,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// loadMoreListItems
+// ---------------------------------------------------------------------------
+
+type ResolvedListItem = {
+  id: number;
+  mediaType: 'movie' | 'tv';
+  title: string;
+  posterPath: string | null;
+};
+
+/**
+ * Server action for client-side "Load More" pagination.
+ * Fetches the next page of list items and resolves their TMDB info.
+ */
+export async function loadMoreListItems(
+  listType: ListType,
+  offset: number,
+): Promise<{
+  data: ResolvedListItem[];
+  hasMore: boolean;
+  error: string | null;
+}> {
+  const locale = await getLocale();
+  const {
+    data: items,
+    hasMore,
+    error,
+  } = await getUserList(listType, { offset });
+
+  if (error) {
+    return { data: [], hasMore: false, error };
+  }
+
+  const resolved: ResolvedListItem[] = await Promise.all(
+    items.map(async (item) => {
+      try {
+        const info = await getMediaBasicInfo(item.tmdbId, item.mediaType, {
+          locale,
+        });
+        return {
+          id: item.tmdbId,
+          mediaType: item.mediaType,
+          title: info.title,
+          posterPath: info.posterPath,
+        };
+      } catch {
+        return {
+          id: item.tmdbId,
+          mediaType: item.mediaType,
+          title: 'Unknown',
+          posterPath: null,
+        };
+      }
+    }),
+  );
+
+  return { data: resolved, hasMore, error: null };
 }
