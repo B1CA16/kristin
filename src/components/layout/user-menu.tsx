@@ -47,11 +47,11 @@ export function UserMenu({ username, avatarUrl }: Props) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem
-          disabled
-          className="text-muted-foreground font-medium"
-        >
-          {username}
+        <DropdownMenuItem asChild>
+          <Link href={`/profile/${username}`}>
+            <User size={16} />
+            {username}
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href="/lists">

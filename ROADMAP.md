@@ -205,18 +205,21 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 ### User Profiles
 
-- [ ] Profile page (`/profile/[username]`) — **design approval required**
-- [ ] `ProfileHeader` (avatar, name, bio, reputation badge, join date) + tests
-- [ ] `ProfileStats` (reviews count, suggestions made, total votes received)
-- [ ] Activity tabs (Reviews / Suggestions / Favorites)
-- [ ] Edit own profile (avatar upload via Supabase Storage, name, bio) + integration tests
-- [ ] Server actions: `updateProfile`, `getPublicProfile`, `getProfileStats` + integration tests
+- [x] Profile page (`/profile/[username]`) — **design approval required**
+- [x] `ProfileHeader` (initial letter avatar, name, bio, reputation badge, join date) + tests
+- [x] `ProfileStats` (reviews count, suggestions made, total votes received)
+- [x] Activity tabs (Reviews / Suggestions / Favorites with public toggle)
+- [x] Edit own profile (username with 30-day cooldown, display name, bio, public favorites toggle) + integration tests
+- [x] Server actions: `updateProfile`, `getPublicProfile`, `getProfileReviews`, `getProfileSuggestions`, `getProfileFavorites` + integration tests
+- [x] Migration: `public_favorites` + `username_changed_at` columns, public favorites RLS policy
+- [ ] Avatar upload via Supabase Storage (deferred — storage limits)
 - [ ] E2E: profile viewing + editing
 
 ### Reputation System
 
-- [ ] `ReputationBadge` component (Newcomer / Contributor / Curator / Tastemaker / Legend) + tests
-- [ ] Badge displayed next to username across the app
+- [x] `ReputationBadge` component (Newcomer / Contributor / Curator / Tastemaker / Legend) + tests
+- [x] Reputation tier utility (`src/lib/reputation.ts`)
+- [ ] Badge displayed next to username across the app (review cards, suggestion cards)
 
 ### Global Search
 
