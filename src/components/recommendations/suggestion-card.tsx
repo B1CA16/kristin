@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { posterUrl } from '@/lib/tmdb/image';
 import { Link } from '@/i18n/navigation';
 import { useOptimisticVote } from '@/hooks/use-optimistic-vote';
+import { ReputationBadge } from '@/components/profile/reputation-badge';
 import type { SuggestionWithVoteStatus } from '@/actions/suggestions';
 
 type SuggestionCardProps = {
@@ -116,9 +117,12 @@ export function SuggestionCard({
             {suggestion.reason}
           </p>
         )}
-        <p className="text-muted-foreground mt-1 text-[11px]">
-          {t('suggestedBy', { username: suggestion.suggestedByUsername })}
-        </p>
+        <div className="mt-1 flex items-center gap-1.5">
+          <p className="text-muted-foreground text-[11px]">
+            {t('suggestedBy', { username: suggestion.suggestedByUsername })}
+          </p>
+          <ReputationBadge reputation={suggestion.suggestedByReputation} />
+        </div>
       </div>
     </div>
   );

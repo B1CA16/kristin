@@ -47,7 +47,9 @@
     "filterAll": "Todos",
     "filterMovies": "Filmes",
     "filterTV": "Séries",
-    "resultsFor": "Resultados para \"{query}\""
+    "resultsFor": "Resultados para \"{query}\"",
+    "recentSearches": "Pesquisas Recentes",
+    "clearRecent": "Limpar"
   },
   "media": {
     "noImage": "Sem imagem",

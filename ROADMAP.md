@@ -219,12 +219,12 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 - [x] `ReputationBadge` component (Newcomer / Contributor / Curator / Tastemaker / Legend) + tests
 - [x] Reputation tier utility (`src/lib/reputation.ts`)
-- [ ] Badge displayed next to username across the app (review cards, suggestion cards)
+- [x] Badge displayed next to username across the app (review cards, suggestion cards)
 
 ### Global Search
 
-- [ ] Navbar search bar with autocomplete
-- [ ] Recent searches (localStorage)
+- [x] Navbar search bar with autocomplete
+- [x] Recent searches (localStorage via `useSyncExternalStore`)
 
 ---
 

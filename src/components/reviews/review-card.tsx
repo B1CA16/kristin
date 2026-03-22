@@ -7,6 +7,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { useOptimisticHelpful } from '@/hooks/use-optimistic-helpful';
 import { StarRating } from '@/components/reviews/star-rating';
+import { ReputationBadge } from '@/components/profile/reputation-badge';
 import type { ReviewWithVoteStatus } from '@/actions/reviews';
 
 type ReviewCardProps = {
@@ -54,7 +55,10 @@ export function ReviewCard({
             {review.username.charAt(0)}
           </div>
           <div className="min-w-0">
-            <p className="truncate text-sm font-medium">{review.username}</p>
+            <div className="flex items-center gap-1.5">
+              <p className="truncate text-sm font-medium">{review.username}</p>
+              <ReputationBadge reputation={review.reputation} />
+            </div>
             <p className="text-muted-foreground text-[11px]">{timeAgo}</p>
           </div>
         </div>

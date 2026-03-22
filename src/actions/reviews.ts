@@ -18,6 +18,7 @@ export type ReviewWithVoteStatus = {
   userId: string;
   username: string;
   avatarUrl: string | null;
+  reputation: number;
   rating: number;
   title: string | null;
   body: string | null;
@@ -133,7 +134,7 @@ export async function getReviewsForMedia(
       helpful_count,
       created_at,
       updated_at,
-      profiles!reviews_user_id_fkey (username, avatar_url)
+      profiles!reviews_user_id_fkey (username, avatar_url, reputation)
     `,
       { count: 'exact' },
     )
@@ -164,11 +165,13 @@ export async function getReviewsForMedia(
     const profile = r.profiles as unknown as {
       username: string;
       avatar_url: string | null;
+      reputation: number;
     };
     return {
       id: r.id,
       userId: r.user_id,
       username: profile?.username ?? 'unknown',
+      reputation: profile?.reputation ?? 0,
       avatarUrl: profile?.avatar_url ?? null,
       rating: r.rating,
       title: r.title,

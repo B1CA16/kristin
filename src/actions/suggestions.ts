@@ -21,6 +21,7 @@ export type SuggestionWithVoteStatus = {
   voteCount: number;
   suggestedBy: string;
   suggestedByUsername: string;
+  suggestedByReputation: number;
   createdAt: string;
   hasVoted: boolean;
 };
@@ -51,7 +52,7 @@ export async function getSuggestionsForMedia(
       vote_count,
       suggested_by,
       created_at,
-      profiles!community_suggestions_suggested_by_fkey (username)
+      profiles!community_suggestions_suggested_by_fkey (username, reputation)
     `,
     )
     .eq('source_tmdb_id', source.tmdbId)
@@ -85,7 +86,11 @@ export async function getSuggestionsForMedia(
     voteCount: s.vote_count,
     suggestedBy: s.suggested_by,
     suggestedByUsername:
-      (s.profiles as unknown as { username: string })?.username ?? 'unknown',
+      (s.profiles as unknown as { username: string; reputation: number })
+        ?.username ?? 'unknown',
+    suggestedByReputation:
+      (s.profiles as unknown as { username: string; reputation: number })
+        ?.reputation ?? 0,
     createdAt: s.created_at,
     hasVoted: votedSuggestionIds.has(s.id),
   }));

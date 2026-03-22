@@ -14,6 +14,7 @@ type SearchDropdownProps = {
   isLoading: boolean;
   query: string;
   onClose: () => void;
+  onResultClick?: (result: MultiSearchResult) => void;
 };
 
 /**
@@ -25,6 +26,7 @@ export function SearchDropdown({
   isLoading,
   query,
   onClose,
+  onResultClick,
 }: SearchDropdownProps) {
   const t = useTranslations('search');
 
@@ -63,7 +65,10 @@ export function SearchDropdown({
           <SearchDropdownItem
             key={`${result.media_type}-${result.id}`}
             result={result}
-            onClose={onClose}
+            onClose={() => {
+              onResultClick?.(result);
+              onClose();
+            }}
           />
         ))}
       </ul>
