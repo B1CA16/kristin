@@ -5,7 +5,26 @@
   },
   "home": {
     "title": "Kristin",
-    "subtitle": "Descobre o teu próximo filme ou série favorita."
+    "subtitle": "Descobre o teu próximo filme ou série favorita através de recomendações da comunidade.",
+
+    "featured": "Destaque",
+    "getStarted": "Começar",
+    "browse": "Explorar",
+    "seeAll": "Ver tudo",
+
+    "howItWorksTitle": "Como Funciona",
+    "step1Title": "Pesquisa",
+    "step1Desc": "Encontra qualquer filme ou série. Cria a tua lista e regista o que já viste.",
+    "step2Title": "Recebe Recomendações",
+    "step2Desc": "Pessoas reais sugerem o que ver a seguir. As melhores escolhas sobem ao topo através de votos.",
+    "step3Title": "Avalia e Partilha",
+    "step3Desc": "Partilha a tua opinião com precisão de meia estrela. Ajuda outros a decidir o que vale a pena ver.",
+    "joinTitle": "Pronto para descobrir o teu próximo favorito?",
+    "joinSubtitle": "Junta-te à comunidade e começa a receber recomendações personalizadas.",
+    "joinCta": "Criar uma Conta",
+    "trendingOnKristin": "Em Alta no Kristin",
+    "trendingOnTMDB": "Em Alta no TMDB",
+    "popularRecommendations": "Recomendações Populares"
   },
   "common": {
     "login": "Entrar",

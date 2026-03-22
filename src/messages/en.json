@@ -5,7 +5,26 @@
   },
   "home": {
     "title": "Kristin",
-    "subtitle": "Discover your next favorite movie or show."
+    "subtitle": "Discover your next favorite movie or show through community-powered recommendations.",
+
+    "featured": "Featured",
+    "getStarted": "Get Started",
+    "browse": "Browse",
+    "seeAll": "See all",
+
+    "howItWorksTitle": "How It Works",
+    "step1Title": "Search",
+    "step1Desc": "Find any movie or TV show. Build your watchlist and track what you've seen.",
+    "step2Title": "Get Recommendations",
+    "step2Desc": "Real people suggest what to watch next. The best picks rise to the top through community votes.",
+    "step3Title": "Rate & Review",
+    "step3Desc": "Share your opinion with half-star precision. Help others decide what's worth watching.",
+    "joinTitle": "Ready to discover your next favorite?",
+    "joinSubtitle": "Join the community and start getting personalized recommendations.",
+    "joinCta": "Create an Account",
+    "trendingOnKristin": "Trending on Kristin",
+    "trendingOnTMDB": "Trending on TMDB",
+    "popularRecommendations": "Popular Recommendations"
   },
   "common": {
     "login": "Log in",
