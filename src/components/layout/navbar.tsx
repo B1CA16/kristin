@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/server';
@@ -32,7 +33,17 @@ export async function Navbar() {
   return (
     <header className="border-border/50 sticky top-0 z-50 border-b backdrop-blur-lg">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
-        <Link href="/" className="text-xl font-bold tracking-tight">
+        <Link
+          href="/"
+          className="flex items-center gap-0 text-xl font-bold tracking-tight"
+        >
+          <Image
+            src="/kristin_logo.svg"
+            alt="Kristin"
+            width={30}
+            height={30}
+            className="size-9"
+          />
           Kristin
         </Link>
 
