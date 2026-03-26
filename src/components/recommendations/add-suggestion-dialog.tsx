@@ -6,6 +6,7 @@ import { Plus, Search } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
+import { inputClass, textareaClass } from '@/lib/styles';
 import { posterUrl } from '@/lib/tmdb/image';
 import { useDebounce } from '@/hooks/use-debounce';
 import { Button } from '@/components/ui/button';
@@ -163,11 +164,7 @@ export function AddSuggestionDialog({
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={tSearch('placeholder')}
-                className={cn(
-                  'bg-secondary/50 text-foreground placeholder:text-muted-foreground',
-                  'h-10 w-full rounded-md border-none pr-3 pl-9 text-sm',
-                  'focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none',
-                )}
+                className={cn(inputClass, 'pr-3 pl-9')}
                 autoFocus
                 autoComplete="off"
               />
@@ -269,11 +266,7 @@ export function AddSuggestionDialog({
                   placeholder={t('reasonPlaceholder')}
                   rows={2}
                   maxLength={280}
-                  className={cn(
-                    'bg-secondary/50 text-foreground placeholder:text-muted-foreground',
-                    'w-full resize-none rounded-md border-none p-3 text-sm',
-                    'focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none',
-                  )}
+                  className={textareaClass}
                 />
               </div>
 

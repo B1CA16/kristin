@@ -3,7 +3,7 @@
 import { useCallback, useState, useTransition } from 'react';
 import { useTranslations } from 'next-intl';
 
-import { cn } from '@/lib/utils';
+import { inputClass, textareaClass } from '@/lib/styles';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -159,11 +159,7 @@ export function ReviewForm({
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder={t('titlePlaceholder')}
                 maxLength={150}
-                className={cn(
-                  'bg-secondary/50 text-foreground placeholder:text-muted-foreground',
-                  'h-10 w-full rounded-md border-none px-3 text-sm',
-                  'focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none',
-                )}
+                className={inputClass}
                 autoComplete="off"
               />
             </div>
@@ -183,11 +179,7 @@ export function ReviewForm({
                 placeholder={t('bodyPlaceholder')}
                 rows={4}
                 maxLength={2000}
-                className={cn(
-                  'bg-secondary/50 text-foreground placeholder:text-muted-foreground',
-                  'w-full resize-none rounded-md border-none p-3 text-sm',
-                  'focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none',
-                )}
+                className={textareaClass}
               />
             </div>
 

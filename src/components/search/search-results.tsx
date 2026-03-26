@@ -6,6 +6,7 @@ import { Loader2 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
+import { inputClass } from '@/lib/styles';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll';
 import { usePathname } from '@/i18n/navigation';
@@ -191,10 +192,8 @@ export function SearchResults({
           onChange={(e) => setQuery(e.target.value)}
           placeholder={t('placeholder')}
           className={cn(
-            'bg-secondary/50 text-foreground placeholder:text-muted-foreground',
-            'h-12 w-full rounded-lg border-none px-4 text-base',
-            'focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none',
-            'transition-colors',
+            inputClass,
+            'h-12 rounded-lg px-4 text-base transition-colors',
           )}
           autoFocus
           autoComplete="off"

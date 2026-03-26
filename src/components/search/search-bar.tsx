@@ -7,6 +7,7 @@ import { Film, Search, Tv, X } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
+import { inputClass } from '@/lib/styles';
 import { posterUrl } from '@/lib/tmdb/image';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useRecentSearches } from '@/hooks/use-recent-searches';
@@ -160,12 +161,7 @@ export function SearchBar({ className }: SearchBarProps) {
             }}
             placeholder={t('placeholder')}
             aria-label={t('placeholder')}
-            className={cn(
-              'bg-secondary/50 text-foreground placeholder:text-muted-foreground',
-              'h-9 w-full rounded-md border-none pr-8 pl-9 text-sm',
-              'focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none',
-              'transition-colors',
-            )}
+            className={cn(inputClass, 'h-9 pr-8 pl-9 transition-colors')}
             autoComplete="off"
           />
           {query && (

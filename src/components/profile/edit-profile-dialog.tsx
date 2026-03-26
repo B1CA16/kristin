@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
+import { inputClass, textareaClass } from '@/lib/styles';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -71,12 +72,6 @@ export function EditProfileDialog({ profile }: EditProfileDialogProps) {
       }
     });
   }, [username, displayName, bio, publicFavorites, profile, router, locale]);
-
-  const inputClass = cn(
-    'bg-secondary/50 text-foreground placeholder:text-muted-foreground',
-    'h-10 w-full rounded-md border-none px-3 text-sm',
-    'focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none',
-  );
 
   return (
     <>
@@ -152,11 +147,7 @@ export function EditProfileDialog({ profile }: EditProfileDialogProps) {
                 placeholder={t('bioPlaceholder')}
                 rows={3}
                 maxLength={300}
-                className={cn(
-                  'bg-secondary/50 text-foreground placeholder:text-muted-foreground',
-                  'w-full resize-none rounded-md border-none p-3 text-sm',
-                  'focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none',
-                )}
+                className={textareaClass}
               />
             </div>
 

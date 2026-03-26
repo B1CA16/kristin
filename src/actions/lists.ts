@@ -6,16 +6,13 @@ import { createClient, getUser } from '@/lib/supabase/server';
 import { logActivity } from '@/actions/activity';
 import { getMediaBasicInfo } from '@/lib/tmdb';
 
+import type { MediaRef } from '@/types/media';
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
 type ListType = 'watchlist' | 'watched' | 'favorite';
-
-type MediaRef = {
-  tmdbId: number;
-  mediaType: 'movie' | 'tv';
-};
 
 /** Status of a media item across all three list types for the current user. */
 export type ListStatus = {

@@ -4,14 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { createClient, getUser } from '@/lib/supabase/server';
 import { logActivity } from '@/actions/activity';
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
-type MediaRef = {
-  tmdbId: number;
-  mediaType: 'movie' | 'tv';
-};
+import type { MediaRef } from '@/types/media';
 
 export type SuggestionWithVoteStatus = {
   id: string;
