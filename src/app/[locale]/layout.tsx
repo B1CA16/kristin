@@ -25,12 +25,23 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'metadata' });
 
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || 'https://trykristin.vercel.app';
+
   return {
     title: {
       default: t('title'),
       template: `%s | ${t('title')}`,
     },
     description: t('description'),
+    alternates: {
+      languages: {
+        en: `${siteUrl}/en`,
+        pt: `${siteUrl}/pt`,
+        es: `${siteUrl}/es`,
+        fr: `${siteUrl}/fr`,
+      },
+    },
   };
 }
 

@@ -4,7 +4,9 @@ import { useCallback, useState, useTransition } from 'react';
 import Image from 'next/image';
 import { formatDistanceToNow } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
+import { Heart, MessageSquare, Sparkles } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { EmptyState } from '@/components/shared/empty-state';
 
 import { cn } from '@/lib/utils';
 import { posterUrl } from '@/lib/tmdb/image';
@@ -174,9 +176,7 @@ export function ProfileTabs({
                 onLoadMore={loadMoreFavorites}
               />
             ) : (
-              <p className="text-muted-foreground py-8 text-center text-sm">
-                {t('favoritesPrivate')}
-              </p>
+              <EmptyState icon={Heart} message={t('favoritesPrivate')} />
             ))}
         </motion.div>
       </AnimatePresence>
@@ -202,11 +202,7 @@ function ReviewsTab({
   const t = useTranslations('profile');
 
   if (reviews.length === 0) {
-    return (
-      <p className="text-muted-foreground py-8 text-center text-sm">
-        {t('noReviews')}
-      </p>
-    );
+    return <EmptyState icon={MessageSquare} message={t('noReviews')} />;
   }
 
   return (
@@ -244,11 +240,7 @@ function SuggestionsTab({
   const t = useTranslations('profile');
 
   if (suggestions.length === 0) {
-    return (
-      <p className="text-muted-foreground py-8 text-center text-sm">
-        {t('noSuggestions')}
-      </p>
-    );
+    return <EmptyState icon={Sparkles} message={t('noSuggestions')} />;
   }
 
   return (
@@ -286,11 +278,7 @@ function FavoritesTab({
   const t = useTranslations('profile');
 
   if (favorites.length === 0) {
-    return (
-      <p className="text-muted-foreground py-8 text-center text-sm">
-        {t('noFavorites')}
-      </p>
-    );
+    return <EmptyState icon={Heart} message={t('noFavorites')} />;
   }
 
   return (

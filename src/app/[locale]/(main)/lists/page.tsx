@@ -9,6 +9,7 @@ import { getMediaBasicInfo } from '@/lib/tmdb';
 import { getUserList, type UserListItem } from '@/actions/lists';
 import { ListTabs } from '@/components/lists/list-tabs';
 import { ListGrid } from '@/components/lists/list-grid';
+import { EmptyState } from '@/components/shared/empty-state';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('lists');
@@ -50,23 +51,6 @@ async function resolveListItems(
     }),
   );
   return results;
-}
-
-function EmptyState({
-  icon: Icon,
-  message,
-}: {
-  icon: typeof Bookmark;
-  message: string;
-}) {
-  return (
-    <div className="flex flex-col items-center justify-center py-16">
-      <div className="bg-muted mb-4 rounded-full p-4">
-        <Icon className="text-muted-foreground size-8" />
-      </div>
-      <p className="text-muted-foreground text-center text-sm">{message}</p>
-    </div>
-  );
 }
 
 export default async function ListsPage() {

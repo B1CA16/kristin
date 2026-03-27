@@ -1,7 +1,9 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { Sparkles } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { EmptyState } from '@/components/shared/empty-state';
 
 import type { SuggestionWithVoteStatus } from '@/actions/suggestions';
 import { SuggestionCard } from './suggestion-card';
@@ -48,9 +50,7 @@ export function CommunitySuggestions({
       </div>
 
       {suggestions.length === 0 ? (
-        <p className="text-muted-foreground py-8 text-center text-sm">
-          {t('noSuggestions')}
-        </p>
+        <EmptyState icon={Sparkles} message={t('noSuggestions')} />
       ) : (
         <div className="space-y-2">
           {suggestions.map((suggestion) => {

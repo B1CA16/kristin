@@ -4,7 +4,9 @@ import { useCallback, useState, useTransition } from 'react';
 import { useTranslations } from 'next-intl';
 
 import dynamic from 'next/dynamic';
+import { MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { EmptyState } from '@/components/shared/empty-state';
 import { Button } from '@/components/ui/button';
 import { ReviewCard } from '@/components/reviews/review-card';
 
@@ -153,9 +155,7 @@ export function ReviewList({
 
       {/* Review cards */}
       {reviews.length === 0 ? (
-        <p className="text-muted-foreground py-8 text-center text-sm">
-          {t('noReviews')}
-        </p>
+        <EmptyState icon={MessageSquare} message={t('noReviews')} />
       ) : (
         <div className="space-y-3">
           {reviews.map((review) => (

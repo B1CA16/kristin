@@ -269,6 +269,7 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 - [ ] Focus management in modals
 - [x] `prefers-reduced-motion` support
 - [ ] Color contrast compliance (both themes)
+- [x] `hreflang` alternate language links
 
 ### SEO
 
@@ -282,9 +283,10 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 ### UX Polish
 
 - [x] Toast notifications for all user actions (reviews, suggestions, lists, profile)
-- [ ] Empty states with illustrations
+- [x] Empty states with icons (suggestions, reviews)
 - [ ] Mobile bottom sheets + touch-friendly interactions
-- [ ] Error boundaries per section + graceful TMDB degradation
+- [x] Error boundary page (`error.tsx`) with styled fallback
+- [x] Reusable `ErrorBoundary` component for section isolation
 
 ### Quality Checks
 
