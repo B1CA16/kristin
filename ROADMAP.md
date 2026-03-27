@@ -237,7 +237,7 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 - [x] Vote/helpful button animations
 - [x] Tab sliding underline indicator (profile tabs with layoutId)
 - [x] Modal enter/exit (scale + fade via shadcn Dialog)
-- [ ] List item add/remove layout animations
+- [x] List item add/remove layout animations (AnimatePresence in list-grid)
 - [x] Skeleton pulse animations (rounded shapes matching design system)
 - [x] Hero backdrop zoom animation
 - [x] Landing page stagger entrance (hero, how-it-works, content sections)
@@ -290,9 +290,9 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 ### Quality Checks
 
-- [ ] Lighthouse CI (target 90+ all categories)
-- [ ] Accessibility audit
-- [ ] Reduced motion behavior tests
+- [ ] Lighthouse CI (target 90+ all categories) (deferred — pre-launch)
+- [x] Accessibility audit (all icon buttons, form labels, focus management, skip-to-content link)
+- [ ] Reduced motion behavior tests (deferred — pre-launch)
 
 ---
 

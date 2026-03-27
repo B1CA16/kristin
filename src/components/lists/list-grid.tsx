@@ -1,12 +1,13 @@
 'use client';
 
 import { useState, useTransition } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { MediaCard } from '@/components/media/media-card';
-import { MediaGrid } from '@/components/media/media-grid';
 import { loadMoreListItems } from '@/actions/lists';
 
 type ListItem = {
@@ -24,8 +25,8 @@ type ListGridProps = {
 };
 
 /**
- * Paginated grid of media cards with a "Load More" button.
- * Initial items are server-rendered; additional pages are fetched client-side.
+ * Paginated grid of media cards with layout animations
+ * and a "Load More" button.
  */
 export function ListGrid({
   listType,
@@ -34,6 +35,7 @@ export function ListGrid({
   emptyState,
 }: ListGridProps) {
   const t = useTranslations('lists');
+  const reduced = useReducedMotion();
   const [items, setItems] = useState(initialItems);
   const [hasMore, setHasMore] = useState(initialHasMore);
   const [isPending, startTransition] = useTransition();
@@ -58,17 +60,35 @@ export function ListGrid({
 
   return (
     <div>
-      <MediaGrid>
-        {items.map((item) => (
-          <MediaCard
-            key={`${item.mediaType}-${item.id}`}
-            id={item.id}
-            mediaType={item.mediaType}
-            title={item.title}
-            posterPath={item.posterPath}
-          />
-        ))}
-      </MediaGrid>
+      <div
+        className={cn(
+          'grid grid-cols-2 gap-3',
+          'min-[475px]:grid-cols-3',
+          'sm:grid-cols-4 sm:gap-4',
+          'md:grid-cols-5',
+          'lg:grid-cols-6',
+        )}
+      >
+        <AnimatePresence>
+          {items.map((item, i) => (
+            <motion.div
+              key={`${item.mediaType}-${item.id}`}
+              layout={!reduced}
+              initial={reduced ? false : { opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={reduced ? undefined : { opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.25, delay: reduced ? 0 : i * 0.03 }}
+            >
+              <MediaCard
+                id={item.id}
+                mediaType={item.mediaType}
+                title={item.title}
+                posterPath={item.posterPath}
+              />
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
 
       {hasMore && (
         <div className="mt-8 flex justify-center">
