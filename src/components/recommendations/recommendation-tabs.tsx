@@ -23,15 +23,15 @@ export function RecommendationTabs({
 
   return (
     <section>
-      {/* Tab headers */}
-      <div className="border-border mb-6 flex gap-1 border-b">
+      {/* Tab headers — pill style */}
+      <div className="mb-6 flex gap-1.5">
         <button
           onClick={() => setTab('community')}
           className={cn(
-            'cursor-pointer border-b-2 px-4 py-2 text-sm font-medium transition-colors',
+            'cursor-pointer rounded-full px-4 py-1.5 text-sm font-semibold transition-all duration-200',
             tab === 'community'
-              ? 'border-primary text-primary'
-              : 'text-muted-foreground hover:text-foreground border-transparent',
+              ? 'bg-primary text-primary-foreground shadow-primary/25 shadow-md'
+              : 'text-muted-foreground hover:bg-primary/10 hover:text-primary',
           )}
         >
           {t('communityPicks')}
@@ -39,10 +39,10 @@ export function RecommendationTabs({
         <button
           onClick={() => setTab('algorithm')}
           className={cn(
-            'cursor-pointer border-b-2 px-4 py-2 text-sm font-medium transition-colors',
+            'cursor-pointer rounded-full px-4 py-1.5 text-sm font-semibold transition-all duration-200',
             tab === 'algorithm'
-              ? 'border-primary text-primary'
-              : 'text-muted-foreground hover:text-foreground border-transparent',
+              ? 'bg-primary text-primary-foreground shadow-primary/25 shadow-md'
+              : 'text-muted-foreground hover:bg-primary/10 hover:text-primary',
           )}
         >
           {t('algorithm')}

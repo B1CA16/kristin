@@ -107,7 +107,7 @@ export function ReviewList({
     <div>
       {/* Header: title + write review button */}
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-lg font-semibold">
+        <h3 className="font-display text-xl font-bold">
           {t('heading')}
           {total > 0 && (
             <span className="text-muted-foreground ml-1.5 text-sm font-normal">
@@ -133,10 +133,10 @@ export function ReviewList({
               onClick={() => handleSortChange(option)}
               disabled={isPending}
               className={cn(
-                'cursor-pointer rounded-md px-3 py-1.5 text-xs font-medium transition-colors',
+                'cursor-pointer rounded-full px-3.5 py-1 text-xs font-semibold transition-all duration-200',
                 sort === option
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:bg-accent',
+                  ? 'bg-primary text-primary-foreground shadow-primary/25 shadow-md'
+                  : 'text-muted-foreground hover:bg-primary/10 hover:text-primary',
               )}
             >
               {t(`sort.${option}`)}

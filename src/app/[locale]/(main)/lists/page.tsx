@@ -99,7 +99,7 @@ export default async function ListsPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-      <h1 className="mb-6 text-2xl font-bold tracking-tight sm:text-3xl">
+      <h1 className="font-display mb-6 text-3xl font-bold tracking-tight sm:text-4xl">
         {t('pageTitle')}
       </h1>
 

@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import { createClient } from '@/lib/supabase/client';
 import { Link } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
+import { inputClass } from '@/lib/styles';
 
 export function LoginForm() {
   const t = useTranslations('auth');
@@ -37,9 +39,18 @@ export function LoginForm() {
   }
 
   return (
-    <div className="w-full max-w-sm space-y-6">
+    <div className="bg-card w-full max-w-sm space-y-6 rounded-3xl p-8 shadow-xl">
       <div className="space-y-2 text-center">
-        <h1 className="text-2xl font-bold">{t('login')}</h1>
+        <Link href="/" className="mb-2 inline-block">
+          <Image
+            src="/kristin_logo.svg"
+            alt="Kristin"
+            width={40}
+            height={40}
+            className="mx-auto size-10"
+          />
+        </Link>
+        <h1 className="font-display text-3xl font-bold">{t('login')}</h1>
         <p className="text-muted-foreground text-sm">{t('loginSubtitle')}</p>
       </div>
 
@@ -54,7 +65,7 @@ export function LoginForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="border-input bg-background w-full rounded-md border px-3 py-2 text-sm"
+            className={inputClass}
             placeholder={t('emailPlaceholder')}
           />
         </div>
@@ -69,21 +80,28 @@ export function LoginForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="border-input bg-background w-full rounded-md border px-3 py-2 text-sm"
+            className={inputClass}
             placeholder={t('passwordPlaceholder')}
           />
         </div>
 
         {error && <p className="text-destructive text-sm">{error}</p>}
 
-        <Button type="submit" disabled={loading} className="w-full">
+        <Button
+          type="submit"
+          disabled={loading}
+          className="w-full rounded-full"
+        >
           {loading ? t('loggingIn') : t('login')}
         </Button>
       </form>
 
       <p className="text-muted-foreground text-center text-sm">
         {t('noAccount')}{' '}
-        <Link href="/signup" className="text-primary hover:underline">
+        <Link
+          href="/signup"
+          className="text-primary font-medium hover:underline"
+        >
           {t('signUp')}
         </Link>
       </p>

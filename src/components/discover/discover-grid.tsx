@@ -123,7 +123,7 @@ export function DiscoverGrid({
 
   return (
     <section>
-      <h2 className="mb-4 text-xl font-semibold">{t('browse')}</h2>
+      <h2 className="font-display mb-4 text-2xl font-bold">{t('browse')}</h2>
 
       {/* Filter bar */}
       <div className="mb-6 flex flex-wrap items-center gap-2">
@@ -134,10 +134,10 @@ export function DiscoverGrid({
               key={type}
               onClick={() => handleMediaTypeChange(type)}
               className={cn(
-                'cursor-pointer rounded-md px-3 py-1.5 text-xs font-medium transition-colors',
+                'cursor-pointer rounded-full px-3.5 py-1 text-xs font-semibold transition-all duration-200',
                 mediaType === type
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:bg-accent',
+                  ? 'bg-primary text-primary-foreground shadow-primary/25 shadow-md'
+                  : 'text-muted-foreground hover:bg-primary/10 hover:text-primary',
               )}
             >
               {type === 'movie' ? t('movies') : t('tvShows')}

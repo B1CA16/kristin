@@ -24,7 +24,7 @@ export default async function DiscoverPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-      <h1 className="mb-8 text-3xl font-bold">{t('title')}</h1>
+      <h1 className="font-display mb-8 text-4xl font-bold">{t('title')}</h1>
 
       <div className="space-y-12">
         {/* Trending on Kristin */}

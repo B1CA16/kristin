@@ -28,8 +28,12 @@ export default async function LoginPage({ params }: Props) {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
-      <LoginForm />
+    <div className="noise-texture relative flex min-h-screen items-center justify-center overflow-hidden px-4">
+      <div className="blob bg-primary/10 absolute -top-20 -right-20 size-80" />
+      <div className="blob bg-primary/[0.06] absolute -bottom-20 -left-20 size-72" />
+      <div className="relative z-10">
+        <LoginForm />
+      </div>
     </div>
   );
 }

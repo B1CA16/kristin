@@ -193,7 +193,7 @@ export function SearchResults({
           placeholder={t('placeholder')}
           className={cn(
             inputClass,
-            'h-12 rounded-lg px-4 text-base transition-colors',
+            'h-12 rounded-2xl px-4 text-base transition-all focus-visible:shadow-[0_0_12px_oklch(0.65_0.27_290/0.15)]',
           )}
           autoFocus
           autoComplete="off"
@@ -215,16 +215,16 @@ export function SearchResults({
       ) : (
         <>
           {/* Filter tabs */}
-          <div className="border-border mb-6 flex gap-1 border-b">
+          <div className="mb-6 flex gap-1.5">
             {filters.map(({ value, label }) => (
               <button
                 key={value}
                 onClick={() => setFilter(value)}
                 className={cn(
-                  'cursor-pointer border-b-2 px-4 py-2 text-sm font-medium transition-colors',
+                  'cursor-pointer rounded-full px-4 py-1.5 text-sm font-semibold transition-all duration-200',
                   filter === value
-                    ? 'border-primary text-primary'
-                    : 'text-muted-foreground hover:text-foreground border-transparent',
+                    ? 'bg-primary text-primary-foreground shadow-primary/25 shadow-md'
+                    : 'text-muted-foreground hover:bg-primary/10 hover:text-primary',
                 )}
               >
                 {label}

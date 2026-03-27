@@ -28,8 +28,12 @@ export default async function SignupPage({ params }: Props) {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
-      <SignupForm />
+    <div className="noise-texture relative flex min-h-screen items-center justify-center overflow-hidden px-4">
+      <div className="blob bg-primary/10 absolute -top-20 -left-20 size-80" />
+      <div className="blob bg-primary/[0.06] absolute -right-20 -bottom-20 size-72" />
+      <div className="relative z-10">
+        <SignupForm />
+      </div>
     </div>
   );
 }

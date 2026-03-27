@@ -23,7 +23,7 @@ const TABS: { type: ListType; icon: typeof Bookmark; labelKey: string }[] = [
 
 /**
  * Tabs for switching between watchlist, watched, and favorites.
- * Shows item count badge on each tab.
+ * Pill-shaped with count badges.
  */
 export function ListTabs({
   watchlistContent,
@@ -42,26 +42,26 @@ export function ListTabs({
 
   return (
     <div>
-      {/* Tab headers */}
-      <div className="border-border mb-6 flex gap-1 border-b">
+      {/* Tab headers — pill style */}
+      <div className="mb-6 flex gap-1.5">
         {TABS.map(({ type, icon: Icon, labelKey }) => (
           <button
             key={type}
             onClick={() => setTab(type)}
             className={cn(
-              'flex cursor-pointer items-center gap-1.5 border-b-2 px-4 py-2.5 text-sm font-medium transition-colors',
+              'flex cursor-pointer items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-semibold transition-all duration-200',
               tab === type
-                ? 'border-primary text-primary'
-                : 'text-muted-foreground hover:text-foreground border-transparent',
+                ? 'bg-primary text-primary-foreground shadow-primary/25 shadow-md'
+                : 'text-muted-foreground hover:bg-primary/10 hover:text-primary',
             )}
           >
             <Icon className="size-4" />
             {t(labelKey)}
             <span
               className={cn(
-                'ml-1 rounded-full px-1.5 py-0.5 text-xs',
+                'ml-0.5 rounded-full px-1.5 py-0.5 text-xs',
                 tab === type
-                  ? 'bg-primary/10 text-primary'
+                  ? 'text-primary-foreground bg-white/20'
                   : 'bg-muted text-muted-foreground',
               )}
             >
@@ -71,7 +71,7 @@ export function ListTabs({
         ))}
       </div>
 
-      {/* Tab content — key forces remount so useState picks up new initialItems */}
+      {/* Tab content */}
       <div key={tab}>{contentMap[tab]}</div>
     </div>
   );

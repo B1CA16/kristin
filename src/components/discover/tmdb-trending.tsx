@@ -59,7 +59,7 @@ export function TMDBTrending() {
           className={cn(
             'cursor-pointer rounded-full px-3.5 py-1 text-xs font-semibold transition-all duration-200',
             timeWindow === w
-              ? 'bg-primary text-primary-foreground shadow-md shadow-primary/25'
+              ? 'bg-primary text-primary-foreground shadow-primary/25 shadow-md'
               : 'text-muted-foreground hover:bg-primary/10 hover:text-primary',
           )}
         >

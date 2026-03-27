@@ -2,9 +2,11 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import { createClient } from '@/lib/supabase/client';
 import { Link } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
+import { inputClass } from '@/lib/styles';
 
 export function SignupForm() {
   const t = useTranslations('auth');
@@ -31,8 +33,6 @@ export function SignupForm() {
       return;
     }
 
-    // Supabase returns a user with empty identities for existing emails
-    // (fake success to prevent account enumeration)
     if (data.user?.identities?.length === 0) {
       setError(t('emailAlreadyExists'));
       setLoading(false);
@@ -45,17 +45,26 @@ export function SignupForm() {
 
   if (success) {
     return (
-      <div className="w-full max-w-sm space-y-4 text-center">
-        <h1 className="text-2xl font-bold">{t('checkEmail')}</h1>
+      <div className="bg-card w-full max-w-sm space-y-4 rounded-3xl p-8 text-center shadow-xl">
+        <h1 className="font-display text-3xl font-bold">{t('checkEmail')}</h1>
         <p className="text-muted-foreground text-sm">{t('confirmationSent')}</p>
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-sm space-y-6">
+    <div className="bg-card w-full max-w-sm space-y-6 rounded-3xl p-8 shadow-xl">
       <div className="space-y-2 text-center">
-        <h1 className="text-2xl font-bold">{t('signUp')}</h1>
+        <Link href="/" className="mb-2 inline-block">
+          <Image
+            src="/kristin_logo.svg"
+            alt="Kristin"
+            width={40}
+            height={40}
+            className="mx-auto size-10"
+          />
+        </Link>
+        <h1 className="font-display text-3xl font-bold">{t('signUp')}</h1>
         <p className="text-muted-foreground text-sm">{t('signUpSubtitle')}</p>
       </div>
 
@@ -70,7 +79,7 @@ export function SignupForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="border-input bg-background w-full rounded-md border px-3 py-2 text-sm"
+            className={inputClass}
             placeholder={t('emailPlaceholder')}
           />
         </div>
@@ -86,21 +95,28 @@ export function SignupForm() {
             onChange={(e) => setPassword(e.target.value)}
             required
             minLength={6}
-            className="border-input bg-background w-full rounded-md border px-3 py-2 text-sm"
+            className={inputClass}
             placeholder={t('passwordPlaceholder')}
           />
         </div>
 
         {error && <p className="text-destructive text-sm">{error}</p>}
 
-        <Button type="submit" disabled={loading} className="w-full">
+        <Button
+          type="submit"
+          disabled={loading}
+          className="w-full rounded-full"
+        >
           {loading ? t('signingUp') : t('signUp')}
         </Button>
       </form>
 
       <p className="text-muted-foreground text-center text-sm">
         {t('hasAccount')}{' '}
-        <Link href="/login" className="text-primary hover:underline">
+        <Link
+          href="/login"
+          className="text-primary font-medium hover:underline"
+        >
           {t('login')}
         </Link>
       </p>
