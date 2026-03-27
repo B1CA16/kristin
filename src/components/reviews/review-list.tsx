@@ -8,12 +8,10 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { ReviewCard } from '@/components/reviews/review-card';
 
-const ReviewForm = dynamic(
-  () =>
-    import('@/components/reviews/review-form').then((m) => ({
-      default: m.ReviewForm,
-    })),
-  { ssr: false },
+const ReviewForm = dynamic(() =>
+  import('@/components/reviews/review-form').then((m) => ({
+    default: m.ReviewForm,
+  })),
 );
 import { getReviewsForMedia } from '@/actions/reviews';
 import type { ReviewWithVoteStatus, ReviewSortOption } from '@/actions/reviews';

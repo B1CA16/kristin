@@ -7,13 +7,8 @@ import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { backdropUrl, posterUrl } from '@/lib/tmdb/image';
 import { slideUp, staggerContainer, DURATION, EASE } from '@/lib/motion';
-import dynamic from 'next/dynamic';
 import { GenreBadge } from './genre-badge';
-
-const TrailerModal = dynamic(
-  () => import('./trailer-modal').then((m) => ({ default: m.TrailerModal })),
-  { ssr: false },
-);
+import { TrailerModal } from './trailer-modal';
 import type { Genre, Video } from '@/lib/tmdb/types';
 
 type MediaHeroProps = {

@@ -6,12 +6,10 @@ import { useTranslations } from 'next-intl';
 import type { SuggestionWithVoteStatus } from '@/actions/suggestions';
 import { SuggestionCard } from './suggestion-card';
 
-const AddSuggestionDialog = dynamic(
-  () =>
-    import('./add-suggestion-dialog').then((m) => ({
-      default: m.AddSuggestionDialog,
-    })),
-  { ssr: false },
+const AddSuggestionDialog = dynamic(() =>
+  import('./add-suggestion-dialog').then((m) => ({
+    default: m.AddSuggestionDialog,
+  })),
 );
 
 type CommunitySuggestionsProps = {
