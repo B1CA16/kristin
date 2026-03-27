@@ -3,6 +3,7 @@
 import { useCallback, useState, useTransition } from 'react';
 import { useTranslations } from 'next-intl';
 
+import { toast } from 'sonner';
 import { inputClass, textareaClass } from '@/lib/styles';
 import { Button } from '@/components/ui/button';
 import {
@@ -85,6 +86,7 @@ export function ReviewForm({
       setOpen(false);
       resetForm();
       onSuccess?.();
+      toast.success(isEditing ? t('reviewUpdated') : t('reviewSubmitted'));
     });
   }, [
     rating,

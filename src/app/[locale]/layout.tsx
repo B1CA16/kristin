@@ -8,6 +8,7 @@ import {
 } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { SetHtmlLang } from '@/components/layout/set-html-lang';
+import { Toaster } from '@/components/ui/sonner';
 
 type Props = {
   children: React.ReactNode;
@@ -47,6 +48,7 @@ export default async function LocaleLayout({ children, params }: Props) {
     <NextIntlClientProvider messages={messages}>
       <SetHtmlLang locale={locale} />
       {children}
+      <Toaster position="bottom-right" />
     </NextIntlClientProvider>
   );
 }

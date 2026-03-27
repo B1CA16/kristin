@@ -113,6 +113,7 @@
     "loginToSuggest": "Inicia sesión para sugerir",
     "loginToVote": "Inicia sesión para votar",
     "cannotVoteOwn": "No puedes votar tu propia sugerencia",
+    "suggestionSubmitted": "¡Sugerencia enviada!",
     "alreadyExists": "Esta sugerencia ya existe.",
     "suggestedBy": "Sugerido por {username}",
     "votes": "{count, plural, one {# voto} other {# votos}}"
@@ -127,7 +128,9 @@
     "emptyWatched": "Aún no has marcado nada como visto.",
     "emptyFavorite": "Sin favoritos aún. ¡Marca los títulos que te encantan!",
     "loadMore": "Cargar Más",
-    "loading": "Cargando..."
+    "loading": "Cargando...",
+    "addedTo": "Añadido a {list}",
+    "removedFrom": "Eliminado de {list}"
   },
   "discover": {
     "title": "Descubrir",
@@ -169,6 +172,8 @@
     "submitReview": "Enviar Reseña",
     "updateReview": "Actualizar Reseña",
     "submitting": "Enviando...",
+    "reviewSubmitted": "¡Reseña enviada!",
+    "reviewUpdated": "¡Reseña actualizada!",
     "noReviews": "Aún no hay reseñas. ¡Sé el primero en compartir tu opinión!",
     "helpful": "Útil",
     "helpfulCount": "{count, plural, one {# útil} other {# útiles}}",
@@ -215,6 +220,7 @@
     "removeAvatar": "Eliminar",
     "save": "Guardar Cambios",
     "saving": "Guardando...",
+    "profileSaved": "¡Perfil guardado!",
     "profileNotFound": "Usuario no encontrado.",
     "tier": {
       "newcomer": "Novato",

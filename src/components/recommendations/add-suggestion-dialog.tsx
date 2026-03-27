@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Plus, Search } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 
+import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { inputClass, textareaClass } from '@/lib/styles';
 import { posterUrl } from '@/lib/tmdb/image';
@@ -112,8 +113,9 @@ export function AddSuggestionDialog({
       setResults([]);
       setSelected(null);
       setReason('');
+      toast.success(t('suggestionSubmitted'));
     });
-  }, [selected, sourceTmdbId, sourceMediaType, reason]);
+  }, [selected, sourceTmdbId, sourceMediaType, reason, t]);
 
   // Reset state when dialog closes
   function handleOpenChange(isOpen: boolean) {

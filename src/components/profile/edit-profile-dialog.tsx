@@ -4,6 +4,7 @@ import { useCallback, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 
+import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { inputClass, textareaClass } from '@/lib/styles';
 import { Button } from '@/components/ui/button';
@@ -65,13 +66,14 @@ export function EditProfileDialog({ profile }: EditProfileDialogProps) {
       }
 
       setOpen(false);
+      toast.success(t('profileSaved'));
 
       // Redirect to new profile URL if username changed
       if (result.newUsername && result.newUsername !== profile.username) {
         router.push(`/${locale}/profile/${result.newUsername}`);
       }
     });
-  }, [username, displayName, bio, publicFavorites, profile, router, locale]);
+  }, [username, displayName, bio, publicFavorites, profile, router, locale, t]);
 
   return (
     <>

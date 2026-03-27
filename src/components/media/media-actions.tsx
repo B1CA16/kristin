@@ -4,6 +4,7 @@ import { useCallback, useOptimistic, useTransition } from 'react';
 import { Bookmark, Eye, Heart } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
+import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { toggleListItem, type ListStatus } from '@/actions/lists';
 
@@ -70,14 +71,23 @@ export function MediaActions({
       startTransition(async () => {
         setOptimisticStatus(listType);
 
-        const { error } = await toggleListItem({ tmdbId, mediaType }, listType);
+        const { error, added } = await toggleListItem(
+          { tmdbId, mediaType },
+          listType,
+        );
 
         if (error) {
-          console.error('List toggle error:', error);
+          toast.error(error);
+        } else {
+          toast.success(
+            added
+              ? t('addedTo', { list: t(listType) })
+              : t('removedFrom', { list: t(listType) }),
+          );
         }
       });
     },
-    [isLoggedIn, tmdbId, mediaType, setOptimisticStatus],
+    [isLoggedIn, tmdbId, mediaType, setOptimisticStatus, t],
   );
 
   return (

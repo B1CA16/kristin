@@ -281,7 +281,7 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 ### UX Polish
 
-- [ ] Toast notifications for all user actions
+- [x] Toast notifications for all user actions (reviews, suggestions, lists, profile)
 - [ ] Empty states with illustrations
 - [ ] Mobile bottom sheets + touch-friendly interactions
 - [ ] Error boundaries per section + graceful TMDB degradation
