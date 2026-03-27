@@ -6,6 +6,10 @@
   "home": {
     "title": "Kristin",
     "subtitle": "Descobre o teu próximo filme ou série favorita através de recomendações da comunidade.",
+    "heroHighlight": "Descobre",
+    "heroRest": "o teu próximo",
+    "heroUnderline": "favorito",
+    "communityPowered": "Movido pela comunidade",
 
     "featured": "Destaque",
     "getStarted": "Começar",
@@ -37,7 +41,11 @@
     "myLists": "As Minhas Listas",
     "discover": "Descobrir",
     "browse": "Explorar",
-    "openMenu": "Abrir menu"
+    "openMenu": "Abrir menu",
+    "footerTagline": "Recomendações de filmes e séries movidas pela comunidade.",
+    "explore": "Explorar",
+    "account": "Conta",
+    "poweredBy": "Desenvolvido com"
   },
   "auth": {
     "login": "Entrar",

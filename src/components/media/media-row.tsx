@@ -22,7 +22,7 @@ export function MediaRow({
   return (
     <section className={className}>
       <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-lg font-semibold">{title}</h2>
+        <h2 className="font-display text-xl font-bold">{title}</h2>
         {trailing}
       </div>
       <div

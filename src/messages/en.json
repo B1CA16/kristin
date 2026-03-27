@@ -6,6 +6,10 @@
   "home": {
     "title": "Kristin",
     "subtitle": "Discover your next favorite movie or show through community-powered recommendations.",
+    "heroHighlight": "Discover",
+    "heroRest": "your next",
+    "heroUnderline": "favorite",
+    "communityPowered": "Community-powered",
 
     "featured": "Featured",
     "getStarted": "Get Started",
@@ -37,7 +41,11 @@
     "myLists": "My Lists",
     "discover": "Discover",
     "browse": "Browse",
-    "openMenu": "Open menu"
+    "openMenu": "Open menu",
+    "footerTagline": "Community-driven movie and TV show recommendations.",
+    "explore": "Explore",
+    "account": "Account",
+    "poweredBy": "Powered by"
   },
   "auth": {
     "login": "Log in",

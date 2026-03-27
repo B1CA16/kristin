@@ -1,11 +1,18 @@
 import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
+import { Space_Grotesk } from 'next/font/google';
 import { ThemeProvider } from '@/providers/theme-provider';
 import './globals.css';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
+});
+
+const spaceGrotesk = Space_Grotesk({
+  variable: '--font-display',
+  subsets: ['latin'],
+  weight: ['500', '600', '700'],
 });
 
 export const metadata: Metadata = {
@@ -21,7 +28,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} font-sans antialiased`}>
+      <body
+        className={`${geistSans.variable} ${spaceGrotesk.variable} font-sans antialiased`}
+      >
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

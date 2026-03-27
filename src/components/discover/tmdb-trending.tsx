@@ -57,10 +57,10 @@ export function TMDBTrending() {
           onClick={() => setTimeWindow(w)}
           disabled={isPending}
           className={cn(
-            'cursor-pointer rounded-md px-2.5 py-1 text-xs font-medium transition-colors',
+            'cursor-pointer rounded-full px-3.5 py-1 text-xs font-semibold transition-all duration-200',
             timeWindow === w
-              ? 'bg-primary text-primary-foreground'
-              : 'text-muted-foreground hover:bg-accent',
+              ? 'bg-primary text-primary-foreground shadow-md shadow-primary/25'
+              : 'text-muted-foreground hover:bg-primary/10 hover:text-primary',
           )}
         >
           {t(w)}
