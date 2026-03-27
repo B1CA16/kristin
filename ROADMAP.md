@@ -232,7 +232,7 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 ### Animations (Framer Motion)
 
-- [ ] Page transitions (AnimatePresence)
+- [x] Page transitions (template.tsx fade-in on navigation)
 - [x] Media card hover/entrance animations
 - [x] Vote/helpful button animations
 - [x] Tab sliding underline indicator (profile tabs with layoutId)
@@ -246,11 +246,11 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 - [x] Scroll-aware navbar shadow
 - [x] `prefers-reduced-motion` support in all motion wrappers
 
-### Real-time
+### Real-time (deferred)
 
 - [ ] Supabase Realtime subscription for vote updates (scoped to visible suggestions)
 
-### E2E (deferred from Phase 4)
+### E2E (deferred)
 
 - [ ] E2E: full suggestion + voting flow
 
@@ -258,17 +258,17 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 - [x] Next.js Image with proper `sizes` + priority for above-fold (hero images)
 - [x] Dynamic imports for heavy components (TrailerModal, ReviewForm, AddSuggestionDialog)
-- [ ] ISR with `generateStaticParams` for popular media pages
-- [ ] Client-side caching with SWR or React Query
-- [ ] `media_cache` TTL cleanup (Supabase Edge Function cron)
+- [ ] ISR with `generateStaticParams` for popular media pages (deferred — not practical for dynamic TMDB pages)
+- [ ] Client-side caching with SWR or React Query (deferred — current server actions are sufficient)
+- [ ] `media_cache` TTL cleanup (deferred — Supabase Edge Function cron)
 
 ### Accessibility
 
-- [ ] Keyboard navigation for all interactive elements
-- [ ] ARIA labels on icon buttons
-- [ ] Focus management in modals
+- [x] Keyboard navigation for all interactive elements (Radix UI handles this)
+- [x] ARIA labels on icon buttons (all icon buttons audited — pass)
+- [x] Focus management in modals (Radix Dialog/Sheet auto-traps focus)
 - [x] `prefers-reduced-motion` support
-- [ ] Color contrast compliance (both themes)
+- [x] Color contrast compliance (muted-foreground darkened for WCAG AA)
 - [x] `hreflang` alternate language links
 
 ### SEO
@@ -283,8 +283,8 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 ### UX Polish
 
 - [x] Toast notifications for all user actions (reviews, suggestions, lists, profile)
-- [x] Empty states with icons (suggestions, reviews)
-- [ ] Mobile bottom sheets + touch-friendly interactions
+- [x] Empty states with icons (suggestions, reviews, lists, profile tabs)
+- [ ] Mobile bottom sheets + touch-friendly interactions (deferred)
 - [x] Error boundary page (`error.tsx`) with styled fallback
 - [x] Reusable `ErrorBoundary` component for section isolation
 

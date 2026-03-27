@@ -180,7 +180,7 @@ export default async function MoviePage({ params }: Props) {
         }
       />
 
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-x-clip">
         <div className="blob bg-primary/10 absolute -top-20 right-0 size-96" />
         <div className="blob bg-primary/[0.07] absolute bottom-1/3 left-0 size-80" />
         <div className="relative z-10 mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
