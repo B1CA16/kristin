@@ -183,9 +183,10 @@ export function SearchResults({
   ];
 
   return (
-    <div className="relative mx-auto w-full max-w-7xl overflow-hidden px-4 py-8 sm:px-6 lg:px-8">
-      <div className="blob bg-primary/[0.06] absolute -top-16 -right-28 size-80" />
-      <div className="blob bg-primary/[0.04] absolute bottom-1/3 -left-20 size-64" />
+    <div className="relative overflow-hidden">
+      <div className="blob bg-primary/[0.06] absolute -top-16 right-0 size-80" />
+      <div className="blob bg-primary/[0.04] absolute bottom-1/3 left-0 size-64" />
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       {/* Search input */}
       <div className="mb-6">
         <input
@@ -273,6 +274,7 @@ export function SearchResults({
           ) : null}
         </>
       )}
+      </div>
     </div>
   );
 }

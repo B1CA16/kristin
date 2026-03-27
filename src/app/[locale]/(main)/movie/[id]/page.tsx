@@ -36,9 +36,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const year = movie.release_date
       ? ` (${new Date(movie.release_date).getFullYear()})`
       : '';
+    const posterImage = movie.poster_path
+      ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+      : undefined;
     return {
       title: `${movie.title}${year}`,
       description: movie.overview || undefined,
+      openGraph: {
+        title: `${movie.title}${year}`,
+        description: movie.overview || undefined,
+        images: posterImage ? [posterImage] : undefined,
+      },
     };
   } catch {
     return { title: 'Movie' };
@@ -120,8 +128,34 @@ export default async function MoviePage({ params }: Props) {
     getRatingDistribution({ tmdbId: movieId, mediaType: 'movie' }),
   ]);
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Movie',
+    name: movie.title,
+    description: movie.overview || undefined,
+    datePublished: movie.release_date || undefined,
+    image: movie.poster_path
+      ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+      : undefined,
+    aggregateRating:
+      movie.vote_average > 0
+        ? {
+            '@type': 'AggregateRating',
+            ratingValue: movie.vote_average,
+            bestRating: 10,
+            ratingCount: movie.vote_count,
+          }
+        : undefined,
+    genre: movie.genres?.map((g) => g.name),
+    director: director ? { '@type': 'Person', name: director.name } : undefined,
+  };
+
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <MediaHero
         title={movie.title}
         tagline={movie.tagline}

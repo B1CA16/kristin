@@ -98,9 +98,10 @@ export default async function ListsPage() {
   ]);
 
   return (
-    <div className="relative mx-auto max-w-7xl overflow-hidden px-4 py-10 sm:px-6 lg:px-8">
-      <div className="blob bg-primary/[0.07] absolute -top-20 -right-32 size-80" />
-      <div className="blob bg-primary/[0.05] absolute bottom-1/4 -left-24 size-72" />
+    <div className="relative overflow-hidden">
+      <div className="blob bg-primary/[0.07] absolute -top-20 right-0 size-80" />
+      <div className="blob bg-primary/[0.05] absolute bottom-1/4 left-0 size-72" />
+      <div className="relative z-10 mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <h1 className="font-display mb-6 text-3xl font-bold tracking-tight sm:text-4xl">
         {t('pageTitle')}
       </h1>
@@ -140,6 +141,7 @@ export default async function ListsPage() {
           favorite: favoriteResult.total,
         }}
       />
+      </div>
     </div>
   );
 }

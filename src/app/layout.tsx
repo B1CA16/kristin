@@ -15,10 +15,34 @@ const spaceGrotesk = Space_Grotesk({
   weight: ['500', '600', '700'],
 });
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://trykristin.vercel.app';
+
 export const metadata: Metadata = {
-  title: 'Kristin',
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: 'Kristin',
+    template: '%s | Kristin',
+  },
   description:
     'Discover movies and TV shows through community-driven recommendations.',
+  openGraph: {
+    type: 'website',
+    siteName: 'Kristin',
+    title: 'Kristin',
+    description:
+      'Discover movies and TV shows through community-driven recommendations.',
+    url: siteUrl,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Kristin',
+    description:
+      'Discover movies and TV shows through community-driven recommendations.',
+  },
+  alternates: {
+    canonical: siteUrl,
+  },
 };
 
 export default function RootLayout({

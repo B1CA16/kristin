@@ -36,9 +36,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const year = show.first_air_date
       ? ` (${new Date(show.first_air_date).getFullYear()})`
       : '';
+    const posterImage = show.poster_path
+      ? `https://image.tmdb.org/t/p/w500${show.poster_path}`
+      : undefined;
     return {
       title: `${show.name}${year}`,
       description: show.overview || undefined,
+      openGraph: {
+        title: `${show.name}${year}`,
+        description: show.overview || undefined,
+        images: posterImage ? [posterImage] : undefined,
+      },
     };
   } catch {
     return { title: 'TV Show' };
@@ -131,8 +139,34 @@ export default async function TVPage({ params }: Props) {
     getRatingDistribution({ tmdbId: tvId, mediaType: 'tv' }),
   ]);
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'TVSeries',
+    name: show.name,
+    description: show.overview || undefined,
+    datePublished: show.first_air_date || undefined,
+    image: show.poster_path
+      ? `https://image.tmdb.org/t/p/w500${show.poster_path}`
+      : undefined,
+    aggregateRating:
+      show.vote_average > 0
+        ? {
+            '@type': 'AggregateRating',
+            ratingValue: show.vote_average,
+            bestRating: 10,
+            ratingCount: show.vote_count,
+          }
+        : undefined,
+    genre: show.genres?.map((g) => g.name),
+    numberOfSeasons: show.number_of_seasons || undefined,
+  };
+
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <MediaHero
         title={show.name}
         tagline={show.tagline}
