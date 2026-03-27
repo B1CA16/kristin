@@ -3,10 +3,18 @@
 import { useCallback, useState, useTransition } from 'react';
 import { useTranslations } from 'next-intl';
 
+import dynamic from 'next/dynamic';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { ReviewCard } from '@/components/reviews/review-card';
-import { ReviewForm } from '@/components/reviews/review-form';
+
+const ReviewForm = dynamic(
+  () =>
+    import('@/components/reviews/review-form').then((m) => ({
+      default: m.ReviewForm,
+    })),
+  { ssr: false },
+);
 import { getReviewsForMedia } from '@/actions/reviews';
 import type { ReviewWithVoteStatus, ReviewSortOption } from '@/actions/reviews';
 

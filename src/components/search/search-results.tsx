@@ -187,93 +187,95 @@ export function SearchResults({
       <div className="blob bg-primary/[0.06] absolute -top-16 right-0 size-80" />
       <div className="blob bg-primary/[0.04] absolute bottom-1/3 left-0 size-64" />
       <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      {/* Search input */}
-      <div className="mb-6">
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder={t('placeholder')}
-          className={cn(
-            inputClass,
-            'h-12 rounded-2xl px-4 text-base transition-all focus-visible:shadow-[0_0_12px_oklch(0.65_0.27_290/0.15)]',
-          )}
-          autoFocus
-          autoComplete="off"
-        />
-      </div>
+        {/* Search input */}
+        <div className="mb-6">
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={t('placeholder')}
+            className={cn(
+              inputClass,
+              'h-12 rounded-2xl px-4 text-base transition-all focus-visible:shadow-[0_0_12px_oklch(0.65_0.27_290/0.15)]',
+            )}
+            autoFocus
+            autoComplete="off"
+          />
+        </div>
 
-      {/* Browse mode — no query */}
-      {isBrowseMode ? (
-        <DiscoverGrid
-          movieGenres={movieGenres}
-          tvGenres={tvGenres}
-          initialGenre={initialGenre}
-          initialType={
-            initialType === 'movie' || initialType === 'tv'
-              ? initialType
-              : 'movie'
-          }
-        />
-      ) : (
-        <>
-          {/* Filter tabs */}
-          <div className="mb-6 flex gap-1.5">
-            {filters.map(({ value, label }) => (
-              <button
-                key={value}
-                onClick={() => setFilter(value)}
-                className={cn(
-                  'cursor-pointer rounded-full px-4 py-1.5 text-sm font-semibold transition-all duration-200',
-                  filter === value
-                    ? 'bg-primary text-primary-foreground shadow-primary/25 shadow-md'
-                    : 'text-muted-foreground hover:bg-primary/10 hover:text-primary',
-                )}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
+        {/* Browse mode — no query */}
+        {isBrowseMode ? (
+          <DiscoverGrid
+            movieGenres={movieGenres}
+            tvGenres={tvGenres}
+            initialGenre={initialGenre}
+            initialType={
+              initialType === 'movie' || initialType === 'tv'
+                ? initialType
+                : 'movie'
+            }
+          />
+        ) : (
+          <>
+            {/* Filter tabs */}
+            <div className="mb-6 flex gap-1.5">
+              {filters.map(({ value, label }) => (
+                <button
+                  key={value}
+                  onClick={() => setFilter(value)}
+                  className={cn(
+                    'cursor-pointer rounded-full px-4 py-1.5 text-sm font-semibold transition-all duration-200',
+                    filter === value
+                      ? 'bg-primary text-primary-foreground shadow-primary/25 shadow-md'
+                      : 'text-muted-foreground hover:bg-primary/10 hover:text-primary',
+                  )}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
 
-          {/* Results */}
-          {isLoading ? (
-            <SearchResultsSkeleton />
-          ) : hasSearched && mediaResults.length === 0 ? (
-            <p className="text-muted-foreground py-12 text-center">
-              {t('noResultsFor', { query: debouncedQuery })}
-            </p>
-          ) : mediaResults.length > 0 ? (
-            <>
-              <MediaGrid>
-                {mediaResults.map((result) => (
-                  <MediaCard
-                    key={`${result.media_type}-${result.id}`}
-                    id={result.id}
-                    mediaType={result.media_type}
-                    title={
-                      result.media_type === 'movie' ? result.title : result.name
-                    }
-                    posterPath={result.poster_path}
-                    releaseDate={
-                      result.media_type === 'movie'
-                        ? result.release_date
-                        : result.first_air_date
-                    }
-                    voteAverage={result.vote_average}
-                  />
-                ))}
-              </MediaGrid>
+            {/* Results */}
+            {isLoading ? (
+              <SearchResultsSkeleton />
+            ) : hasSearched && mediaResults.length === 0 ? (
+              <p className="text-muted-foreground py-12 text-center">
+                {t('noResultsFor', { query: debouncedQuery })}
+              </p>
+            ) : mediaResults.length > 0 ? (
+              <>
+                <MediaGrid>
+                  {mediaResults.map((result) => (
+                    <MediaCard
+                      key={`${result.media_type}-${result.id}`}
+                      id={result.id}
+                      mediaType={result.media_type}
+                      title={
+                        result.media_type === 'movie'
+                          ? result.title
+                          : result.name
+                      }
+                      posterPath={result.poster_path}
+                      releaseDate={
+                        result.media_type === 'movie'
+                          ? result.release_date
+                          : result.first_air_date
+                      }
+                      voteAverage={result.vote_average}
+                    />
+                  ))}
+                </MediaGrid>
 
-              {/* Infinite scroll sentinel */}
-              <div ref={sentinelRef} className="flex justify-center py-8">
-                {isLoadingMore && (
-                  <Loader2 className="text-muted-foreground size-6 animate-spin" />
-                )}
-              </div>
-            </>
-          ) : null}
-        </>
-      )}
+                {/* Infinite scroll sentinel */}
+                <div ref={sentinelRef} className="flex justify-center py-8">
+                  {isLoadingMore && (
+                    <Loader2 className="text-muted-foreground size-6 animate-spin" />
+                  )}
+                </div>
+              </>
+            ) : null}
+          </>
+        )}
       </div>
     </div>
   );

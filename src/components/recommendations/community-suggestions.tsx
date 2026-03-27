@@ -1,10 +1,18 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
 
 import type { SuggestionWithVoteStatus } from '@/actions/suggestions';
 import { SuggestionCard } from './suggestion-card';
-import { AddSuggestionDialog } from './add-suggestion-dialog';
+
+const AddSuggestionDialog = dynamic(
+  () =>
+    import('./add-suggestion-dialog').then((m) => ({
+      default: m.AddSuggestionDialog,
+    })),
+  { ssr: false },
+);
 
 type CommunitySuggestionsProps = {
   suggestions: SuggestionWithVoteStatus[];

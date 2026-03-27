@@ -256,8 +256,8 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 ### Performance
 
-- [ ] Next.js Image with proper `sizes` + priority for above-fold
-- [ ] Dynamic imports for heavy components (TrailerModal, ReviewForm, AddSuggestionDialog)
+- [x] Next.js Image with proper `sizes` + priority for above-fold (hero images)
+- [x] Dynamic imports for heavy components (TrailerModal, ReviewForm, AddSuggestionDialog)
 - [ ] ISR with `generateStaticParams` for popular media pages
 - [ ] Client-side caching with SWR or React Query
 - [ ] `media_cache` TTL cleanup (Supabase Edge Function cron)
