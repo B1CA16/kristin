@@ -1,4 +1,5 @@
 import { useTranslations } from 'next-intl';
+import { CountUp } from '@/components/motion';
 
 type ProfileStatsProps = {
   reviewCount: number;
@@ -8,7 +9,7 @@ type ProfileStatsProps = {
 
 /**
  * Three stat cards showing review count, suggestion count,
- * and total votes received.
+ * and total votes received with animated counters.
  */
 export function ProfileStats({
   reviewCount,
@@ -34,9 +35,9 @@ export function ProfileStats({
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className="bg-card ring-border rounded-lg p-4 text-center ring-1"
+          className="bg-card rounded-2xl p-5 text-center shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
         >
-          <p className="text-2xl font-bold">{stat.value}</p>
+          <CountUp target={stat.value} className="text-2xl font-bold" />
           <p className="text-muted-foreground text-xs">{stat.label}</p>
         </div>
       ))}

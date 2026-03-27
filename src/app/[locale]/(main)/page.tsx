@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Film, Search, Star, Tv, Users } from 'lucide-react';
+import { Film, Search, Sparkles, Star, Tv, Users } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { backdropUrl } from '@/lib/tmdb/image';
 import { getTrending } from '@/lib/tmdb';
@@ -13,6 +13,7 @@ import { Link } from '@/i18n/navigation';
 import { MediaCard } from '@/components/media/media-card';
 import { MediaRow } from '@/components/media/media-row';
 import { TMDBTrending } from '@/components/discover/tmdb-trending';
+import { FadeIn, StaggerContainer, StaggerItem } from '@/components/motion';
 import type { MovieListResult, TVListResult } from '@/lib/tmdb/types';
 
 export default async function Home() {
@@ -21,7 +22,6 @@ export default async function Home() {
   const user = await getUser();
   const isLoggedIn = !!user;
 
-  // Fetch data in parallel
   const [{ data: kristinTrending }, { data: popularRecs }, tmdbTrending] =
     await Promise.all([
       getTrendingOnKristin(6),
@@ -29,7 +29,6 @@ export default async function Home() {
       getTrending('all', 'day', { locale }),
     ]);
 
-  // Pick a random trending item with a backdrop for the hero
   const heroItems = (tmdbTrending.results ?? []).filter((r) => r.backdrop_path);
   const heroItem =
     heroItems.length > 0
@@ -47,10 +46,10 @@ export default async function Home() {
   const heroMediaType = heroItem && 'title' in heroItem ? 'movie' : 'tv';
 
   return (
-    <div>
-      {/* Hero with backdrop */}
-      <section className="relative overflow-hidden">
-        {/* Backdrop image */}
+    <div className="overflow-hidden">
+      {/* ====== HERO ====== */}
+      <section className="noise-texture relative min-h-[calc(100dvh-4rem)] overflow-hidden">
+        {/* Backdrop */}
         {heroBackdrop && (
           <Image
             src={heroBackdrop}
@@ -58,158 +57,230 @@ export default async function Home() {
             fill
             unoptimized
             priority
-            className="object-cover object-top"
+            className="animate-backdrop-zoom object-cover object-top"
           />
         )}
 
-        {/* Gradient overlays — theme-aware for light/dark mode */}
-        <div className="bg-background/80 dark:bg-background/75 absolute inset-0" />
+        {/* Overlays */}
+        {/* Darker overlays for cleaner text readability */}
+        <div className="bg-background/80 dark:bg-background/85 absolute inset-0" />
         <div className="from-background/60 absolute inset-0 bg-gradient-to-r to-transparent dark:from-black/40" />
-        <div className="from-background absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t" />
+        <div className="from-background via-background/80 absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t to-transparent" />
+
+        {/* Decorative blobs — purple only */}
+        <div className="blob bg-primary/15 absolute -top-32 -right-32 size-96" />
+        <div className="blob bg-primary/10 absolute -bottom-20 -left-20 size-80" />
 
         {/* Content */}
-        <div className="relative mx-auto max-w-4xl px-4 py-20 sm:py-28 lg:py-32">
-          <div className="max-w-2xl">
-            <h1 className="text-foreground text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-              {t('title')}
-            </h1>
-            <p className="text-muted-foreground mt-4 max-w-lg text-lg sm:text-xl">
-              {t('subtitle')}
-            </p>
-
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              {!isLoggedIn && (
-                <Button size="lg" asChild>
-                  <Link href="/signup">{t('getStarted')}</Link>
-                </Button>
-              )}
-              <Button variant="outline" size="lg" asChild>
-                <Link href="/search">{t('browse')}</Link>
-              </Button>
-            </div>
-          </div>
-
-          {/* Featured item */}
-          {heroItem && (
-            <div className="mt-8 inline-flex items-center gap-2">
-              <span className="bg-primary/20 text-primary rounded-full px-2.5 py-0.5 text-[11px] font-medium">
-                {t('featured')}
-              </span>
-              <Link
-                href={`/${heroMediaType}/${heroItem.id}`}
-                className="text-foreground/70 hover:text-foreground inline-flex items-center gap-1.5 text-sm font-medium hover:underline"
-              >
-                {heroMediaType === 'movie' ? (
-                  <Film className="size-3.5" />
-                ) : (
-                  <Tv className="size-3.5" />
+        <div className="relative z-10 mx-auto flex min-h-[calc(100dvh-4rem)] max-w-7xl items-center px-4 sm:px-6 lg:px-8">
+          <StaggerContainer className="max-w-2xl" staggerDelay={0.15}>
+            <StaggerItem>
+              <div className="bg-primary/10 text-primary mb-4 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium">
+                <Sparkles className="size-4" />
+                {t('communityPowered')}
+              </div>
+            </StaggerItem>
+            <StaggerItem>
+              <h1 className="font-display text-5xl leading-[1.1] font-bold tracking-tight sm:text-6xl lg:text-7xl">
+                <span className="from-primary bg-gradient-to-r to-[oklch(0.7_0.25_300)] bg-clip-text text-transparent">
+                  {t('heroHighlight')}
+                </span>{' '}
+                {t('heroRest')}{' '}
+                <span className="relative">
+                  {t('heroUnderline')}
+                  <svg
+                    className="text-primary/60 absolute -bottom-1 left-0 h-3 w-full"
+                    viewBox="0 0 200 12"
+                    preserveAspectRatio="none"
+                  >
+                    <path
+                      d="M2 8 Q50 2 100 8 Q150 14 198 6"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      fill="none"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </span>
+              </h1>
+            </StaggerItem>
+            <StaggerItem>
+              <p className="text-muted-foreground mt-6 max-w-lg text-lg leading-relaxed sm:text-xl">
+                {t('subtitle')}
+              </p>
+            </StaggerItem>
+            <StaggerItem>
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                {!isLoggedIn && (
+                  <Button size="lg" className="rounded-full px-8" asChild>
+                    <Link href="/signup">{t('getStarted')}</Link>
+                  </Button>
                 )}
-                {heroTitle}
-              </Link>
-            </div>
-          )}
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="rounded-full px-8"
+                  asChild
+                >
+                  <Link href="/search">{t('browse')}</Link>
+                </Button>
+              </div>
+            </StaggerItem>
+
+            {/* Featured item */}
+            {heroItem && (
+              <StaggerItem>
+                <div className="bg-card/50 mt-10 inline-flex items-center gap-3 rounded-2xl p-3 pr-5 backdrop-blur-sm">
+                  <span className="animate-glow-pulse bg-primary/20 text-primary rounded-full px-3 py-1 text-[11px] font-semibold">
+                    {t('featured')}
+                  </span>
+                  <Link
+                    href={`/${heroMediaType}/${heroItem.id}`}
+                    className="text-foreground/80 hover:text-foreground inline-flex items-center gap-1.5 text-sm font-medium hover:underline"
+                  >
+                    {heroMediaType === 'movie' ? (
+                      <Film className="size-3.5" />
+                    ) : (
+                      <Tv className="size-3.5" />
+                    )}
+                    {heroTitle}
+                  </Link>
+                </div>
+              </StaggerItem>
+            )}
+          </StaggerContainer>
         </div>
       </section>
 
-      {/* How it works */}
-      <section className="border-border/50 border-b py-16">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-10 text-center text-2xl font-bold">
-            {t('howItWorksTitle')}
-          </h2>
-          <div className="grid gap-10 sm:grid-cols-3">
-            <StepCard
-              step={1}
-              icon={<Search className="size-5" />}
-              title={t('step1Title')}
-              description={t('step1Desc')}
-            />
-            <StepCard
-              step={2}
-              icon={<Users className="size-5" />}
-              title={t('step2Title')}
-              description={t('step2Desc')}
-            />
-            <StepCard
-              step={3}
-              icon={<Star className="size-5" />}
-              title={t('step3Title')}
-              description={t('step3Desc')}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Content sections */}
-      <div className="mx-auto max-w-7xl space-y-12 px-4 py-12 sm:px-6 lg:px-8">
-        {kristinTrending.length > 0 && (
-          <MediaRow
-            title={t('trendingOnKristin')}
-            trailing={
-              <Link
-                href="/discover"
-                className="text-primary text-sm font-medium hover:underline"
-              >
-                {t('seeAll')}
-              </Link>
-            }
-          >
-            {kristinTrending.map((item) => (
-              <MediaCard
-                key={`${item.mediaType}-${item.tmdbId}`}
-                id={item.tmdbId}
-                mediaType={item.mediaType}
-                title={item.title}
-                posterPath={item.posterPath}
-                releaseDate={item.releaseDate ?? undefined}
-                voteAverage={item.voteAverage ?? undefined}
+      {/* ====== HOW IT WORKS — slanted section ====== */}
+      <section className="slant-top slant-bottom noise-texture bg-primary/[0.04] dark:bg-primary/[0.03] relative">
+        <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
+          <FadeIn>
+            <h2 className="font-display mb-12 text-center text-3xl font-bold sm:text-4xl">
+              {t('howItWorksTitle')}
+            </h2>
+          </FadeIn>
+          <StaggerContainer className="grid gap-8 sm:grid-cols-3">
+            <StaggerItem>
+              <StepCard
+                step={1}
+                icon={<Search className="size-6" />}
+                title={t('step1Title')}
+                description={t('step1Desc')}
+                color="bg-primary"
               />
-            ))}
-          </MediaRow>
+            </StaggerItem>
+            <StaggerItem>
+              <StepCard
+                step={2}
+                icon={<Users className="size-6" />}
+                title={t('step2Title')}
+                description={t('step2Desc')}
+                color="bg-primary/80"
+              />
+            </StaggerItem>
+            <StaggerItem>
+              <StepCard
+                step={3}
+                icon={<Star className="size-6" />}
+                title={t('step3Title')}
+                description={t('step3Desc')}
+                color="bg-primary/60"
+              />
+            </StaggerItem>
+          </StaggerContainer>
+        </div>
+      </section>
+
+      {/* ====== CONTENT SECTIONS ====== */}
+      <div className="relative mx-auto max-w-7xl space-y-16 px-4 py-16 sm:px-6 lg:px-8">
+        {/* Decorative background elements */}
+        <div className="blob bg-primary/[0.07] absolute -top-20 -left-40 size-96" />
+        <div className="blob bg-primary/[0.05] absolute top-1/3 -right-32 size-80" />
+        <div className="blob bg-primary/[0.06] absolute bottom-1/4 -left-24 size-72" />
+
+        {kristinTrending.length > 0 && (
+          <FadeIn>
+            <MediaRow
+              title={t('trendingOnKristin')}
+              trailing={
+                <Link
+                  href="/discover"
+                  className="text-primary bg-primary/10 hover:bg-primary/20 rounded-full px-3.5 py-1 text-xs font-semibold transition-all duration-200"
+                >
+                  {t('seeAll')}
+                </Link>
+              }
+            >
+              {kristinTrending.map((item) => (
+                <MediaCard
+                  key={`${item.mediaType}-${item.tmdbId}`}
+                  id={item.tmdbId}
+                  mediaType={item.mediaType}
+                  title={item.title}
+                  posterPath={item.posterPath}
+                  releaseDate={item.releaseDate ?? undefined}
+                  voteAverage={item.voteAverage ?? undefined}
+                />
+              ))}
+            </MediaRow>
+          </FadeIn>
         )}
 
-        <TMDBTrending />
+        <FadeIn>
+          <TMDBTrending />
+        </FadeIn>
 
         {popularRecs.length > 0 && (
-          <MediaRow
-            title={t('popularRecommendations')}
-            trailing={
-              <Link
-                href="/discover"
-                className="text-primary text-sm font-medium hover:underline"
-              >
-                {t('seeAll')}
-              </Link>
-            }
-          >
-            {popularRecs.map((item) => (
-              <MediaCard
-                key={`${item.targetType}-${item.targetTmdbId}`}
-                id={item.targetTmdbId}
-                mediaType={item.targetType}
-                title={item.title}
-                posterPath={item.posterPath}
-                releaseDate={item.releaseDate ?? undefined}
-                voteAverage={item.voteAverage ?? undefined}
-              />
-            ))}
-          </MediaRow>
+          <FadeIn>
+            <MediaRow
+              title={t('popularRecommendations')}
+              trailing={
+                <Link
+                  href="/discover"
+                  className="text-primary bg-primary/10 hover:bg-primary/20 rounded-full px-3.5 py-1 text-xs font-semibold transition-all duration-200"
+                >
+                  {t('seeAll')}
+                </Link>
+              }
+            >
+              {popularRecs.map((item) => (
+                <MediaCard
+                  key={`${item.targetType}-${item.targetTmdbId}`}
+                  id={item.targetTmdbId}
+                  mediaType={item.targetType}
+                  title={item.title}
+                  posterPath={item.posterPath}
+                  releaseDate={item.releaseDate ?? undefined}
+                  voteAverage={item.voteAverage ?? undefined}
+                />
+              ))}
+            </MediaRow>
+          </FadeIn>
         )}
       </div>
 
-      {/* Bottom CTA */}
+      {/* ====== BOTTOM CTA ====== */}
       {!isLoggedIn && (
-        <section className="border-border/50 border-t">
-          <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:py-20">
-            <h2 className="text-2xl font-bold sm:text-3xl">{t('joinTitle')}</h2>
-            <p className="text-muted-foreground mt-3 text-lg">
-              {t('joinSubtitle')}
-            </p>
-            <Button size="lg" className="mt-6" asChild>
-              <Link href="/signup">{t('joinCta')}</Link>
-            </Button>
-          </div>
-        </section>
+        <FadeIn>
+          <section className="noise-texture relative overflow-hidden py-20">
+            {/* Decorative blobs */}
+            <div className="blob bg-primary/15 absolute -top-10 left-1/4 size-72" />
+            <div className="blob bg-primary/10 absolute right-1/4 -bottom-10 size-64" />
+
+            <div className="relative z-10 mx-auto max-w-3xl px-4 text-center">
+              <h2 className="font-display text-3xl font-bold sm:text-4xl">
+                {t('joinTitle')}
+              </h2>
+              <p className="text-muted-foreground mt-4 text-lg">
+                {t('joinSubtitle')}
+              </p>
+              <Button size="lg" className="mt-8 rounded-full px-10" asChild>
+                <Link href="/signup">{t('joinCta')}</Link>
+              </Button>
+            </div>
+          </section>
+        </FadeIn>
       )}
     </div>
   );
@@ -224,22 +295,28 @@ function StepCard({
   icon,
   title,
   description,
+  color,
 }: {
   step: number;
   icon: React.ReactNode;
   title: string;
   description: string;
+  color: string;
 }) {
   return (
-    <div className="text-center">
-      <div className="bg-primary text-primary-foreground mx-auto mb-3 flex size-12 items-center justify-center rounded-full">
+    <div className="group bg-card ring-border/50 relative rounded-3xl p-6 ring-1 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+      {/* Step number as giant background text */}
+      <span className="font-display text-foreground/5 absolute top-2 right-4 text-7xl font-bold">
+        {step}
+      </span>
+
+      <div
+        className={`${color} mb-4 flex size-14 items-center justify-center rounded-2xl text-white shadow-lg`}
+      >
         {icon}
       </div>
-      <div className="text-muted-foreground mb-1 text-xs font-medium tracking-wider uppercase">
-        {step}
-      </div>
-      <h3 className="font-semibold">{title}</h3>
-      <p className="text-muted-foreground mt-1 text-sm leading-relaxed">
+      <h3 className="font-display text-lg font-semibold">{title}</h3>
+      <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
         {description}
       </p>
     </div>

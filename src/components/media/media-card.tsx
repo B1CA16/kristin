@@ -16,8 +16,8 @@ type MediaCardProps = {
 };
 
 /**
- * Poster-dominant card for media grids (discover, trending, recommendations).
- * Links to the media detail page. Shows poster, title, year, and rating.
+ * Poster-dominant card with rounded-2xl shape, clean hover lift,
+ * and warm rating badge.
  */
 export function MediaCard({
   id,
@@ -37,10 +37,11 @@ export function MediaCard({
     <Link
       href={href}
       className={cn(
-        'group relative flex flex-col overflow-hidden rounded-lg',
-        'bg-card ring-border ring-1',
-        'transition-all duration-200',
-        'hover:ring-primary/40 hover:shadow-primary/5 hover:shadow-lg',
+        'group relative flex flex-col overflow-hidden rounded-2xl',
+        'bg-card',
+        'transition-all duration-300',
+        'hover:shadow-lg',
+        'active:scale-[0.98]',
         'focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none',
         className,
       )}
@@ -54,7 +55,7 @@ export function MediaCard({
             fill
             unoptimized
             sizes="(max-width: 475px) 45vw, (max-width: 640px) 30vw, (max-width: 768px) 25vw, (max-width: 1024px) 20vw, 185px"
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
           <div className="flex h-full items-center justify-center">
@@ -67,7 +68,7 @@ export function MediaCard({
           <div
             className={cn(
               'absolute top-2 right-2 flex items-center gap-0.5',
-              'rounded-md px-1.5 py-0.5 text-xs font-semibold',
+              'rounded-full px-2 py-0.5 text-xs font-semibold',
               'bg-black/70 text-white backdrop-blur-sm',
             )}
           >

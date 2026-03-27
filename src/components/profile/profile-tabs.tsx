@@ -3,6 +3,7 @@
 import { useCallback, useState, useTransition } from 'react';
 import Image from 'next/image';
 import { formatDistanceToNow } from 'date-fns';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
@@ -110,8 +111,8 @@ export function ProfileTabs({
 
   return (
     <div>
-      {/* Tab buttons */}
-      <div className="border-border mb-6 flex gap-1 border-b">
+      {/* Tab buttons with animated indicator */}
+      <div className="border-border relative mb-6 flex gap-1 border-b">
         {tabs
           .filter((tab) => tab.show)
           .map(({ value, label }) => (
@@ -119,49 +120,66 @@ export function ProfileTabs({
               key={value}
               onClick={() => setActiveTab(value)}
               className={cn(
-                'cursor-pointer border-b-2 px-4 py-2 text-sm font-medium transition-colors',
+                'relative cursor-pointer px-4 py-2 text-sm font-medium transition-colors',
                 activeTab === value
-                  ? 'border-primary text-primary'
-                  : 'text-muted-foreground hover:text-foreground border-transparent',
+                  ? 'text-primary'
+                  : 'text-muted-foreground hover:text-foreground',
               )}
             >
               {label}
+              {activeTab === value && (
+                <motion.div
+                  layoutId="profile-tab-indicator"
+                  className="bg-primary absolute inset-x-0 -bottom-px h-0.5"
+                  transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                />
+              )}
             </button>
           ))}
       </div>
 
-      {/* Tab content */}
-      {activeTab === 'reviews' && (
-        <ReviewsTab
-          reviews={reviews}
-          hasMore={reviewsHasMore}
-          isPending={isPending}
-          onLoadMore={loadMoreReviews}
-        />
-      )}
+      {/* Tab content with fade transition */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.2 }}
+        >
+          {activeTab === 'reviews' && (
+            <ReviewsTab
+              reviews={reviews}
+              hasMore={reviewsHasMore}
+              isPending={isPending}
+              onLoadMore={loadMoreReviews}
+            />
+          )}
 
-      {activeTab === 'suggestions' && (
-        <SuggestionsTab
-          suggestions={suggestions}
-          hasMore={suggestionsHasMore}
-          isPending={isPending}
-          onLoadMore={loadMoreSuggestions}
-        />
-      )}
+          {activeTab === 'suggestions' && (
+            <SuggestionsTab
+              suggestions={suggestions}
+              hasMore={suggestionsHasMore}
+              isPending={isPending}
+              onLoadMore={loadMoreSuggestions}
+            />
+          )}
 
-      {activeTab === 'favorites' &&
-        (showFavorites ? (
-          <FavoritesTab
-            favorites={favorites}
-            hasMore={favoritesHasMore}
-            isPending={isPending}
-            onLoadMore={loadMoreFavorites}
-          />
-        ) : (
-          <p className="text-muted-foreground py-8 text-center text-sm">
-            {t('favoritesPrivate')}
-          </p>
-        ))}
+          {activeTab === 'favorites' &&
+            (showFavorites ? (
+              <FavoritesTab
+                favorites={favorites}
+                hasMore={favoritesHasMore}
+                isPending={isPending}
+                onLoadMore={loadMoreFavorites}
+              />
+            ) : (
+              <p className="text-muted-foreground py-8 text-center text-sm">
+                {t('favoritesPrivate')}
+              </p>
+            ))}
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }

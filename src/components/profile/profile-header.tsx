@@ -25,15 +25,17 @@ export function ProfileHeader({
 
   return (
     <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start sm:gap-6">
-      {/* Avatar */}
-      <div className="bg-primary/10 text-primary flex size-20 shrink-0 items-center justify-center rounded-full text-2xl font-bold uppercase sm:size-24">
-        {displayName.charAt(0)}
+      {/* Avatar with gradient ring */}
+      <div className="animate-gradient-spin from-primary via-chart-5 to-chart-2 shrink-0 rounded-full bg-gradient-to-r p-[3px]">
+        <div className="bg-card text-primary flex size-20 items-center justify-center rounded-full text-2xl font-bold uppercase sm:size-24">
+          {displayName.charAt(0)}
+        </div>
       </div>
 
       {/* Info */}
       <div className="flex-1 text-center sm:text-left">
         <div className="flex flex-col items-center gap-2 sm:flex-row">
-          <h1 className="text-2xl font-bold">{displayName}</h1>
+          <h1 className="font-display text-2xl font-bold">{displayName}</h1>
           <ReputationBadge reputation={profile.reputation} size="md" />
         </div>
 

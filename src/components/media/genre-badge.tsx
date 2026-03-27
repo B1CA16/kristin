@@ -24,7 +24,7 @@ export function GenreBadge({
       className={cn(
         'bg-secondary text-secondary-foreground hover:bg-secondary/70',
         'inline-block rounded-full px-3 py-1 text-xs font-medium',
-        'transition-colors',
+        'transition-all duration-200 hover:scale-105 hover:shadow-sm',
         className,
       )}
     >

@@ -161,7 +161,10 @@ export function SearchBar({ className }: SearchBarProps) {
             }}
             placeholder={t('placeholder')}
             aria-label={t('placeholder')}
-            className={cn(inputClass, 'h-9 pr-8 pl-9 transition-colors')}
+            className={cn(
+              inputClass,
+              'h-9 pr-8 pl-9 transition-all focus-visible:shadow-[0_0_12px_oklch(0.65_0.27_290/0.15)]',
+            )}
             autoComplete="off"
           />
           {query && (

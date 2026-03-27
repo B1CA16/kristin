@@ -4,6 +4,7 @@ import { Link } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { Button } from '@/components/ui/button';
 import { SearchBar } from '@/components/search/search-bar';
+import { ScrollHeader } from '@/components/motion/scroll-header';
 import { ThemeToggle } from './theme-toggle';
 import { LanguageSwitcher } from './language-switcher';
 import { UserMenu } from './user-menu';
@@ -31,11 +32,11 @@ export async function Navbar() {
     : null;
 
   return (
-    <header className="border-border/50 sticky top-0 z-50 border-b backdrop-blur-lg">
+    <ScrollHeader className="glass sticky top-0 z-50 border-b border-white/10">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
         <Link
           href="/"
-          className="flex items-center gap-0 text-xl font-bold tracking-tight"
+          className="font-display flex items-center gap-0.5 text-xl font-bold tracking-tight transition-transform duration-200 hover:scale-105"
         >
           <Image
             src="/kristin_logo.svg"
@@ -44,7 +45,9 @@ export async function Navbar() {
             height={30}
             className="size-9"
           />
-          Kristin
+          <span className="from-primary bg-gradient-to-r to-[oklch(0.7_0.25_300)] bg-clip-text text-transparent">
+            Kristin
+          </span>
         </Link>
 
         {/* Desktop search */}
@@ -80,6 +83,6 @@ export async function Navbar() {
         {/* Mobile nav */}
         <MobileNav profile={mobileProfile} />
       </div>
-    </header>
+    </ScrollHeader>
   );
 }

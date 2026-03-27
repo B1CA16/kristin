@@ -46,8 +46,9 @@ export function SuggestionCard({
   return (
     <div
       className={cn(
-        'bg-card ring-border flex gap-3 rounded-lg p-3 ring-1',
-        'transition-all duration-200',
+        'bg-card flex gap-3 rounded-2xl p-4 shadow-sm',
+        'transition-all duration-300',
+        'hover:-translate-y-0.5 hover:shadow-lg',
       )}
     >
       {/* Vote button */}
