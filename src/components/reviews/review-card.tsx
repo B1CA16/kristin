@@ -43,17 +43,17 @@ export function ReviewCard({
   return (
     <div
       className={cn(
-        'bg-card rounded-2xl p-5 shadow-sm',
+        'bg-card border-primary/20 rounded-2xl border-l-4 p-5 shadow-sm',
         'transition-all duration-300',
-        'hover:-translate-y-0.5 hover:shadow-lg',
+        'hover:border-primary/50 hover:shadow-lg',
       )}
     >
       {/* Header: avatar + username + date */}
       <div className="mb-3 flex items-start justify-between gap-2">
         <div className="flex items-center gap-2.5">
           {/* Avatar */}
-          <div className="bg-primary/10 text-primary flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold uppercase">
-            {review.username.charAt(0)}
+          <div className="from-primary/20 to-primary/5 text-primary flex size-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br text-xs font-bold">
+            {review.username.charAt(0).toUpperCase()}
           </div>
           <div className="min-w-0">
             <div className="flex items-center gap-1.5">
@@ -94,10 +94,10 @@ export function ReviewCard({
                   : t('markHelpful')
           }
           className={cn(
-            'flex cursor-pointer items-center gap-1.5 rounded-md px-2 py-1 text-xs transition-colors',
+            'flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-all duration-200',
             hasVoted
-              ? 'bg-primary/10 text-primary'
-              : 'hover:bg-accent text-muted-foreground',
+              ? 'bg-primary text-primary-foreground shadow-primary/25 shadow-sm'
+              : 'bg-primary/5 text-muted-foreground hover:bg-primary/15 hover:text-primary',
             (!canVote || isPending) && 'cursor-not-allowed opacity-50',
           )}
         >

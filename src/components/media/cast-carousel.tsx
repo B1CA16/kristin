@@ -22,34 +22,32 @@ export function CastCarousel({ cast, limit = 20 }: CastCarouselProps) {
 
   return (
     <section>
-      <h2 className="mb-4 text-lg font-semibold">{t('cast')}</h2>
+      <h2 className="font-display mb-4 text-lg font-bold">{t('cast')}</h2>
       <div className="scrollbar-custom flex gap-3 overflow-x-auto pb-3">
         {visibleCast.map((member) => {
           const photo = profileUrl(member.profile_path, 'md');
           return (
             <div
               key={member.id}
-              className="flex w-[120px] shrink-0 flex-col overflow-hidden rounded-lg sm:w-[140px]"
+              className="flex w-[110px] shrink-0 flex-col overflow-hidden sm:w-[130px]"
             >
-              <div className="bg-muted relative aspect-2/3 w-full overflow-hidden rounded-lg">
+              <div className="bg-muted relative aspect-2/3 w-full overflow-hidden rounded-2xl">
                 {photo ? (
                   <Image
                     src={photo}
                     alt={member.name}
                     fill
                     unoptimized
-                    sizes="140px"
+                    sizes="130px"
                     className="object-cover"
                   />
                 ) : (
-                  <div className="flex h-full items-center justify-center">
-                    <span className="text-muted-foreground text-xs">
-                      {member.name.charAt(0)}
-                    </span>
+                  <div className="bg-primary/10 text-primary flex h-full items-center justify-center text-lg font-bold">
+                    {member.name.charAt(0)}
                   </div>
                 )}
               </div>
-              <div className="mt-1.5 min-w-0">
+              <div className="mt-2 min-w-0">
                 <p className="truncate text-sm font-medium">{member.name}</p>
                 <p className="text-muted-foreground truncate text-xs">
                   {member.character}

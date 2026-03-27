@@ -207,7 +207,7 @@ export function DiscoverGrid({
       {hasMore && (
         <div ref={sentinelRef} className="flex justify-center py-8">
           {isPending && (
-            <p className="text-muted-foreground text-sm">{t('loadingMore')}</p>
+            <div className="bg-primary/10 text-primary size-8 animate-spin rounded-full border-2 border-current border-t-transparent" />
           )}
         </div>
       )}

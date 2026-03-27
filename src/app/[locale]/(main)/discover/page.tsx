@@ -23,7 +23,9 @@ export default async function DiscoverPage() {
   ]);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+    <div className="relative mx-auto max-w-7xl overflow-hidden px-4 py-10 sm:px-6 lg:px-8">
+      <div className="blob bg-primary/[0.07] absolute -top-20 -left-32 size-80" />
+      <div className="blob bg-primary/[0.05] absolute top-1/2 -right-24 size-72" />
       <h1 className="font-display mb-8 text-4xl font-bold">{t('title')}</h1>
 
       <div className="space-y-12">

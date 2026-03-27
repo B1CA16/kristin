@@ -46,9 +46,9 @@ export function SuggestionCard({
   return (
     <div
       className={cn(
-        'bg-card flex gap-3 rounded-2xl p-4 shadow-sm',
+        'bg-card border-primary/20 flex gap-3 rounded-2xl border-l-4 p-4 shadow-sm',
         'transition-all duration-300',
-        'hover:-translate-y-0.5 hover:shadow-lg',
+        'hover:border-primary/50 hover:shadow-lg',
       )}
     >
       {/* Vote button */}
@@ -64,10 +64,10 @@ export function SuggestionCard({
                 : undefined
           }
           className={cn(
-            'flex size-10 cursor-pointer flex-col items-center justify-center rounded-md transition-colors',
+            'flex size-8 cursor-pointer flex-col items-center justify-center rounded-lg transition-all duration-200',
             hasVoted
-              ? 'bg-primary/10 text-primary'
-              : 'hover:bg-accent text-muted-foreground',
+              ? 'bg-primary text-primary-foreground shadow-primary/25 shadow-md'
+              : 'bg-primary/5 text-muted-foreground hover:bg-primary/15 hover:text-primary',
             (!isLoggedIn || isPending || isOwnSuggestion) &&
               'cursor-not-allowed opacity-50',
           )}
@@ -76,7 +76,7 @@ export function SuggestionCard({
         </button>
         <span
           className={cn(
-            'text-xs font-semibold',
+            'mt-2 text-sm font-bold',
             hasVoted ? 'text-primary' : 'text-muted-foreground',
           )}
         >
@@ -87,7 +87,7 @@ export function SuggestionCard({
       {/* Poster thumbnail */}
       <Link
         href={`/${suggestion.targetType}/${suggestion.targetTmdbId}`}
-        className="bg-muted relative h-[72px] w-12 shrink-0 overflow-hidden rounded"
+        className="bg-muted relative h-[72px] w-12 shrink-0 overflow-hidden rounded-xl"
       >
         {poster ? (
           <Image

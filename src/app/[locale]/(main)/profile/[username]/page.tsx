@@ -62,32 +62,36 @@ export default async function ProfilePage({ params }: Props) {
   ]);
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
-      <div className="space-y-8">
-        <ProfileHeader
-          profile={profile}
-          isOwnProfile={isOwnProfile}
-          editButton={
-            isOwnProfile ? <EditProfileDialog profile={profile} /> : undefined
-          }
-        />
+    <div className="relative overflow-hidden">
+      <div className="blob bg-primary/[0.07] absolute -top-16 left-0 size-72" />
+      <div className="blob bg-primary/[0.05] absolute right-0 bottom-1/3 size-64" />
+      <div className="relative z-10 mx-auto max-w-3xl px-4 py-10 sm:px-6">
+        <div className="space-y-8">
+          <ProfileHeader
+            profile={profile}
+            isOwnProfile={isOwnProfile}
+            editButton={
+              isOwnProfile ? <EditProfileDialog profile={profile} /> : undefined
+            }
+          />
 
-        <ProfileStats
-          reviewCount={profile.stats.reviewCount}
-          suggestionCount={profile.stats.suggestionCount}
-          totalVotesReceived={profile.stats.totalVotesReceived}
-        />
+          <ProfileStats
+            reviewCount={profile.stats.reviewCount}
+            suggestionCount={profile.stats.suggestionCount}
+            totalVotesReceived={profile.stats.totalVotesReceived}
+          />
 
-        <ProfileTabs
-          userId={profile.id}
-          initialReviews={reviews}
-          initialReviewsHasMore={reviewsHasMore}
-          initialSuggestions={suggestions}
-          initialSuggestionsHasMore={suggestionsHasMore}
-          showFavorites={showFavorites}
-          initialFavorites={favoritesResult.data}
-          initialFavoritesHasMore={favoritesResult.hasMore}
-        />
+          <ProfileTabs
+            userId={profile.id}
+            initialReviews={reviews}
+            initialReviewsHasMore={reviewsHasMore}
+            initialSuggestions={suggestions}
+            initialSuggestionsHasMore={suggestionsHasMore}
+            showFavorites={showFavorites}
+            initialFavorites={favoritesResult.data}
+            initialFavoritesHasMore={favoritesResult.hasMore}
+          />
+        </div>
       </div>
     </div>
   );

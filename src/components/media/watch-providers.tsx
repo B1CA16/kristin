@@ -24,7 +24,9 @@ export function WatchProviders({ providers }: WatchProvidersProps) {
 
   return (
     <section>
-      <h2 className="mb-4 text-lg font-semibold">{t('watchProviders')}</h2>
+      <h2 className="font-display mb-4 text-lg font-bold">
+        {t('watchProviders')}
+      </h2>
 
       <div className="flex flex-col gap-4">
         {flatrate && flatrate.length > 0 && (
@@ -80,7 +82,7 @@ function ProviderRow({
             <div
               key={provider.provider_id}
               title={provider.provider_name}
-              className="bg-muted relative size-10 overflow-hidden rounded-lg"
+              className="bg-muted relative size-11 overflow-hidden rounded-xl"
             >
               {logo && (
                 <Image

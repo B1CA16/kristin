@@ -146,10 +146,13 @@ export default async function MoviePage({ params }: Props) {
         }
       />
 
-      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="lg:grid lg:grid-cols-[1fr_380px] lg:gap-10">
+      <div className="relative mx-auto max-w-7xl overflow-hidden px-4 py-12 sm:px-6 lg:px-8">
+        {/* Decorative blobs */}
+        <div className="blob bg-primary/10 absolute -top-20 -right-32 size-96" />
+        <div className="blob bg-primary/[0.07] absolute bottom-1/3 -left-24 size-80" />
+        <div className="lg:grid lg:grid-cols-[1fr_380px] lg:gap-12">
           {/* Primary column — recommendations + reviews */}
-          <div className="space-y-10">
+          <div className="space-y-12">
             <RecommendationTabs
               communityContent={
                 <CommunitySuggestions
@@ -215,7 +218,7 @@ export default async function MoviePage({ params }: Props) {
           </div>
 
           {/* Sidebar — cast + providers */}
-          <aside className="mt-10 space-y-10 lg:mt-0">
+          <aside className="mt-12 space-y-10 lg:mt-0">
             {movie.credits?.cast && <CastCarousel cast={movie.credits.cast} />}
             <WatchProviders providers={providers} />
           </aside>
