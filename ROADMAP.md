@@ -374,44 +374,44 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 ### Error Tracking & Logging
 
-- [ ] Sentry integration (client + server + edge)
+- [ ] Sentry integration (deferred — free tier available but adds complexity)
 - [ ] Structured logging for server actions and API routes
-- [ ] Error boundaries per page section with Sentry reporting
-- [ ] Source maps uploaded to Sentry (not exposed publicly)
+- [x] Error boundaries per page section (`error.tsx` + `ErrorBoundary` component)
+- [ ] Source maps uploaded to Sentry (deferred)
 
 ### Uptime & Alerting
 
-- [ ] Uptime monitoring (BetterUptime, UptimeRobot, or similar)
-- [ ] Health check endpoint (`/api/health`) — checks Supabase connectivity
+- [ ] Uptime monitoring (BetterUptime, UptimeRobot, or similar) — free tiers available
+- [x] Health check endpoint (`/api/health`) — checks Supabase connectivity + latency
 - [ ] Alert channels (email, Discord/Slack webhook) for downtime + error spikes
 
 ### Performance Monitoring
 
-- [ ] Vercel Analytics (Web Vitals — LCP, FID, CLS, TTFB)
-- [ ] Vercel Speed Insights for real user monitoring (RUM)
+- [x] Vercel Analytics (Web Vitals — LCP, FID, CLS, TTFB)
+- [x] Vercel Speed Insights for real user monitoring (RUM)
 - [ ] Performance budgets: bundle size limits in CI
 - [ ] Database query performance review (slow query identification, index analysis)
 
 ### Database Operations
 
-- [ ] Supabase connection pooling configuration (understand PgBouncer)
-- [ ] Database backup strategy (Supabase automatic backups + point-in-time recovery)
+- [x] Supabase connection pooling (PgBouncer enabled by default)
+- [x] Database backup strategy (Supabase daily backups, 7-day retention on free tier)
 - [ ] `media_cache` TTL cleanup (Supabase Edge Function cron or pg_cron)
 - [ ] Index analysis: verify all frequent queries are using indexes
 
-### CDN & Edge
+### CDN & Edge (understanding documented)
 
-- [ ] Understand Vercel's CDN/edge network and how static assets are served
+- [x] Understand Vercel's CDN/edge network and how static assets are served
 - [ ] Cache-Control headers strategy (static assets, API responses, ISR pages)
 - [ ] Image optimization pipeline (Next.js Image + Vercel OG)
-- [ ] Understand cold starts vs warm functions (serverless vs edge runtime)
+- [x] Understand cold starts vs warm functions (serverless vs edge runtime)
 
-### Scaling Awareness
+### Scaling Awareness (understanding documented)
 
-- [ ] Supabase free tier limits — understand what happens when you hit them
-- [ ] Vercel free tier limits (bandwidth, serverless function invocations, build minutes)
-- [ ] Database connection limits and pooling under concurrent users
-- [ ] Identify which features would need rearchitecting at 10k, 100k, 1M users
+- [x] Supabase free tier limits — 500MB DB, 60 connections, 1GB storage
+- [x] Vercel free tier limits — 100GB bandwidth, 100k invocations, 6k build mins
+- [x] Database connection limits and pooling under concurrent users
+- [x] Identify which features would need rearchitecting at 10k, 100k, 1M users
 
 ---
 

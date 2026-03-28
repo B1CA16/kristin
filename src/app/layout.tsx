@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
 import { Space_Grotesk } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { ThemeProvider } from '@/providers/theme-provider';
 import './globals.css';
 
@@ -56,6 +58,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${spaceGrotesk.variable} font-sans antialiased`}
       >
         <ThemeProvider>{children}</ThemeProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
