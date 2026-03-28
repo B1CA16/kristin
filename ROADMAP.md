@@ -434,12 +434,12 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 ### Cookie Consent & Privacy
 
-- [ ] Cookie consent banner (GDPR/ePrivacy compliance) — **design approval required**
-- [ ] Cookie policy page (what cookies, why, how long)
-- [ ] Privacy policy page (data collection, storage, third-party services)
-- [ ] Terms of service page
-- [ ] Consent state management (analytics + ads only after consent)
-- [ ] Understand GDPR basics: data minimization, right to erasure, lawful basis
+- [x] Cookie consent banner (GDPR/ePrivacy compliance) — **design approval required**
+- [x] Cookie policy page (what cookies, why, how long)
+- [x] Privacy policy page (data collection, storage, third-party services)
+- [x] Terms of service page
+- [x] Consent state management (analytics + ads only after consent)
+- [x] Understand GDPR basics: data minimization, right to erasure, lawful basis
 
 ### SEO Maturation
 

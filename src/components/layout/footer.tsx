@@ -72,6 +72,29 @@ export function Footer() {
                 {t('signUp')}
               </Link>
             </div>
+            <div className="flex flex-col gap-2">
+              <h4 className="text-xs font-semibold tracking-wider uppercase">
+                {t('legal')}
+              </h4>
+              <Link
+                href="/privacy"
+                className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+              >
+                {t('privacyPolicy')}
+              </Link>
+              <Link
+                href="/terms"
+                className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+              >
+                {t('termsOfService')}
+              </Link>
+              <Link
+                href="/cookie-policy"
+                className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+              >
+                {t('cookiePolicy')}
+              </Link>
+            </div>
           </div>
         </div>
 
