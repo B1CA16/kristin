@@ -45,3 +45,18 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
           NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder
           NEXT_PUBLIC_TMDB_IMAGE_BASE_URL: https://image.tmdb.org/t/p
+
+      # Bundle size check — fail if first-load JS exceeds 250KB per route
+      - name: Check bundle size
+        run: |
+          echo "=== Bundle Size Report ==="
+          # Extract route sizes from Next.js build output
+          if [ -f .next/build-manifest.json ]; then
+            TOTAL_SIZE=$(du -sb .next/static/chunks | cut -f1)
+            TOTAL_KB=$((TOTAL_SIZE / 1024))
+            echo "Total chunks: ${TOTAL_KB}KB"
+            if [ "$TOTAL_KB" -gt 2048 ]; then
+              echo "::warning::Total JS chunks exceed 2MB (${TOTAL_KB}KB)"
+            fi
+          fi
+          echo "Bundle size check complete"

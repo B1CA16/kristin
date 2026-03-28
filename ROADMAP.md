@@ -389,21 +389,21 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 - [x] Vercel Analytics (Web Vitals — LCP, FID, CLS, TTFB)
 - [x] Vercel Speed Insights for real user monitoring (RUM)
-- [ ] Performance budgets: bundle size limits in CI
+- [x] Performance budgets: bundle size check in CI (warns if chunks exceed 2MB)
 - [x] Database query performance review (all query patterns have matching indexes)
 
 ### Database Operations
 
 - [x] Supabase connection pooling (PgBouncer enabled by default)
 - [x] Database backup strategy (Supabase daily backups, 7-day retention on free tier)
-- [ ] `media_cache` TTL cleanup (Supabase Edge Function cron or pg_cron)
+- [x] `media_cache` TTL cleanup (GitHub Actions daily cron → `/api/cron/cleanup-cache`)
 - [x] Index analysis: all frequent queries verified against indexes
 
 ### CDN & Edge (understanding documented)
 
 - [x] Understand Vercel's CDN/edge network and how static assets are served
 - [x] Cache-Control headers on TMDB API routes (s-maxage + stale-while-revalidate)
-- [ ] Image optimization pipeline (Next.js Image + Vercel OG)
+- [x] Image optimization pipeline (dynamic OG images via `@vercel/og` for social sharing)
 - [x] Understand cold starts vs warm functions (serverless vs edge runtime)
 
 ### Scaling Awareness (understanding documented)

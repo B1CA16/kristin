@@ -36,16 +36,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const year = movie.release_date
       ? ` (${new Date(movie.release_date).getFullYear()})`
       : '';
-    const posterImage = movie.poster_path
-      ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-      : undefined;
+    const siteUrl =
+      process.env.NEXT_PUBLIC_SITE_URL || 'https://trykristin.vercel.app';
+    const ogImage = `${siteUrl}/api/og?title=${encodeURIComponent(movie.title)}&type=movie&rating=${movie.vote_average}&year=${movie.release_date?.slice(0, 4) || ''}`;
     return {
       title: `${movie.title}${year}`,
       description: movie.overview || undefined,
       openGraph: {
         title: `${movie.title}${year}`,
         description: movie.overview || undefined,
-        images: posterImage ? [posterImage] : undefined,
+        images: [ogImage],
       },
     };
   } catch {

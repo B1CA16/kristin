@@ -1,0 +1,30 @@
+name: Cache Cleanup
+
+on:
+  schedule:
+    # Run daily at 3:00 AM UTC
+    - cron: '0 3 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  cleanup:
+    name: Clean expired media cache
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call cleanup endpoint
+        run: |
+          RESPONSE=$(curl -s -w "\n%{http_code}" \
+            -X POST \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "${{ vars.SITE_URL }}/api/cron/cleanup-cache")
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | head -1)
+
+          echo "Status: $HTTP_CODE"
+          echo "Response: $BODY"
+
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "::error::Cache cleanup failed with status $HTTP_CODE"
+            exit 1
+          fi
