@@ -451,9 +451,9 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 ### Social & Growth
 
-- [ ] Social sharing buttons (share a suggestion, share a review)
-- [ ] OpenGraph previews optimized for sharing (dynamic OG images per media page)
-- [ ] `robots.txt` fine-tuning (crawl budget optimization)
+- [x] Social sharing buttons (share a suggestion, share a review)
+- [x] OpenGraph previews optimized for sharing (dynamic OG images per media page)
+- [x] `robots.txt` fine-tuning (crawl budget optimization)
 
 ---
 
@@ -465,7 +465,7 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 - [ ] Responsive E2E tests (mobile 375px, tablet 768px, desktop 1440px)
 - [ ] Lighthouse CI scores 90+ all categories (Performance, Accessibility, Best Practices, SEO)
 - [ ] Security headers score A+ on securityheaders.com
-- [ ] All user-facing text is translated (EN, PT, ES, FR)
+- [x] All user-facing text is translated (EN, PT, ES, FR)
 - [ ] Error tracking confirmed working (trigger test error, verify Sentry receives it)
 - [ ] Uptime monitoring confirmed working
 - [ ] Backup/restore tested at least once
@@ -485,6 +485,6 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 ### Launch
 
 - [ ] Go live on custom domain
-- [ ] Submit sitemap to Google Search Console
+- [x] Submit sitemap to Google Search Console
 - [ ] Social media announcement
 - [ ] Monitor error rates and performance for first 48 hours

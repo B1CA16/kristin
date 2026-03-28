@@ -23,6 +23,7 @@ import { CommunitySuggestions } from '@/components/recommendations/community-sug
 import { ReviewList } from '@/components/reviews/review-list';
 import { RatingDistribution } from '@/components/reviews/rating-distribution';
 import { AdSlot } from '@/components/ads/ad-slot';
+import { ShareButton } from '@/components/shared/share-button';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -172,12 +173,19 @@ export default async function MoviePage({ params }: Props) {
         creditLabel={director ? t('director') : undefined}
         creditName={director?.name}
         actions={
-          <MediaActions
-            tmdbId={movieId}
-            mediaType="movie"
-            initialStatus={listStatus}
-            isLoggedIn={isLoggedIn}
-          />
+          <>
+            <MediaActions
+              tmdbId={movieId}
+              mediaType="movie"
+              initialStatus={listStatus}
+              isLoggedIn={isLoggedIn}
+            />
+            <ShareButton
+              path={`/movie/${movieId}`}
+              title={movie.title}
+              utmSource="movie_detail"
+            />
+          </>
         }
       />
 

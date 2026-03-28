@@ -23,6 +23,7 @@ import { CommunitySuggestions } from '@/components/recommendations/community-sug
 import { ReviewList } from '@/components/reviews/review-list';
 import { RatingDistribution } from '@/components/reviews/rating-distribution';
 import { AdSlot } from '@/components/ads/ad-slot';
+import { ShareButton } from '@/components/shared/share-button';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -183,12 +184,19 @@ export default async function TVPage({ params }: Props) {
         creditLabel={creator ? t('creator') : undefined}
         creditName={creator?.name}
         actions={
-          <MediaActions
-            tmdbId={tvId}
-            mediaType="tv"
-            initialStatus={listStatus}
-            isLoggedIn={isLoggedIn}
-          />
+          <>
+            <MediaActions
+              tmdbId={tvId}
+              mediaType="tv"
+              initialStatus={listStatus}
+              isLoggedIn={isLoggedIn}
+            />
+            <ShareButton
+              path={`/tv/${tvId}`}
+              title={show.name}
+              utmSource="tv_detail"
+            />
+          </>
         }
       />
 

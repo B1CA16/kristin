@@ -50,6 +50,9 @@
     "privacyPolicy": "Política de Privacidad",
     "termsOfService": "Términos de Servicio",
     "genres": "Géneros",
+    "share": "Compartir",
+    "copyLink": "Copiar Enlace",
+    "copied": "¡Copiado!",
     "poweredBy": "Desarrollado con"
   },
   "auth": {
