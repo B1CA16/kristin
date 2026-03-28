@@ -426,11 +426,11 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 ### Monetization (Ads)
 
-- [ ] Research ad networks (Google AdSense, Carbon Ads, EthicalAds) — **user decision required**
-- [ ] Ad placement strategy (non-intrusive, doesn't break UX) — **design approval required**
-- [ ] Ad component with lazy loading (don't block page render)
-- [ ] Test ad impact on Core Web Vitals (ads are a common LCP/CLS killer)
-- [ ] Ad-blocker graceful degradation (don't break the site)
+- [x] Research ad networks (Google AdSense, Carbon Ads, EthicalAds) — **user decision required**
+- [x] Ad placement strategy (non-intrusive, doesn't break UX) — **design approval required**
+- [x] Ad component with lazy loading (don't block page render)
+- [x] Test ad impact on Core Web Vitals (ads are a common LCP/CLS killer)
+- [x] Ad-blocker graceful degradation (don't break the site)
 
 ### Cookie Consent & Privacy
 

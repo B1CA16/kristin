@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState, useTransition } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
+import { AdSlot } from '@/components/ads/ad-slot';
 import { MediaCard } from '@/components/media/media-card';
 import { MediaGrid } from '@/components/media/media-grid';
 import { GenreCombobox } from '@/components/discover/genre-combobox';
@@ -202,6 +203,9 @@ export function DiscoverGrid({
           </p>
         )
       )}
+
+      {/* In-feed ad between results and next page */}
+      {results.length >= 12 && <AdSlot format="in-feed" className="my-6" />}
 
       {/* Infinite scroll sentinel */}
       {hasMore && (

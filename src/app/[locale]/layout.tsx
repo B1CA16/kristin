@@ -11,6 +11,7 @@ import { SetHtmlLang } from '@/components/layout/set-html-lang';
 import { Toaster } from '@/components/ui/sonner';
 import { ConsentProvider } from '@/providers/consent-provider';
 import { CookieBanner } from '@/components/shared/cookie-banner';
+import { AdSenseScript } from '@/components/ads/adsense-script';
 
 type Props = {
   children: React.ReactNode;
@@ -63,6 +64,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       <ConsentProvider>
         {children}
         <CookieBanner />
+        <AdSenseScript />
       </ConsentProvider>
       <Toaster position="bottom-right" />
     </NextIntlClientProvider>

@@ -7,6 +7,7 @@ import { useLocale, useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
 import { trackEvent } from '@/lib/analytics';
+import { AdSlot } from '@/components/ads/ad-slot';
 import { inputClass } from '@/lib/styles';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll';
@@ -271,6 +272,11 @@ export function SearchResults({
                     />
                   ))}
                 </MediaGrid>
+
+                {/* In-feed ad between results and next page */}
+                {mediaResults.length >= 12 && (
+                  <AdSlot format="in-feed" className="my-6" />
+                )}
 
                 {/* Infinite scroll sentinel */}
                 <div ref={sentinelRef} className="flex justify-center py-8">

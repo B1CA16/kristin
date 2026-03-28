@@ -22,6 +22,7 @@ import { RecommendationTabs } from '@/components/recommendations/recommendation-
 import { CommunitySuggestions } from '@/components/recommendations/community-suggestions';
 import { ReviewList } from '@/components/reviews/review-list';
 import { RatingDistribution } from '@/components/reviews/rating-distribution';
+import { AdSlot } from '@/components/ads/ad-slot';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -257,6 +258,7 @@ export default async function MoviePage({ params }: Props) {
                 <CastCarousel cast={movie.credits.cast} />
               )}
               <WatchProviders providers={providers} />
+              <AdSlot format="sidebar" className="hidden lg:flex" />
             </aside>
           </div>
         </div>
