@@ -300,8 +300,8 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 ### Environment Separation
 
-- [ ] Production Supabase project (separate from dev — free tier allows 2 projects)
-- [ ] Environment variable strategy: dev / preview / production
+- [x] Production Supabase project (separate from dev)
+- [x] Environment variable strategy: dev / preview / production (Vercel scoped env vars)
 - [ ] Document environment differences and how data flows between them
 
 ### Vercel Deployment
@@ -310,11 +310,12 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 - [x] Run migrations on production
 - [ ] Custom domain configuration (deferred — costs money)
 - [ ] DNS setup (A records, CNAME, understanding propagation) (deferred)
-- [ ] Preview deployment environment variables (separate Supabase for previews vs prod)
+- [x] Preview deployment environment variables (dev Supabase for previews, prod for production)
 
 ### CI/CD Maturation
 
 - [x] GitHub Actions: lint + typecheck + test + build (optimized to 2 jobs)
+- [x] Branch protection on `main` (require PR, require CI pass, no bypass)
 - [ ] GitHub Actions: run E2E tests against preview deployments (deferred)
 - [ ] GitHub Actions: automated Lighthouse CI (deferred)
 - [ ] Deployment notifications (GitHub + optional Slack/Discord webhook)
@@ -342,16 +343,16 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 - [ ] Verify all RLS policies are active and correct (systematic audit)
 - [ ] Verify TMDB API key never exposed to client (check network tab, source maps)
-- [ ] Rate limiting on server actions (Upstash Redis or Vercel KV)
-- [ ] Rate limiting on API routes (TMDB proxy)
-- [ ] Input sanitization on all user-submitted text (XSS prevention)
+- [ ] Rate limiting on server actions (deferred — needs Redis for production-grade)
+- [ ] Rate limiting on API routes (deferred — needs Redis)
+- [x] Input sanitization on all user-submitted text (shared `sanitizeText` utility)
 - [ ] CSRF protection review (Next.js Server Actions have built-in protection — understand how)
 - [ ] CORS policy review on API routes
 
 ### Dependency Security
 
 - [ ] `npm audit` integrated into CI pipeline
-- [ ] Dependabot or Renovate for automated dependency updates
+- [x] Dependabot for automated dependency updates (weekly npm + GitHub Actions)
 - [ ] Review and pin critical dependency versions
 
 ### Auth Security

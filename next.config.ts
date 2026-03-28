@@ -8,8 +8,8 @@ const securityHeaders = [
   { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
   // Prevent MIME type sniffing — browser trusts the Content-Type header
   { key: 'X-Content-Type-Options', value: 'nosniff' },
-  // Control referrer information — send origin only on cross-origin requests
-  { key: 'Referrer-Policy', value: 'origin-when-cross-origin' },
+  // Control referrer information — only send origin, never the full URL path
+  { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
   // Restrict browser features — disable camera, microphone, geolocation
   {
     key: 'Permissions-Policy',

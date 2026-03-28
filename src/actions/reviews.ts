@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { createClient, getUser } from '@/lib/supabase/server';
+import { sanitizeText } from '@/lib/sanitize';
 import { logActivity } from '@/actions/activity';
 
 import type { MediaRef } from '@/types/media';
@@ -263,8 +264,8 @@ export async function createReview(
     tmdb_id: media.tmdbId,
     media_type: media.mediaType,
     rating: input.rating,
-    title: input.title?.trim() || null,
-    body: input.body?.trim() || null,
+    title: sanitizeText(input.title),
+    body: sanitizeText(input.body),
   });
 
   if (error) {

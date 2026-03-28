@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { getLocale } from 'next-intl/server';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
+import { sanitizeText } from '@/lib/sanitize';
 import { getMediaBasicInfo } from '@/lib/tmdb';
 
 // ---------------------------------------------------------------------------
@@ -422,12 +423,12 @@ export async function updateProfile(input: {
   }
 
   if (input.displayName !== undefined) {
-    updates.display_name = input.displayName.trim() || null;
+    updates.display_name = sanitizeText(input.displayName);
   }
 
   if (input.bio !== undefined) {
     // Strip HTML tags for XSS prevention
-    updates.bio = input.bio.replace(/<[^>]*>/g, '').trim() || null;
+    updates.bio = sanitizeText(input.bio);
   }
 
   if (input.publicFavorites !== undefined) {

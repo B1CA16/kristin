@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { createClient, getUser } from '@/lib/supabase/server';
+import { sanitizeText } from '@/lib/sanitize';
 import { logActivity } from '@/actions/activity';
 
 import type { MediaRef } from '@/types/media';
@@ -127,7 +128,7 @@ export async function createSuggestion(
     source_type: source.mediaType,
     target_tmdb_id: target.tmdbId,
     target_type: target.mediaType,
-    reason: reason?.trim() || null,
+    reason: sanitizeText(reason),
     suggested_by: user.id,
   });
 
