@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { Film, Search, Sparkles, Star, Tv, Users } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
@@ -12,9 +13,14 @@ import { Button } from '@/components/ui/button';
 import { Link } from '@/i18n/navigation';
 import { MediaCard } from '@/components/media/media-card';
 import { MediaRow } from '@/components/media/media-row';
-import { TMDBTrending } from '@/components/discover/tmdb-trending';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/motion';
 import type { MovieListResult, TVListResult } from '@/lib/tmdb/types';
+
+const TMDBTrending = dynamic(() =>
+  import('@/components/discover/tmdb-trending').then((m) => ({
+    default: m.TMDBTrending,
+  })),
+);
 
 export default async function Home() {
   const locale = await getLocale();
@@ -55,8 +61,8 @@ export default async function Home() {
             src={heroBackdrop}
             alt=""
             fill
-            unoptimized
             priority
+            sizes="100vw"
             className="animate-backdrop-zoom object-cover object-top"
           />
         )}

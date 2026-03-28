@@ -72,7 +72,6 @@ export function MediaHero({
             src={backdrop}
             alt=""
             fill
-            unoptimized
             priority
             sizes="100vw"
             className="object-cover"
@@ -106,7 +105,6 @@ export function MediaHero({
                   src={poster}
                   alt={title}
                   fill
-                  unoptimized
                   priority
                   sizes="(max-width: 640px) 160px, (max-width: 768px) 200px, 240px"
                   className="object-cover"
