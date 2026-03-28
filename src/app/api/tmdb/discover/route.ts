@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { discoverMovies, discoverTV } from '@/lib/tmdb';
+import { logger } from '@/lib/logger';
 
 /**
  * GET /api/tmdb/discover
@@ -52,9 +53,18 @@ export async function GET(request: NextRequest) {
             voteCountGte,
           });
 
-    return NextResponse.json(data);
+    return NextResponse.json(data, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+      },
+    });
   } catch (error) {
-    console.error('TMDB discover error:', error);
+    logger.error('TMDB discover failed', {
+      type,
+      sortBy,
+      withGenres,
+      error: String(error),
+    });
     return NextResponse.json(
       { error: 'Failed to fetch discover results' },
       { status: 502 },

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { searchMulti, searchMovies, searchTV } from '@/lib/tmdb';
+import { logger } from '@/lib/logger';
 
 /**
  * GET /api/tmdb/search
@@ -34,9 +35,13 @@ export async function GET(request: NextRequest) {
         data = await searchMulti(query, { locale, page });
     }
 
-    return NextResponse.json(data);
+    return NextResponse.json(data, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120',
+      },
+    });
   } catch (error) {
-    console.error('TMDB search error:', error);
+    logger.error('TMDB search failed', { query, type, error: String(error) });
     return NextResponse.json(
       { error: 'Failed to fetch search results' },
       { status: 502 },

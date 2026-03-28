@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { logger } from '@/lib/logger';
 
 /**
  * GET /api/health
@@ -21,6 +22,11 @@ export async function GET() {
 
     // PGRST116 = no rows found — that's fine, DB is reachable
     if (error && error.code !== 'PGRST116') {
+      logger.error('Health check failed', {
+        database: 'error',
+        error: error.message,
+        latency: Date.now() - start,
+      });
       return NextResponse.json(
         {
           status: 'unhealthy',
@@ -39,6 +45,10 @@ export async function GET() {
       timestamp: new Date().toISOString(),
     });
   } catch {
+    logger.error('Health check failed', {
+      database: 'unreachable',
+      latency: Date.now() - start,
+    });
     return NextResponse.json(
       {
         status: 'unhealthy',

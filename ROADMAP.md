@@ -375,7 +375,7 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 ### Error Tracking & Logging
 
 - [ ] Sentry integration (deferred — free tier available but adds complexity)
-- [ ] Structured logging for server actions and API routes
+- [x] Structured logging utility (`src/lib/logger.ts` — JSON in prod, readable in dev)
 - [x] Error boundaries per page section (`error.tsx` + `ErrorBoundary` component)
 - [ ] Source maps uploaded to Sentry (deferred)
 
@@ -390,19 +390,19 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 - [x] Vercel Analytics (Web Vitals — LCP, FID, CLS, TTFB)
 - [x] Vercel Speed Insights for real user monitoring (RUM)
 - [ ] Performance budgets: bundle size limits in CI
-- [ ] Database query performance review (slow query identification, index analysis)
+- [x] Database query performance review (all query patterns have matching indexes)
 
 ### Database Operations
 
 - [x] Supabase connection pooling (PgBouncer enabled by default)
 - [x] Database backup strategy (Supabase daily backups, 7-day retention on free tier)
 - [ ] `media_cache` TTL cleanup (Supabase Edge Function cron or pg_cron)
-- [ ] Index analysis: verify all frequent queries are using indexes
+- [x] Index analysis: all frequent queries verified against indexes
 
 ### CDN & Edge (understanding documented)
 
 - [x] Understand Vercel's CDN/edge network and how static assets are served
-- [ ] Cache-Control headers strategy (static assets, API responses, ISR pages)
+- [x] Cache-Control headers on TMDB API routes (s-maxage + stale-while-revalidate)
 - [ ] Image optimization pipeline (Next.js Image + Vercel OG)
 - [x] Understand cold starts vs warm functions (serverless vs edge runtime)
 

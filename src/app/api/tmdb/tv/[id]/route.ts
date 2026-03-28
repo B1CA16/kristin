@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getTVDetails } from '@/lib/tmdb';
+import { logger } from '@/lib/logger';
 
 /**
  * GET /api/tmdb/tv/[id]
@@ -25,7 +26,7 @@ export async function GET(
     const data = await getTVDetails(tvId, { locale });
     return NextResponse.json(data);
   } catch (error) {
-    console.error('TMDB TV details error:', error);
+    logger.error('TMDB TV details failed', { tvId, error: String(error) });
     return NextResponse.json(
       { error: 'Failed to fetch TV show details' },
       { status: 502 },

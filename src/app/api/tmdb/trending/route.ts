@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getTrending } from '@/lib/tmdb';
+import { logger } from '@/lib/logger';
 
 /**
  * GET /api/tmdb/trending
@@ -18,9 +19,17 @@ export async function GET(request: NextRequest) {
 
   try {
     const data = await getTrending(mediaType, timeWindow, { locale, page });
-    return NextResponse.json(data);
+    return NextResponse.json(data, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+      },
+    });
   } catch (error) {
-    console.error('TMDB trending error:', error);
+    logger.error('TMDB trending failed', {
+      mediaType,
+      timeWindow,
+      error: String(error),
+    });
     return NextResponse.json(
       { error: 'Failed to fetch trending results' },
       { status: 502 },
