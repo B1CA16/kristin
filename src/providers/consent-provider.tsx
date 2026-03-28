@@ -28,22 +28,40 @@ const ConsentContext = createContext<ConsentContextValue | null>(null);
 
 /**
  * Simple pub/sub so useSyncExternalStore re-renders when consent changes.
+ * Snapshots are cached to satisfy useSyncExternalStore's requirement that
+ * getSnapshot returns the same reference between re-renders unless data changed.
  */
 const listeners = new Set<() => void>();
+
+let cachedConsent: ConsentState | null = null;
+let cachedHasConsented = true; // default true to avoid banner flash on SSR
+
+function updateCache() {
+  cachedConsent = getConsent();
+  cachedHasConsented = checkHasConsent();
+}
+
 function subscribe(cb: () => void) {
   listeners.add(cb);
   return () => listeners.delete(cb);
 }
+
 function notify() {
+  updateCache();
   listeners.forEach((cb) => cb());
 }
 
 function getConsentSnapshot(): ConsentState | null {
-  return getConsent();
+  return cachedConsent;
 }
 
 function getHasConsentedSnapshot(): boolean {
-  return checkHasConsent();
+  return cachedHasConsented;
+}
+
+// Initialize cache on module load (client-side only)
+if (typeof document !== 'undefined') {
+  updateCache();
 }
 
 // Server snapshots — default to "consented" to avoid rendering the banner during SSR
