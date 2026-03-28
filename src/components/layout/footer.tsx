@@ -57,9 +57,9 @@ export function Footer() {
           {/* Navigation */}
           <div className="grid grid-cols-2 gap-x-10 gap-y-6 sm:flex sm:gap-10">
             <div className="flex flex-col gap-2">
-              <h4 className="text-xs font-semibold tracking-wider uppercase">
+              <p className="text-xs font-semibold tracking-wider uppercase">
                 {t('explore')}
-              </h4>
+              </p>
               <Link href="/discover" className={linkClass}>
                 {t('discover')}
               </Link>
@@ -68,9 +68,9 @@ export function Footer() {
               </Link>
             </div>
             <div className="flex flex-col gap-2">
-              <h4 className="text-xs font-semibold tracking-wider uppercase">
+              <p className="text-xs font-semibold tracking-wider uppercase">
                 {t('account')}
-              </h4>
+              </p>
               <Link href="/login" className={linkClass}>
                 {t('login')}
               </Link>
@@ -79,9 +79,9 @@ export function Footer() {
               </Link>
             </div>
             <div className="flex flex-col gap-2">
-              <h4 className="text-xs font-semibold tracking-wider uppercase">
+              <p className="text-xs font-semibold tracking-wider uppercase">
                 {t('genres')}
-              </h4>
+              </p>
               {POPULAR_GENRES.slice(0, 4).map((genre) => (
                 <Link
                   key={genre.id}
@@ -93,9 +93,9 @@ export function Footer() {
               ))}
             </div>
             <div className="flex flex-col gap-2">
-              <h4 className="text-xs font-semibold tracking-wider uppercase">
+              <p className="text-xs font-semibold tracking-wider uppercase">
                 {t('legal')}
-              </h4>
+              </p>
               <Link href="/privacy" className={linkClass}>
                 {t('privacyPolicy')}
               </Link>

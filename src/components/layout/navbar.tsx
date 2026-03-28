@@ -36,7 +36,7 @@ export async function Navbar() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
         <Link
           href="/"
-          className="font-display flex items-center gap-0.5 text-xl font-bold tracking-tight transition-transform duration-200 hover:scale-105"
+          className="font-display flex shrink-0 items-center gap-0.5 text-xl font-bold tracking-tight transition-transform duration-200 hover:scale-105"
         >
           <Image
             src="/kristin_logo.svg"
@@ -51,10 +51,10 @@ export async function Navbar() {
         </Link>
 
         {/* Desktop search */}
-        <SearchBar className="hidden w-full max-w-sm md:block" />
+        <SearchBar className="mx-4 hidden w-full max-w-xs md:block lg:max-w-sm" />
 
         {/* Desktop nav */}
-        <div className="hidden items-center gap-1 md:flex">
+        <div className="hidden shrink-0 items-center gap-1 md:flex">
           <Button variant="ghost" size="sm" asChild>
             <Link href="/discover">{t('discover')}</Link>
           </Button>

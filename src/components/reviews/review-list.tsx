@@ -115,14 +115,14 @@ export function ReviewList({
     <div>
       {/* Header: title + write review button */}
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="font-display text-xl font-bold">
+        <h2 className="font-display text-xl font-bold">
           {t('heading')}
           {total > 0 && (
             <span className="text-muted-foreground ml-1.5 text-sm font-normal">
               ({total})
             </span>
           )}
-        </h3>
+        </h2>
         <ReviewForm
           tmdbId={tmdbId}
           mediaType={mediaType}

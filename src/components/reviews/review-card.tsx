@@ -69,7 +69,7 @@ export function ReviewCard({
 
       {/* Title */}
       {review.title && (
-        <h4 className="mb-1 text-sm font-semibold">{review.title}</h4>
+        <h3 className="mb-1 text-sm font-semibold">{review.title}</h3>
       )}
 
       {/* Body */}
