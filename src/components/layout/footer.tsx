@@ -3,6 +3,24 @@ import { useTranslations } from 'next-intl';
 
 import { Link } from '@/i18n/navigation';
 
+/**
+ * Popular genre IDs from TMDB (stable — these don't change).
+ * Creates crawlable internal links from every page to genre-filtered discover pages.
+ */
+const POPULAR_GENRES = [
+  { id: 28, name: 'Action', type: 'movie' },
+  { id: 35, name: 'Comedy', type: 'movie' },
+  { id: 18, name: 'Drama', type: 'movie' },
+  { id: 27, name: 'Horror', type: 'movie' },
+  { id: 878, name: 'Sci-Fi', type: 'movie' },
+  { id: 53, name: 'Thriller', type: 'movie' },
+  { id: 16, name: 'Animation', type: 'movie' },
+  { id: 10749, name: 'Romance', type: 'movie' },
+] as const;
+
+const linkClass =
+  'text-muted-foreground hover:text-foreground text-sm transition-colors';
+
 export function Footer() {
   const t = useTranslations('common');
   const currentYear = new Date().getFullYear();
@@ -37,21 +55,15 @@ export function Footer() {
           </div>
 
           {/* Navigation */}
-          <div className="flex gap-10">
+          <div className="grid grid-cols-2 gap-x-10 gap-y-6 sm:flex sm:gap-10">
             <div className="flex flex-col gap-2">
               <h4 className="text-xs font-semibold tracking-wider uppercase">
                 {t('explore')}
               </h4>
-              <Link
-                href="/discover"
-                className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-              >
+              <Link href="/discover" className={linkClass}>
                 {t('discover')}
               </Link>
-              <Link
-                href="/search"
-                className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-              >
+              <Link href="/search" className={linkClass}>
                 {t('browse')}
               </Link>
             </div>
@@ -59,47 +71,59 @@ export function Footer() {
               <h4 className="text-xs font-semibold tracking-wider uppercase">
                 {t('account')}
               </h4>
-              <Link
-                href="/login"
-                className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-              >
+              <Link href="/login" className={linkClass}>
                 {t('login')}
               </Link>
-              <Link
-                href="/signup"
-                className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-              >
+              <Link href="/signup" className={linkClass}>
                 {t('signUp')}
               </Link>
             </div>
             <div className="flex flex-col gap-2">
               <h4 className="text-xs font-semibold tracking-wider uppercase">
+                {t('genres')}
+              </h4>
+              {POPULAR_GENRES.slice(0, 4).map((genre) => (
+                <Link
+                  key={genre.id}
+                  href={`/search?type=${genre.type}&withGenres=${genre.id}`}
+                  className={linkClass}
+                >
+                  {genre.name}
+                </Link>
+              ))}
+            </div>
+            <div className="flex flex-col gap-2">
+              <h4 className="text-xs font-semibold tracking-wider uppercase">
                 {t('legal')}
               </h4>
-              <Link
-                href="/privacy"
-                className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-              >
+              <Link href="/privacy" className={linkClass}>
                 {t('privacyPolicy')}
               </Link>
-              <Link
-                href="/terms"
-                className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-              >
+              <Link href="/terms" className={linkClass}>
                 {t('termsOfService')}
               </Link>
-              <Link
-                href="/cookie-policy"
-                className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-              >
+              <Link href="/cookie-policy" className={linkClass}>
                 {t('cookiePolicy')}
               </Link>
             </div>
           </div>
         </div>
 
+        {/* Genre chips row — additional crawlable links */}
+        <div className="border-border/50 mt-8 flex flex-wrap justify-center gap-2 border-t pt-6">
+          {POPULAR_GENRES.map((genre) => (
+            <Link
+              key={genre.id}
+              href={`/search?type=${genre.type}&withGenres=${genre.id}`}
+              className="bg-secondary/50 text-muted-foreground hover:bg-primary/10 hover:text-primary rounded-full px-3 py-1 text-xs font-medium transition-colors"
+            >
+              {genre.name}
+            </Link>
+          ))}
+        </div>
+
         {/* Bottom bar */}
-        <div className="border-border/50 mt-10 flex flex-col items-center gap-2 border-t pt-6 sm:flex-row sm:justify-between">
+        <div className="border-border/50 mt-6 flex flex-col items-center gap-2 border-t pt-6 sm:flex-row sm:justify-between">
           <p className="text-muted-foreground text-xs">
             &copy; {currentYear} Kristin. {t('allRightsReserved')}
           </p>

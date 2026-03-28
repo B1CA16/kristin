@@ -443,11 +443,11 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 ### SEO Maturation
 
-- [ ] Google Search Console setup + sitemap submission
-- [ ] Monitor crawl errors, index coverage, Core Web Vitals in Search Console
+- [x] Google Search Console setup + sitemap submission
+- [x] Monitor crawl errors, index coverage, Core Web Vitals in Search Console
 - [ ] Structured data testing (Schema.org validation)
 - [ ] Social media preview testing (OpenGraph debugger, Twitter Card validator)
-- [ ] Internal linking strategy (related media, user profiles, genre pages)
+- [x] Internal linking strategy (related media, user profiles, genre pages)
 
 ### Social & Growth
 

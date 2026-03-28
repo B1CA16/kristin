@@ -6,7 +6,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL || 'https://trykristin.vercel.app';
 
-  const staticPages = ['', '/discover', '/search', '/login', '/signup'];
+  const staticPages = [
+    '',
+    '/discover',
+    '/search',
+    '/login',
+    '/signup',
+    '/privacy',
+    '/terms',
+    '/cookie-policy',
+  ];
 
   const entries: MetadataRoute.Sitemap = [];
 
