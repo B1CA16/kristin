@@ -45,9 +45,35 @@ export function SignupForm() {
 
   if (success) {
     return (
-      <div className="bg-card w-full max-w-sm space-y-4 rounded-3xl p-8 text-center shadow-xl">
-        <h1 className="font-display text-3xl font-bold">{t('checkEmail')}</h1>
-        <p className="text-muted-foreground text-sm">{t('confirmationSent')}</p>
+      <div className="bg-card w-full max-w-sm space-y-6 rounded-3xl p-8 text-center shadow-xl">
+        <div className="bg-primary/10 text-primary mx-auto flex size-16 items-center justify-center rounded-2xl">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <rect width="20" height="16" x="2" y="4" rx="2" />
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+          </svg>
+        </div>
+        <div>
+          <h1 className="font-display text-3xl font-bold">{t('checkEmail')}</h1>
+          <p className="text-muted-foreground mt-2 text-sm">
+            {t('confirmationSent')}
+          </p>
+        </div>
+        <Link
+          href="/login"
+          className="text-primary text-sm font-medium hover:underline"
+        >
+          {t('login')}
+        </Link>
       </div>
     );
   }
