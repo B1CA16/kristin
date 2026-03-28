@@ -36,16 +36,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const year = show.first_air_date
       ? ` (${new Date(show.first_air_date).getFullYear()})`
       : '';
-    const siteUrl =
-      process.env.NEXT_PUBLIC_SITE_URL || 'https://trykristin.vercel.app';
-    const ogImage = `${siteUrl}/api/og?title=${encodeURIComponent(show.name)}&type=tv&rating=${show.vote_average}&year=${show.first_air_date?.slice(0, 4) || ''}`;
+    const posterImage = show.poster_path
+      ? `https://image.tmdb.org/t/p/w500${show.poster_path}`
+      : undefined;
     return {
       title: `${show.name}${year}`,
       description: show.overview || undefined,
       openGraph: {
         title: `${show.name}${year}`,
         description: show.overview || undefined,
-        images: [ogImage],
+        images: posterImage ? [posterImage] : undefined,
       },
     };
   } catch {
