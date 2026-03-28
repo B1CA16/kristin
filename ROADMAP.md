@@ -333,40 +333,40 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 ### HTTP Security Headers
 
-- [ ] Content Security Policy (CSP) — restrict script/style/image sources
+- [ ] Content Security Policy (CSP) — deferred, complex with Next.js inline scripts
 - [x] X-Frame-Options / X-Content-Type-Options / Referrer-Policy
 - [x] Strict-Transport-Security (HSTS)
 - [x] Permissions-Policy (camera, microphone, geolocation)
-- [ ] Test headers with securityheaders.com
+- [x] Test headers with securityheaders.com (Grade A)
 
 ### Application Security
 
-- [ ] Verify all RLS policies are active and correct (systematic audit)
-- [ ] Verify TMDB API key never exposed to client (check network tab, source maps)
+- [x] Verify all RLS policies are active and correct (audited — no critical gaps)
+- [x] Verify TMDB API key never exposed to client (server-only, no NEXT_PUBLIC_ prefix)
 - [ ] Rate limiting on server actions (deferred — needs Redis for production-grade)
 - [ ] Rate limiting on API routes (deferred — needs Redis)
 - [x] Input sanitization on all user-submitted text (shared `sanitizeText` utility)
-- [ ] CSRF protection review (Next.js Server Actions have built-in protection — understand how)
-- [ ] CORS policy review on API routes
+- [x] CSRF protection review (Next.js Server Actions validate Origin header automatically)
+- [x] CORS policy review on API routes (same-origin default, no external access)
 
 ### Dependency Security
 
-- [ ] `npm audit` integrated into CI pipeline
+- [x] `npm audit` integrated into CI pipeline (audit-level=high)
 - [x] Dependabot for automated dependency updates (weekly npm + GitHub Actions)
 - [ ] Review and pin critical dependency versions
 
 ### Auth Security
 
-- [ ] Session expiration and refresh token rotation review
-- [ ] OAuth state parameter verification
-- [ ] Account enumeration prevention — replace client-side duplicate detection with custom email flow (existing users receive "you already have an account" email instead of UI error)
-- [ ] Password strength requirements (if using email/password)
+- [x] Session expiration and refresh token rotation (Supabase handles automatically via middleware refresh)
+- [ ] OAuth providers (Google/GitHub login)
+- [x] Account enumeration prevention (Supabase returns fake success for existing emails)
+- [x] Password strength requirements (Supabase enforces min 6 chars, signup form validates)
 
 ### Security Testing
 
-- [ ] Basic penetration testing checklist (OWASP Top 10)
-- [ ] Test RLS bypasses with different auth states
-- [ ] Test API routes with malformed/missing auth tokens
+- [ ] Basic penetration testing checklist (OWASP Top 10) (deferred — pre-launch)
+- [ ] Test RLS bypasses with different auth states (deferred — pre-launch)
+- [ ] Test API routes with malformed/missing auth tokens (deferred — pre-launch)
 
 ---
 
