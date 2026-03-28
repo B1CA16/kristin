@@ -7,6 +7,7 @@ import { useLocale, useTranslations } from 'next-intl';
 
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+import { trackEvent } from '@/lib/analytics';
 import { inputClass, textareaClass } from '@/lib/styles';
 import { posterUrl } from '@/lib/tmdb/image';
 import { useDebounce } from '@/hooks/use-debounce';
@@ -108,6 +109,12 @@ export function AddSuggestionDialog({
       }
 
       // Success — close dialog and reset
+      trackEvent('suggestion_created', {
+        source_media_type: sourceMediaType,
+        source_tmdb_id: sourceTmdbId,
+        target_media_type: selected.media_type,
+        target_tmdb_id: selected.id,
+      });
       setOpen(false);
       setQuery('');
       setResults([]);

@@ -45,6 +45,34 @@ export async function middleware(request: NextRequest) {
     // auth-dependent features will treat the user as logged out for this request.
   }
 
+  // Capture UTM parameters on first visit so they persist across the session.
+  // Vercel Analytics reads these from the URL on the landing page, but storing them
+  // in a cookie lets us attribute later events (e.g. signup) to the original source.
+  const UTM_PARAMS = [
+    'utm_source',
+    'utm_medium',
+    'utm_campaign',
+    'utm_term',
+    'utm_content',
+  ] as const;
+
+  const url = request.nextUrl;
+  const hasUtm = UTM_PARAMS.some((p) => url.searchParams.has(p));
+
+  if (hasUtm) {
+    const utmData: Record<string, string> = {};
+    for (const param of UTM_PARAMS) {
+      const value = url.searchParams.get(param);
+      if (value) utmData[param] = value;
+    }
+    response.cookies.set('utm_params', JSON.stringify(utmData), {
+      maxAge: 60 * 60 * 24 * 30, // 30 days
+      path: '/',
+      sameSite: 'lax',
+      httpOnly: false, // client-side analytics needs to read this
+    });
+  }
+
   return response;
 }
 

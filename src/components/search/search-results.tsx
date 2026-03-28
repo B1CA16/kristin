@@ -6,6 +6,7 @@ import { Loader2 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
+import { trackEvent } from '@/lib/analytics';
 import { inputClass } from '@/lib/styles';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll';
@@ -118,6 +119,11 @@ export function SearchResults({
           setResults(data.results ?? []);
           setTotalPages(data.total_pages ?? 1);
           setHasSearched(true);
+          trackEvent('search', {
+            query: debouncedQuery,
+            filter,
+            result_count: data.total_results ?? 0,
+          });
         }
       } catch {
         if (!controller.signal.aborted) {

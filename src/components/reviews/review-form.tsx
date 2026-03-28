@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 
 import { toast } from 'sonner';
 import { inputClass, textareaClass } from '@/lib/styles';
+import { trackEvent } from '@/lib/analytics';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -83,6 +84,12 @@ export function ReviewForm({
         return;
       }
 
+      trackEvent('review_submitted', {
+        media_type: mediaType,
+        tmdb_id: tmdbId,
+        rating,
+        is_edit: isEditing,
+      });
       setOpen(false);
       resetForm();
       onSuccess?.();

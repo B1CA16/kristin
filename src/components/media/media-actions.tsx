@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+import { trackEvent } from '@/lib/analytics';
 import { toggleListItem, type ListStatus } from '@/actions/lists';
 
 type MediaActionsProps = {
@@ -79,6 +80,12 @@ export function MediaActions({
         if (error) {
           toast.error(error);
         } else {
+          trackEvent('list_toggled', {
+            media_type: mediaType,
+            tmdb_id: tmdbId,
+            list_type: listType,
+            action: added ? 'add' : 'remove',
+          });
           toast.success(
             added
               ? t('addedTo', { list: t(listType) })

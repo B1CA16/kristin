@@ -1,5 +1,6 @@
 import { useCallback, useOptimistic, useTransition } from 'react';
 import { voteSuggestion, unvoteSuggestion } from '@/actions/suggestions';
+import { trackEvent } from '@/lib/analytics';
 
 type VoteState = {
   voteCount: number;
@@ -42,6 +43,11 @@ export function useOptimisticVote(
         // On error, React rolls back optimistic state automatically
         // when the transition completes without updating real state.
         console.error('Vote error:', error);
+      } else {
+        trackEvent('suggestion_voted', {
+          suggestion_id: suggestionId,
+          action,
+        });
       }
     });
   }, [optimisticState.hasVoted, suggestionId, setOptimisticState]);

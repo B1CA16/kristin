@@ -419,10 +419,10 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 ### Analytics
 
-- [ ] Vercel Web Analytics (privacy-friendly, no cookies)
-- [ ] Custom event tracking (search queries, suggestion votes, popular media)
-- [ ] Dashboard/tracking for key metrics: DAU, suggestions per day, most-searched media
-- [ ] UTM parameter handling for marketing/sharing attribution
+- [x] Vercel Web Analytics (privacy-friendly, no cookies)
+- [x] Custom event tracking (search queries, suggestion votes, popular media)
+- [x] Dashboard/tracking for key metrics: DAU, suggestions per day, most-searched media
+- [x] UTM parameter handling for marketing/sharing attribution
 
 ### Monetization (Ads)
 
