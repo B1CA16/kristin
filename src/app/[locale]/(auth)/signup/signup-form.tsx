@@ -68,12 +68,6 @@ export function SignupForm() {
             {t('confirmationSent')}
           </p>
         </div>
-        <Link
-          href="/login"
-          className="text-primary text-sm font-medium hover:underline"
-        >
-          {t('login')}
-        </Link>
       </div>
     );
   }
