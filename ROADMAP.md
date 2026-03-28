@@ -342,7 +342,7 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 ### Application Security
 
 - [x] Verify all RLS policies are active and correct (audited — no critical gaps)
-- [x] Verify TMDB API key never exposed to client (server-only, no NEXT_PUBLIC_ prefix)
+- [x] Verify TMDB API key never exposed to client (server-only, no NEXT*PUBLIC* prefix)
 - [ ] Rate limiting on server actions (deferred — needs Redis for production-grade)
 - [ ] Rate limiting on API routes (deferred — needs Redis)
 - [x] Input sanitization on all user-submitted text (shared `sanitizeText` utility)
