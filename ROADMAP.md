@@ -300,30 +300,31 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 ### Environment Separation
 
-- [ ] Production Supabase project (separate from dev)
+- [ ] Production Supabase project (separate from dev — free tier allows 2 projects)
 - [ ] Environment variable strategy: dev / preview / production
 - [ ] Document environment differences and how data flows between them
 
 ### Vercel Deployment
 
-- [ ] Vercel project setup with environment variables per environment
-- [ ] Run migrations on production
-- [ ] Custom domain configuration
-- [ ] DNS setup (A records, CNAME, understanding propagation)
+- [x] Vercel project setup with environment variables per environment
+- [x] Run migrations on production
+- [ ] Custom domain configuration (deferred — costs money)
+- [ ] DNS setup (A records, CNAME, understanding propagation) (deferred)
 - [ ] Preview deployment environment variables (separate Supabase for previews vs prod)
 
 ### CI/CD Maturation
 
-- [ ] GitHub Actions: run E2E tests against preview deployments
-- [ ] GitHub Actions: automated Lighthouse CI (fail if scores drop below thresholds)
+- [x] GitHub Actions: lint + typecheck + test + build (optimized to 2 jobs)
+- [ ] GitHub Actions: run E2E tests against preview deployments (deferred)
+- [ ] GitHub Actions: automated Lighthouse CI (deferred)
 - [ ] Deployment notifications (GitHub + optional Slack/Discord webhook)
 - [ ] Rollback strategy (understand Vercel instant rollback, when to use it)
 
 ### Documentation
 
-- [ ] README with setup instructions + architecture overview
-- [ ] `.env.local.example` with all required variables documented
-- [ ] Contributing guide (for open-source readiness)
+- [x] README with setup instructions + architecture overview
+- [x] `.env.local.example` with all required variables documented
+- [x] Contributing guide (for open-source readiness)
 
 ---
 
@@ -332,9 +333,9 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 ### HTTP Security Headers
 
 - [ ] Content Security Policy (CSP) — restrict script/style/image sources
-- [ ] X-Frame-Options / X-Content-Type-Options / Referrer-Policy
-- [ ] Strict-Transport-Security (HSTS)
-- [ ] Permissions-Policy (camera, microphone, geolocation)
+- [x] X-Frame-Options / X-Content-Type-Options / Referrer-Policy
+- [x] Strict-Transport-Security (HSTS)
+- [x] Permissions-Policy (camera, microphone, geolocation)
 - [ ] Test headers with securityheaders.com
 
 ### Application Security
