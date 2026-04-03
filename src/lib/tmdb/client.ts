@@ -350,6 +350,34 @@ export async function getTVDetails(
   });
 }
 
+/**
+ * Batch-fetch `last_air_date` for a list of TV show IDs.
+ * Returns a map of ID → last_air_date string.
+ * Uses the cached TV details endpoint so popular shows are cheap lookups.
+ */
+export async function getTVLastAirDates(
+  ids: number[],
+  options: { locale?: string } = {},
+): Promise<Record<number, string>> {
+  const results: Record<number, string> = {};
+  await Promise.all(
+    ids.map(async (id) => {
+      try {
+        const data = await tmdbFetch<{ last_air_date?: string }>(`/tv/${id}`, {
+          locale: options.locale,
+          cacheTtl: CACHE_TTL.tvDetails,
+        });
+        if (data.last_air_date) {
+          results[id] = data.last_air_date;
+        }
+      } catch {
+        // Skip — show will just display start year
+      }
+    }),
+  );
+  return results;
+}
+
 /** Get the list of movie genres. */
 export async function getMovieGenres(options: { locale?: string } = {}) {
   return tmdbFetch<GenreListResponse>('/genre/movie/list', {

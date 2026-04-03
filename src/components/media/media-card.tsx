@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Star } from 'lucide-react';
+import { Film, Star, Tv } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { posterUrl } from '@/lib/tmdb/image';
@@ -11,6 +11,8 @@ type MediaCardProps = {
   title: string;
   posterPath: string | null;
   releaseDate?: string;
+  /** Last air date for TV shows — enables year range display (e.g. 2005–2013). */
+  lastAirDate?: string;
   voteAverage?: number;
   className?: string;
 };
@@ -25,13 +27,22 @@ export function MediaCard({
   title,
   posterPath,
   releaseDate,
+  lastAirDate,
   voteAverage,
   className,
 }: MediaCardProps) {
-  const year = releaseDate ? new Date(releaseDate).getFullYear() : null;
+  const startYear = releaseDate ? new Date(releaseDate).getFullYear() : null;
+  const endYear = lastAirDate ? new Date(lastAirDate).getFullYear() : null;
+  const yearDisplay = startYear
+    ? mediaType === 'tv' && endYear && endYear !== startYear
+      ? `${startYear}–${endYear}`
+      : String(startYear)
+    : null;
   const rating = voteAverage ? Math.round(voteAverage * 10) / 10 : null;
   const poster = posterUrl(posterPath, 'lg');
   const href = `/${mediaType}/${id}`;
+
+  const TypeIcon = mediaType === 'movie' ? Film : Tv;
 
   return (
     <Link
@@ -76,6 +87,11 @@ export function MediaCard({
             <span>{rating}</span>
           </div>
         )}
+
+        {/* Media type icon */}
+        <div className="absolute bottom-2 left-2 flex items-center justify-center rounded-full bg-black/60 p-1 backdrop-blur-sm">
+          <TypeIcon className="size-3 text-white/90" />
+        </div>
       </div>
 
       {/* Info */}
@@ -83,7 +99,9 @@ export function MediaCard({
         <h3 className="line-clamp-2 text-sm leading-snug font-medium">
           {title}
         </h3>
-        {year && <span className="text-muted-foreground text-xs">{year}</span>}
+        {yearDisplay && (
+          <span className="text-muted-foreground text-xs">{yearDisplay}</span>
+        )}
       </div>
     </Link>
   );
