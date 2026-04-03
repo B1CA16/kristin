@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
   const type = searchParams.get('type') || 'movie';
   const page = parseInt(searchParams.get('page') || '1', 10);
   const locale = searchParams.get('locale') || 'en';
-  const sortBy = searchParams.get('sortBy') || undefined;
+  let sortBy = searchParams.get('sortBy') || undefined;
   const withGenres = searchParams.get('withGenres') || undefined;
   const year = searchParams.get('year')
     ? parseInt(searchParams.get('year')!, 10)
@@ -21,6 +21,19 @@ export async function GET(request: NextRequest) {
   const voteAverageGte = searchParams.get('voteAverageGte')
     ? parseFloat(searchParams.get('voteAverageGte')!)
     : undefined;
+
+  // Normalize sort field for the media type — TMDB uses different date fields
+  // for movies (primary_release_date) and TV (first_air_date)
+  if (type === 'tv' && sortBy?.includes('primary_release_date')) {
+    sortBy = sortBy.replace('primary_release_date', 'first_air_date');
+  } else if (type === 'movie' && sortBy?.includes('first_air_date')) {
+    sortBy = sortBy.replace('first_air_date', 'primary_release_date');
+  }
+
+  // Cap date-sorted results to today to exclude unreleased titles
+  const isDateSort =
+    sortBy?.includes('release_date') || sortBy?.includes('air_date');
+  const today = new Date().toISOString().split('T')[0];
 
   // When sorting by rating, require a minimum vote count to filter out
   // obscure titles with inflated averages from very few votes.
@@ -40,6 +53,7 @@ export async function GET(request: NextRequest) {
             sortBy,
             withGenres,
             firstAirDateYear: year,
+            firstAirDateLte: isDateSort ? today : undefined,
             voteAverageGte,
             voteCountGte,
           })
@@ -49,6 +63,7 @@ export async function GET(request: NextRequest) {
             sortBy,
             withGenres,
             year,
+            releaseDateLte: isDateSort ? today : undefined,
             voteAverageGte,
             voteCountGte,
           });

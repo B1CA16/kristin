@@ -228,6 +228,7 @@ export async function discoverMovies(
     sortBy?: string;
     withGenres?: string;
     year?: number;
+    releaseDateLte?: string;
     voteAverageGte?: number;
     voteCountGte?: number;
   } = {},
@@ -240,6 +241,7 @@ export async function discoverMovies(
       sort_by: options.sortBy || 'popularity.desc',
       with_genres: options.withGenres,
       primary_release_year: options.year,
+      'primary_release_date.lte': options.releaseDateLte,
       'vote_average.gte': options.voteAverageGte,
       'vote_count.gte': options.voteCountGte,
     },
@@ -254,6 +256,7 @@ export async function discoverTV(
     sortBy?: string;
     withGenres?: string;
     firstAirDateYear?: number;
+    firstAirDateLte?: string;
     voteAverageGte?: number;
     voteCountGte?: number;
   } = {},
@@ -266,6 +269,7 @@ export async function discoverTV(
       sort_by: options.sortBy || 'popularity.desc',
       with_genres: options.withGenres,
       first_air_date_year: options.firstAirDateYear,
+      'first_air_date.lte': options.firstAirDateLte,
       'vote_average.gte': options.voteAverageGte,
       'vote_count.gte': options.voteCountGte,
     },

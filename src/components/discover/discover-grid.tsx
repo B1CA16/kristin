@@ -63,7 +63,13 @@ export function DiscoverGrid({
   const sortOptions = [
     { value: 'popularity.desc', label: t('sortPopularity') },
     { value: 'vote_average.desc', label: t('sortRating') },
-    { value: 'primary_release_date.desc', label: t('sortNewest') },
+    {
+      value:
+        mediaType === 'movie'
+          ? 'primary_release_date.desc'
+          : 'first_air_date.desc',
+      label: t('sortNewest'),
+    },
   ];
 
   const yearOptions = YEARS.map((y) => ({
@@ -120,6 +126,12 @@ export function DiscoverGrid({
     if (type === mediaType) return;
     setMediaType(type);
     setGenreId(''); // Reset genre since genres differ between movie/tv
+    // Reset date sort to the correct field for the new media type
+    if (sortBy.includes('release_date') || sortBy.includes('air_date')) {
+      setSortBy(
+        type === 'movie' ? 'primary_release_date.desc' : 'first_air_date.desc',
+      );
+    }
   };
 
   return (
