@@ -5,6 +5,11 @@ import { useSyncExternalStore } from 'react';
 import { Moon, Sun } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 const emptySubscribe = () => () => {};
 function useMounted() {
@@ -25,13 +30,18 @@ export function ThemeToggle() {
   }
 
   return (
-    <Button
-      variant="ghost"
-      size="icon"
-      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-      aria-label={t('toggleTheme')}
-    >
-      {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-    </Button>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+          aria-label={t('toggleTheme')}
+        >
+          {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>{t('toggleTheme')}</TooltipContent>
+    </Tooltip>
   );
 }

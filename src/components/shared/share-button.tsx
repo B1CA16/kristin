@@ -13,6 +13,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 type ShareButtonProps = {
   /** URL path to share (e.g. /movie/123). Full URL is built automatically. */
@@ -135,41 +140,55 @@ export function ShareButton({
 
   if (supportsNativeShare) {
     return (
-      <Button
-        variant="ghost"
-        size={variant === 'icon' ? 'icon' : 'sm'}
-        onClick={handleNativeShare}
-        title={t('share')}
-        className={cn(
-          'text-muted-foreground hover:bg-white/10 hover:text-white',
-          variant === 'icon' && 'size-9',
-          className,
-        )}
-      >
-        <Share2 className="size-4" />
-        {variant === 'button' && <span className="ml-1.5">{t('share')}</span>}
-      </Button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="ghost"
+            size={variant === 'icon' ? 'icon' : 'sm'}
+            onClick={handleNativeShare}
+            aria-label={t('share')}
+            className={cn(
+              'text-muted-foreground hover:bg-foreground/10 hover:text-foreground',
+              variant === 'icon' && 'size-9',
+              className,
+            )}
+          >
+            <Share2 className="size-4" />
+            {variant === 'button' && (
+              <span className="ml-1.5">{t('share')}</span>
+            )}
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>{t('share')}</TooltipContent>
+      </Tooltip>
     );
   }
 
   // Desktop fallback: dropdown with platforms + copy link
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size={variant === 'icon' ? 'icon' : 'sm'}
-          title={t('share')}
-          className={cn(
-            'text-muted-foreground hover:bg-white/10 hover:text-white',
-            variant === 'icon' && 'size-9',
-            className,
-          )}
-        >
-          <Share2 className="size-4" />
-          {variant === 'button' && <span className="ml-1.5">{t('share')}</span>}
-        </Button>
-      </DropdownMenuTrigger>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size={variant === 'icon' ? 'icon' : 'sm'}
+              aria-label={t('share')}
+              className={cn(
+                'text-muted-foreground hover:bg-foreground/10 hover:text-foreground',
+                variant === 'icon' && 'size-9',
+                className,
+              )}
+            >
+              <Share2 className="size-4" />
+              {variant === 'button' && (
+                <span className="ml-1.5">{t('share')}</span>
+              )}
+            </Button>
+          </DropdownMenuTrigger>
+        </TooltipTrigger>
+        <TooltipContent>{t('share')}</TooltipContent>
+      </Tooltip>
       <DropdownMenuContent align="end" className="w-48">
         {PLATFORMS.map((platform) => (
           <DropdownMenuItem

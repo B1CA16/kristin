@@ -9,6 +9,11 @@ import { posterUrl } from '@/lib/tmdb/image';
 import { Link } from '@/i18n/navigation';
 import { useOptimisticVote } from '@/hooks/use-optimistic-vote';
 import { ReputationBadge } from '@/components/profile/reputation-badge';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import type { SuggestionWithVoteStatus } from '@/actions/suggestions';
 
 type SuggestionCardProps = {
@@ -53,27 +58,31 @@ export function SuggestionCard({
     >
       {/* Vote button */}
       <div className="flex flex-col items-center gap-0.5">
-        <button
-          onClick={isLoggedIn && !isOwnSuggestion ? toggleVote : undefined}
-          disabled={isPending || !isLoggedIn || isOwnSuggestion}
-          title={
-            !isLoggedIn
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              onClick={isLoggedIn && !isOwnSuggestion ? toggleVote : undefined}
+              disabled={isPending || !isLoggedIn || isOwnSuggestion}
+              className={cn(
+                'flex size-8 cursor-pointer flex-col items-center justify-center rounded-lg transition-all duration-200',
+                hasVoted
+                  ? 'bg-primary text-primary-foreground shadow-primary/25 shadow-md'
+                  : 'bg-primary/5 text-muted-foreground hover:bg-primary/15 hover:text-primary',
+                (!isLoggedIn || isPending || isOwnSuggestion) &&
+                  'cursor-not-allowed opacity-50',
+              )}
+            >
+              <ChevronUp className="size-5" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent>
+            {!isLoggedIn
               ? t('loginToVote')
               : isOwnSuggestion
                 ? t('cannotVoteOwn')
-                : undefined
-          }
-          className={cn(
-            'flex size-8 cursor-pointer flex-col items-center justify-center rounded-lg transition-all duration-200',
-            hasVoted
-              ? 'bg-primary text-primary-foreground shadow-primary/25 shadow-md'
-              : 'bg-primary/5 text-muted-foreground hover:bg-primary/15 hover:text-primary',
-            (!isLoggedIn || isPending || isOwnSuggestion) &&
-              'cursor-not-allowed opacity-50',
-          )}
-        >
-          <ChevronUp className="size-5" />
-        </button>
+                : t('votes', { count: voteCount })}
+          </TooltipContent>
+        </Tooltip>
         <span
           className={cn(
             'mt-2 text-sm font-bold',

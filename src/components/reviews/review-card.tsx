@@ -8,6 +8,11 @@ import { cn } from '@/lib/utils';
 import { useOptimisticHelpful } from '@/hooks/use-optimistic-helpful';
 import { StarRating } from '@/components/reviews/star-rating';
 import { ReputationBadge } from '@/components/profile/reputation-badge';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import type { ReviewWithVoteStatus } from '@/actions/reviews';
 
 type ReviewCardProps = {
@@ -81,33 +86,37 @@ export function ReviewCard({
 
       {/* Helpful vote */}
       <div className="mt-3 flex items-center gap-1.5">
-        <button
-          onClick={canVote ? toggleHelpful : undefined}
-          disabled={isPending || !canVote}
-          title={
-            !isLoggedIn
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              onClick={canVote ? toggleHelpful : undefined}
+              disabled={isPending || !canVote}
+              className={cn(
+                'flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-all duration-200',
+                hasVoted
+                  ? 'bg-primary text-primary-foreground shadow-primary/25 shadow-sm'
+                  : 'bg-primary/5 text-muted-foreground hover:bg-primary/15 hover:text-primary',
+                (!canVote || isPending) && 'cursor-not-allowed opacity-50',
+              )}
+            >
+              <ThumbsUp className="size-3.5" />
+              <span className="font-medium">
+                {helpfulCount > 0
+                  ? t('helpfulCount', { count: helpfulCount })
+                  : t('helpful')}
+              </span>
+            </button>
+          </TooltipTrigger>
+          <TooltipContent>
+            {!isLoggedIn
               ? t('loginToVote')
               : isOwnReview
                 ? t('cannotVoteOwn')
                 : hasVoted
                   ? t('removeHelpful')
-                  : t('markHelpful')
-          }
-          className={cn(
-            'flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-all duration-200',
-            hasVoted
-              ? 'bg-primary text-primary-foreground shadow-primary/25 shadow-sm'
-              : 'bg-primary/5 text-muted-foreground hover:bg-primary/15 hover:text-primary',
-            (!canVote || isPending) && 'cursor-not-allowed opacity-50',
-          )}
-        >
-          <ThumbsUp className="size-3.5" />
-          <span className="font-medium">
-            {helpfulCount > 0
-              ? t('helpfulCount', { count: helpfulCount })
-              : t('helpful')}
-          </span>
-        </button>
+                  : t('markHelpful')}
+          </TooltipContent>
+        </Tooltip>
       </div>
     </div>
   );

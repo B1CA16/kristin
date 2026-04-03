@@ -8,6 +8,11 @@ import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { trackEvent } from '@/lib/analytics';
 import { toggleListItem, type ListStatus } from '@/actions/lists';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 type MediaActionsProps = {
   tmdbId: number;
@@ -103,22 +108,27 @@ export function MediaActions({
         const isActive = optimisticStatus[type];
 
         return (
-          <button
-            key={type}
-            onClick={() => handleToggle(type)}
-            disabled={isPending || !isLoggedIn}
-            title={isLoggedIn ? t(labelKey) : t('loginRequired')}
-            className={cn(
-              'flex cursor-pointer items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition-colors',
-              isActive
-                ? `bg-white/10 ${activeClass}`
-                : 'text-muted-foreground hover:bg-white/10 hover:text-white',
-              (!isLoggedIn || isPending) && 'cursor-not-allowed opacity-50',
-            )}
-          >
-            <Icon className={cn('size-4', isActive && 'fill-current')} />
-            <span className="hidden sm:inline">{t(labelKey)}</span>
-          </button>
+          <Tooltip key={type}>
+            <TooltipTrigger asChild>
+              <button
+                onClick={() => handleToggle(type)}
+                disabled={isPending || !isLoggedIn}
+                className={cn(
+                  'flex cursor-pointer items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                  isActive
+                    ? `bg-foreground/10 ${activeClass}`
+                    : 'text-muted-foreground hover:bg-foreground/10 hover:text-foreground',
+                  (!isLoggedIn || isPending) && 'cursor-not-allowed opacity-50',
+                )}
+              >
+                <Icon className={cn('size-4', isActive && 'fill-current')} />
+                <span className="hidden sm:inline">{t(labelKey)}</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>
+              {isLoggedIn ? t(labelKey) : t('loginRequired')}
+            </TooltipContent>
+          </Tooltip>
         );
       })}
     </>
