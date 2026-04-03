@@ -124,6 +124,7 @@
     "suggestionSubmitted": "Suggestion soumise !",
     "alreadyExists": "Cette suggestion existe déjà.",
     "suggestedBy": "Suggéré par {username}",
+    "reverseSuggestion": "Suggéré depuis la page de l'autre titre",
     "votes": "{count, plural, one {# vote} other {# votes}}"
   },
   "lists": {

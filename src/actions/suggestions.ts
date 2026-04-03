@@ -18,6 +18,8 @@ export type SuggestionWithVoteStatus = {
   suggestedByReputation: number;
   createdAt: string;
   hasVoted: boolean;
+  /** True when this suggestion was created from the other media's page. */
+  isReverse: boolean;
 };
 
 // ---------------------------------------------------------------------------
@@ -26,8 +28,13 @@ export type SuggestionWithVoteStatus = {
 
 /**
  * Get all community suggestions for a given media item.
- * Returns suggestions sorted by vote count (highest first),
- * with whether the current user has voted on each one.
+ *
+ * Returns both forward suggestions (A → B, showing B on A's page)
+ * and reverse suggestions (B → A, also showing B on A's page).
+ * This means if someone suggests Show B on Show A, Show A also
+ * appears as a recommendation on Show B's page automatically.
+ *
+ * Sorted by vote count (highest first), with user vote status.
  */
 export async function getSuggestionsForMedia(
   source: MediaRef,
@@ -35,7 +42,8 @@ export async function getSuggestionsForMedia(
   const supabase = await createClient();
   const user = await getUser();
 
-  const { data: suggestions, error } = await supabase
+  // Fetch forward suggestions (source → target)
+  const { data: forward, error: fwdError } = await supabase
     .from('community_suggestions')
     .select(
       `
@@ -53,26 +61,51 @@ export async function getSuggestionsForMedia(
     .eq('source_type', source.mediaType)
     .order('vote_count', { ascending: false });
 
-  if (error) {
-    return { data: [], error: error.message };
+  if (fwdError) {
+    return { data: [], error: fwdError.message };
   }
 
-  // If logged in, fetch user's votes to mark which they've voted on
+  // Fetch reverse suggestions (this media is the target — show the source)
+  const { data: reverse, error: revError } = await supabase
+    .from('community_suggestions')
+    .select(
+      `
+      id,
+      source_tmdb_id,
+      source_type,
+      reason,
+      vote_count,
+      suggested_by,
+      created_at,
+      profiles!community_suggestions_suggested_by_fkey (username, reputation)
+    `,
+    )
+    .eq('target_tmdb_id', source.tmdbId)
+    .eq('target_type', source.mediaType)
+    .order('vote_count', { ascending: false });
+
+  if (revError) {
+    return { data: [], error: revError.message };
+  }
+
+  // Collect all suggestion IDs for vote lookup
+  const allIds = [...forward.map((s) => s.id), ...reverse.map((s) => s.id)];
+
   let votedSuggestionIds = new Set<string>();
-  if (user) {
-    const suggestionIds = suggestions.map((s) => s.id);
-    if (suggestionIds.length > 0) {
-      const { data: votes } = await supabase
-        .from('suggestion_votes')
-        .select('suggestion_id')
-        .eq('user_id', user.id)
-        .in('suggestion_id', suggestionIds);
+  if (user && allIds.length > 0) {
+    const { data: votes } = await supabase
+      .from('suggestion_votes')
+      .select('suggestion_id')
+      .eq('user_id', user.id)
+      .in('suggestion_id', allIds);
 
-      votedSuggestionIds = new Set(votes?.map((v) => v.suggestion_id) ?? []);
-    }
+    votedSuggestionIds = new Set(votes?.map((v) => v.suggestion_id) ?? []);
   }
 
-  const mapped: SuggestionWithVoteStatus[] = suggestions.map((s) => ({
+  type ProfileJoin = { username: string; reputation: number };
+
+  // Map forward suggestions (target is the recommended media)
+  const forwardMapped: SuggestionWithVoteStatus[] = forward.map((s) => ({
     id: s.id,
     targetTmdbId: s.target_tmdb_id,
     targetType: s.target_type,
@@ -80,16 +113,44 @@ export async function getSuggestionsForMedia(
     voteCount: s.vote_count,
     suggestedBy: s.suggested_by,
     suggestedByUsername:
-      (s.profiles as unknown as { username: string; reputation: number })
-        ?.username ?? 'unknown',
+      (s.profiles as unknown as ProfileJoin)?.username ?? 'unknown',
     suggestedByReputation:
-      (s.profiles as unknown as { username: string; reputation: number })
-        ?.reputation ?? 0,
+      (s.profiles as unknown as ProfileJoin)?.reputation ?? 0,
     createdAt: s.created_at,
     hasVoted: votedSuggestionIds.has(s.id),
+    isReverse: false,
   }));
 
-  return { data: mapped, error: null };
+  // Map reverse suggestions (source becomes the "target" to display)
+  // Deduplicate: skip if the same media pair already exists in forward
+  const forwardPairs = new Set(
+    forward.map((s) => `${s.target_type}-${s.target_tmdb_id}`),
+  );
+
+  const reverseMapped: SuggestionWithVoteStatus[] = reverse
+    .filter((s) => !forwardPairs.has(`${s.source_type}-${s.source_tmdb_id}`))
+    .map((s) => ({
+      id: s.id,
+      targetTmdbId: s.source_tmdb_id,
+      targetType: s.source_type,
+      reason: s.reason,
+      voteCount: s.vote_count,
+      suggestedBy: s.suggested_by,
+      suggestedByUsername:
+        (s.profiles as unknown as ProfileJoin)?.username ?? 'unknown',
+      suggestedByReputation:
+        (s.profiles as unknown as ProfileJoin)?.reputation ?? 0,
+      createdAt: s.created_at,
+      hasVoted: votedSuggestionIds.has(s.id),
+      isReverse: true,
+    }));
+
+  // Merge and sort by vote count
+  const merged = [...forwardMapped, ...reverseMapped].sort(
+    (a, b) => b.voteCount - a.voteCount,
+  );
+
+  return { data: merged, error: null };
 }
 
 // ---------------------------------------------------------------------------
@@ -121,6 +182,21 @@ export async function createSuggestion(
     source.mediaType === target.mediaType
   ) {
     return { error: 'Cannot suggest a media item to itself.' };
+  }
+
+  // Check for reverse duplicate — if target→source already exists,
+  // block the suggestion since bidirectional display makes it redundant
+  const { data: reverseExists } = await supabase
+    .from('community_suggestions')
+    .select('id')
+    .eq('source_tmdb_id', target.tmdbId)
+    .eq('source_type', target.mediaType)
+    .eq('target_tmdb_id', source.tmdbId)
+    .eq('target_type', source.mediaType)
+    .limit(1);
+
+  if (reverseExists && reverseExists.length > 0) {
+    return { error: 'This suggestion already exists.' };
   }
 
   const { error } = await supabase.from('community_suggestions').insert({

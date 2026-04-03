@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { ChevronUp } from 'lucide-react';
+import { ArrowLeftRight, ChevronUp } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
@@ -123,6 +123,14 @@ export function SuggestionCard({
             {t('suggestedBy', { username: suggestion.suggestedByUsername })}
           </p>
           <ReputationBadge reputation={suggestion.suggestedByReputation} />
+          {suggestion.isReverse && (
+            <span
+              title={t('reverseSuggestion')}
+              className="text-muted-foreground flex items-center gap-0.5 text-[10px]"
+            >
+              <ArrowLeftRight className="size-2.5" />
+            </span>
+          )}
         </div>
       </div>
     </div>
