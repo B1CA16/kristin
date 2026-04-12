@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Film, Search, Sparkles, Star, Tv, Users } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { backdropUrl } from '@/lib/tmdb/image';
-import { getTrending, getTVLastAirDates } from '@/lib/tmdb';
+import { getTrending } from '@/lib/tmdb';
 import { getUser } from '@/lib/supabase/server';
 import {
   getTrendingOnKristin,
@@ -34,16 +34,6 @@ export default async function Home() {
       getPopularRecommendations(6),
       getTrending('all', 'day', { locale }),
     ]);
-
-  // Batch-fetch last_air_date for TV shows in both sections
-  const tvIds = [
-    ...kristinTrending.filter((i) => i.mediaType === 'tv').map((i) => i.tmdbId),
-    ...popularRecs
-      .filter((i) => i.targetType === 'tv')
-      .map((i) => i.targetTmdbId),
-  ];
-  const tvLastAirDates =
-    tvIds.length > 0 ? await getTVLastAirDates(tvIds, { locale }) : {};
 
   const heroItems = (tmdbTrending.results ?? []).filter((r) => r.backdrop_path);
   const heroItem =
@@ -236,7 +226,6 @@ export default async function Home() {
                   title={item.title}
                   posterPath={item.posterPath}
                   releaseDate={item.releaseDate ?? undefined}
-                  lastAirDate={tvLastAirDates[item.tmdbId]}
                   voteAverage={item.voteAverage ?? undefined}
                 />
               ))}
@@ -269,7 +258,6 @@ export default async function Home() {
                   title={item.title}
                   posterPath={item.posterPath}
                   releaseDate={item.releaseDate ?? undefined}
-                  lastAirDate={tvLastAirDates[item.targetTmdbId]}
                   voteAverage={item.voteAverage ?? undefined}
                 />
               ))}

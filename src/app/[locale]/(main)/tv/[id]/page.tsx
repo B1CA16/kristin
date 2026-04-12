@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getLocale, getTranslations } from 'next-intl/server';
 
-import { getTVDetails, getTVLastAirDates, getMediaBasicInfo } from '@/lib/tmdb';
+import { getTVDetails, getMediaBasicInfo } from '@/lib/tmdb';
 import { LOCALE_TO_REGION } from '@/lib/tmdb/config';
 import { getUser } from '@/lib/supabase/server';
 import { getSuggestionsForMedia } from '@/actions/suggestions';
@@ -98,14 +98,6 @@ export default async function TVPage({ params }: Props) {
 
   const recommendations = show.recommendations?.results ?? [];
   const similar = show.similar?.results ?? [];
-
-  // Batch-fetch last_air_date for TV recommendations/similar
-  const recTvIds = [
-    ...recommendations.map((r) => r.id),
-    ...similar.map((s) => s.id),
-  ];
-  const tvLastAirDates =
-    recTvIds.length > 0 ? await getTVLastAirDates(recTvIds, { locale }) : {};
 
   // Community suggestions
   const { data: suggestions } = await getSuggestionsForMedia({
@@ -237,7 +229,6 @@ export default async function TVPage({ params }: Props) {
                           title={rec.name}
                           posterPath={rec.poster_path}
                           releaseDate={rec.first_air_date}
-                          lastAirDate={tvLastAirDates[rec.id]}
                           voteAverage={rec.vote_average}
                         />
                       ))}
@@ -252,7 +243,6 @@ export default async function TVPage({ params }: Props) {
                           title={sim.name}
                           posterPath={sim.poster_path}
                           releaseDate={sim.first_air_date}
-                          lastAirDate={tvLastAirDates[sim.id]}
                           voteAverage={sim.vote_average}
                         />
                       ))}

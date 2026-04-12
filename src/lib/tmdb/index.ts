@@ -8,7 +8,6 @@ export {
   getMediaBasicInfo,
   getMovieDetails,
   getTVDetails,
-  getTVLastAirDates,
   getMovieGenres,
   getTVGenres,
 } from './client';

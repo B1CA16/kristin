@@ -11,8 +11,6 @@ type MediaCardProps = {
   title: string;
   posterPath: string | null;
   releaseDate?: string;
-  /** Last air date for TV shows — enables year range display (e.g. 2005–2013). */
-  lastAirDate?: string;
   voteAverage?: number;
   className?: string;
 };
@@ -27,17 +25,10 @@ export function MediaCard({
   title,
   posterPath,
   releaseDate,
-  lastAirDate,
   voteAverage,
   className,
 }: MediaCardProps) {
-  const startYear = releaseDate ? new Date(releaseDate).getFullYear() : null;
-  const endYear = lastAirDate ? new Date(lastAirDate).getFullYear() : null;
-  const yearDisplay = startYear
-    ? mediaType === 'tv' && endYear && endYear !== startYear
-      ? `${startYear}–${endYear}`
-      : String(startYear)
-    : null;
+  const year = releaseDate ? new Date(releaseDate).getFullYear() : null;
   const rating = voteAverage ? Math.round(voteAverage * 10) / 10 : null;
   const poster = posterUrl(posterPath, 'lg');
   const href = `/${mediaType}/${id}`;
@@ -99,9 +90,7 @@ export function MediaCard({
         <h3 className="line-clamp-2 text-sm leading-snug font-medium">
           {title}
         </h3>
-        {yearDisplay && (
-          <span className="text-muted-foreground text-xs">{yearDisplay}</span>
-        )}
+        {year && <span className="text-muted-foreground text-xs">{year}</span>}
       </div>
     </Link>
   );
