@@ -10,11 +10,13 @@ updates:
     labels:
       - dependencies
     groups:
-      # Group minor/patch updates to reduce PR noise
+      # Group all minor/patch updates into a single PR
       minor-and-patch:
         update-types:
           - minor
           - patch
+    # Rebase PRs automatically when they have conflicts
+    rebase-strategy: auto
 
   # GitHub Actions
   - package-ecosystem: github-actions
@@ -23,3 +25,4 @@ updates:
       interval: weekly
     labels:
       - ci
+    rebase-strategy: auto
