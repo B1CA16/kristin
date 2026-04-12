@@ -35,11 +35,12 @@ export async function middleware(request: NextRequest) {
     },
   );
 
-  // getUser() triggers the token refresh if needed.
-  // We don't need the result — the side effect (cookie refresh) is what matters.
-  // Wrapped in try-catch so a Supabase timeout doesn't crash the entire request.
+  // getSession() reads the session from cookies locally and only contacts
+  // Supabase when the access token is expired and needs refreshing.
+  // Unlike getUser() which makes a network call on every request, this is
+  // nearly instant for non-expired sessions — preventing middleware timeouts.
   try {
-    await supabase.auth.getUser();
+    await supabase.auth.getSession();
   } catch {
     // Auth refresh failed (likely network timeout). The page will still render —
     // auth-dependent features will treat the user as logged out for this request.
