@@ -15,18 +15,39 @@ jobs:
     steps:
       - name: Call cleanup endpoint
         run: |
-          RESPONSE=$(curl -s -w "\n%{http_code}" \
-            -X POST \
-            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
-            "${SITE_URL}/api/cron/cleanup-cache")
+          MAX_RETRIES=3
+          RETRY_DELAY=30
 
-          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
-          BODY=$(echo "$RESPONSE" | head -1)
+          for attempt in $(seq 1 $MAX_RETRIES); do
+            echo "Attempt $attempt/$MAX_RETRIES"
 
-          echo "Status: $HTTP_CODE"
-          echo "Response: $BODY"
+            RESPONSE=$(curl -s -w "\n%{http_code}" \
+              --max-time 30 \
+              -X POST \
+              -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+              "${SITE_URL}/api/cron/cleanup-cache")
 
-          if [ "$HTTP_CODE" != "200" ]; then
-            echo "::error::Cache cleanup failed with status $HTTP_CODE"
-            exit 1
-          fi
+            HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+            BODY=$(echo "$RESPONSE" | sed '$d')
+
+            echo "Status: $HTTP_CODE"
+
+            if [ "$HTTP_CODE" = "200" ]; then
+              echo "Response: $BODY"
+              exit 0
+            fi
+
+            # Retry on server errors (5xx) and timeouts
+            if [ "$attempt" -lt "$MAX_RETRIES" ] && [ "$HTTP_CODE" -ge 500 ] 2>/dev/null; then
+              echo "Server error, retrying in ${RETRY_DELAY}s..."
+              sleep $RETRY_DELAY
+              RETRY_DELAY=$((RETRY_DELAY * 2))
+              continue
+            fi
+
+            echo "::warning::Cache cleanup failed with status $HTTP_CODE (attempt $attempt)"
+          done
+
+          # After all retries, warn but don't fail the workflow —
+          # stale cache rows are harmless, they'll get cleaned up next run
+          echo "::warning::Cache cleanup failed after $MAX_RETRIES attempts. Will retry next scheduled run."
