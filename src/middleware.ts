@@ -35,14 +35,19 @@ export async function middleware(request: NextRequest) {
     },
   );
 
-  // getSession() reads the session from cookies locally and only contacts
-  // Supabase when the access token is expired and needs refreshing.
-  // Unlike getUser() which makes a network call on every request, this is
-  // nearly instant for non-expired sessions — preventing middleware timeouts.
+  // Refresh the auth session with a hard timeout.
+  // getSession() is usually instant (reads JWT from cookies), but when the
+  // token is expired it contacts Supabase to refresh — which can be slow on
+  // the free tier. The timeout ensures the page still loads if Supabase is slow.
   try {
-    await supabase.auth.getSession();
+    await Promise.race([
+      supabase.auth.getSession(),
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Auth timeout')), 3000),
+      ),
+    ]);
   } catch {
-    // Auth refresh failed (likely network timeout). The page will still render —
+    // Auth refresh failed or timed out. The page will still render —
     // auth-dependent features will treat the user as logged out for this request.
   }
 
