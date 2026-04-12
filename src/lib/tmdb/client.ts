@@ -1,7 +1,5 @@
 import 'server-only';
 
-import { createAdminClient } from '@/lib/supabase/admin';
-import type { Json } from '@/types/database';
 import { TMDB_API_BASE, LOCALE_TO_TMDB_LANG, CACHE_TTL } from './config';
 import type {
   PaginatedResponse,
@@ -20,7 +18,7 @@ import type {
 type TMDBFetchOptions = {
   /** App locale (en, pt, es, fr). Mapped to TMDB language code. */
   locale?: string;
-  /** Cache TTL in seconds. Pass 0 to skip caching. */
+  /** Cache TTL in seconds. Used for Next.js fetch cache (revalidate). */
   cacheTtl?: number;
   /** Additional query parameters. */
   params?: Record<string, string | number | undefined>;
@@ -30,7 +28,7 @@ type TMDBFetchOptions = {
  * Low-level TMDB API fetch with:
  * - API key injection
  * - Locale mapping
- * - DB-level caching via media_cache table
+ * - Next.js fetch cache (replaces Supabase media_cache to eliminate egress)
  * - Exponential backoff on 429 (rate limit)
  */
 async function tmdbFetch<T>(
@@ -55,35 +53,26 @@ async function tmdbFetch<T>(
     }
   }
 
-  // Build a cache key from the URL (without API key for safety)
-  const cacheKey = buildCacheKey(endpoint, locale, params);
-
-  // Check DB cache first
-  if (cacheTtl > 0) {
-    const cached = await getCachedResponse<T>(cacheKey);
-    if (cached) return cached;
-  }
-
-  // Fetch from TMDB with retry on rate limit
-  const data = await fetchWithRetry<T>(url.toString());
-
-  // Write to cache in the background (don't block the response)
-  if (cacheTtl > 0) {
-    setCachedResponse(cacheKey, data, cacheTtl).catch(() => {
-      // Cache write failures are non-critical — log but don't throw
-    });
-  }
+  // Fetch from TMDB with retry on rate limit.
+  // Next.js fetch cache handles caching at the edge — no Supabase round-trip.
+  const data = await fetchWithRetry<T>(url.toString(), 3, cacheTtl);
 
   return data;
 }
 
 /**
  * Fetch with exponential backoff on 429 responses.
- * Max 3 retries with 1s, 2s, 4s delays.
+ * Uses Next.js fetch cache for automatic edge caching on Vercel.
  */
-async function fetchWithRetry<T>(url: string, maxRetries = 3): Promise<T> {
+async function fetchWithRetry<T>(
+  url: string,
+  maxRetries = 3,
+  revalidate = 0,
+): Promise<T> {
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      next: revalidate > 0 ? { revalidate } : undefined,
+    });
 
     if (response.ok) {
       return response.json() as Promise<T>;
@@ -106,62 +95,6 @@ async function fetchWithRetry<T>(url: string, maxRetries = 3): Promise<T> {
 
   // Should never reach here, but TypeScript needs it
   throw new Error('TMDB API: max retries exceeded');
-}
-
-// ---------------------------------------------------------------------------
-// DB cache (media_cache table)
-// ---------------------------------------------------------------------------
-
-function buildCacheKey(
-  endpoint: string,
-  locale: string,
-  params: Record<string, string | number | undefined>,
-): string {
-  const sortedParams = Object.entries(params)
-    .filter(([, v]) => v !== undefined)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([k, v]) => `${k}=${v}`)
-    .join('&');
-
-  return `tmdb:${locale}:${endpoint}${sortedParams ? `?${sortedParams}` : ''}`;
-}
-
-async function getCachedResponse<T>(cacheKey: string): Promise<T | null> {
-  const supabase = createAdminClient();
-  const { data } = await supabase
-    .from('media_cache')
-    .select('data, expires_at')
-    .eq('cache_key', cacheKey)
-    .single();
-
-  if (!data) return null;
-
-  // Check if expired
-  if (new Date(data.expires_at) < new Date()) {
-    // Expired — delete in background, return null
-    supabase.from('media_cache').delete().eq('cache_key', cacheKey).then();
-    return null;
-  }
-
-  return data.data as T;
-}
-
-async function setCachedResponse(
-  cacheKey: string,
-  data: unknown,
-  ttlSeconds: number,
-): Promise<void> {
-  const supabase = createAdminClient();
-  const expiresAt = new Date(Date.now() + ttlSeconds * 1000).toISOString();
-
-  await supabase.from('media_cache').upsert(
-    {
-      cache_key: cacheKey,
-      data: data as Json,
-      expires_at: expiresAt,
-    },
-    { onConflict: 'cache_key' },
-  );
 }
 
 // ---------------------------------------------------------------------------
