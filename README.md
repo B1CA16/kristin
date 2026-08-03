@@ -157,17 +157,36 @@ bypasses RLS on every table, and one of the two schedulers is a third party.
 **1. GitHub Actions** — `.github/workflows/keepalive.yml`, daily at 03:00 UTC.
 Requires:
 
-| Kind                | Name                       | Value                       |
-| ------------------- | -------------------------- | --------------------------- |
-| Repository variable | `NEXT_PUBLIC_SUPABASE_URL` | `https://<ref>.supabase.co` |
-| Repository secret   | `SUPABASE_ANON_KEY`        | The project's anon key      |
+The job runs as a matrix over both projects, so neither can be silently
+forgotten. Names carry the environment explicitly — a bare
+`NEXT_PUBLIC_SUPABASE_URL` doesn't say which project it points at, and a
+keep-alive aimed at the wrong database looks exactly as healthy as a correct one.
 
-**2. External backstop** — a job on [cron-job.org](https://cron-job.org) every 3
-days. This exists because **GitHub silently disables scheduled workflows in
-public repos after 60 days with no pushes**, so Actions alone is not a
-sufficient guarantee. cron-job.org rather than UptimeRobot because the RPC
-writes, so PostgREST only accepts `POST`, and UptimeRobot's free tier sends only
-`GET`/`HEAD`.
+| Kind                | Name                     | Value                            |
+| ------------------- | ------------------------ | -------------------------------- |
+| Repository variable | `SUPABASE_URL_PROD`      | `https://<prod-ref>.supabase.co` |
+| Repository variable | `SUPABASE_URL_DEV`       | `https://<dev-ref>.supabase.co`  |
+| Repository secret   | `SUPABASE_ANON_KEY_PROD` | Prod project's anon key          |
+| Repository secret   | `SUPABASE_ANON_KEY_DEV`  | Dev project's anon key           |
+
+Both projects need the `keepalive` migration applied, or that target's ping
+fails with `PGRST202`.
+
+**2. External backstop** — a job on [cron-job.org](https://cron-job.org), daily
+at 15:00 UTC. Deliberately staggered 12 hours from the GitHub job so the two
+schedulers aren't correlated: a Supabase blip at 03:00 doesn't take out both.
+
+This exists because **GitHub silently disables scheduled workflows in public
+repos after 60 days with no pushes**. Every other failure mode — bad secret,
+Supabase down, broken SQL — makes the Actions job fail loudly and email you. The
+60-day disable is the only one that produces no signal at all, and it is exactly
+the gap this covers.
+
+Enable failure notifications on the cron-job.org side too, or the backstop
+acquires the same silent-failure problem it exists to solve.
+
+cron-job.org rather than UptimeRobot because the RPC writes, so PostgREST only
+accepts `POST`, and UptimeRobot's free tier sends only `GET`/`HEAD`.
 
 ```
 POST https://<ref>.supabase.co/rest/v1/rpc/ping_keepalive

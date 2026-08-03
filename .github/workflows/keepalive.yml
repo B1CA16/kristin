@@ -26,19 +26,28 @@ concurrency:
 
 jobs:
   ping:
-    name: Ping Supabase
+    name: Ping ${{ matrix.target }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    strategy:
+      # Both projects are pinged independently. fail-fast would cancel the dev
+      # ping the moment prod failed, hiding whether dev is also broken.
+      fail-fast: false
+      matrix:
+        target: [PROD, DEV]
     steps:
       - name: Ping keepalive RPC
         env:
-          SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          # Names carry the environment explicitly. A bare NEXT_PUBLIC_SUPABASE_URL
+          # does not say which project it points at, and a keep-alive aimed at the
+          # wrong database looks exactly as healthy as a correct one.
+          SUPABASE_URL: ${{ vars[format('SUPABASE_URL_{0}', matrix.target)] }}
+          SUPABASE_ANON_KEY: ${{ secrets[format('SUPABASE_ANON_KEY_{0}', matrix.target)] }}
         run: |
           set -uo pipefail
 
           if [ -z "${SUPABASE_URL}" ] || [ -z "${SUPABASE_ANON_KEY}" ]; then
-            echo "::error::Missing configuration. Set the NEXT_PUBLIC_SUPABASE_URL repository variable and the SUPABASE_ANON_KEY repository secret."
+            echo "::error::Missing configuration for ${{ matrix.target }}. Set the SUPABASE_URL_${{ matrix.target }} repository variable and the SUPABASE_ANON_KEY_${{ matrix.target }} repository secret."
             exit 1
           fi
 
