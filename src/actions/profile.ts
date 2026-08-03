@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 import { sanitizeText } from '@/lib/sanitize';
 import { getMediaBasicInfo } from '@/lib/tmdb';
+import type { Database } from '@/types/database';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -385,7 +386,12 @@ export async function updateProfile(input: {
     return { error: 'Profile not found.' };
   }
 
-  const updates: Record<string, unknown> = {};
+  // Typed against the generated Update shape rather than Record<string, unknown>.
+  // supabase-js rejects index-signature payloads on .update(): an index
+  // signature could carry any key, so it can never prove it has no excess
+  // columns. Using the generated type also catches misspelled column names here
+  // instead of at runtime.
+  const updates: Database['public']['Tables']['profiles']['Update'] = {};
 
   // Username change
   if (input.username !== undefined && input.username !== profile.username) {
@@ -451,7 +457,7 @@ export async function updateProfile(input: {
     return { error: error.message };
   }
 
-  const newUsername = (updates.username as string) ?? profile.username;
+  const newUsername = updates.username ?? profile.username;
   revalidatePath(`/profile/${newUsername}`);
   return { error: null, newUsername };
 }
