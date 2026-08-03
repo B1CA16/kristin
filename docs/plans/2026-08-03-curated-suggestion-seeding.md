@@ -1094,7 +1094,23 @@ git commit -m "feat(recommendations): render curated picks as a distinct section
 
 ---
 
-### Task 8: Trending fallback
+### Task 8: Trending fallback — **DROPPED during execution**
+
+> **Do not implement this task.** It was written without checking what the
+> Discover and home pages already render. Both already show TMDB trending as
+> their own section (`<TMDBTrending />` on Discover, a separate
+> `getTrending('all', 'day')` on the home page), and both guard the Kristin row
+> with `kristinTrending.length > 0` so an empty section does not render. A
+> fallback would have displayed the same TMDB data twice on one page, solving a
+> problem that did not exist.
+>
+> **What was kept instead:** `getPopularRecommendations` now filters
+> `.eq('source', 'community')`. It ordered by `vote_count` with no source filter,
+> so curated rows — `vote_count: 0` by design — would have appeared in "Popular
+> recommendations" as though they were popular. That was a real bug, found while
+> investigating this task.
+>
+> The steps below are retained only as a record of what was considered.
 
 **Files:**
 

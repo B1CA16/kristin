@@ -49,6 +49,13 @@ const ACTION_WEIGHTS: Record<string, number> = {
 /**
  * Aggregate activity_log for the last 7 days, weighted by action type.
  * Returns top media sorted by weighted activity score.
+ *
+ * Returns an empty list when there is no recent activity, and callers hide the
+ * section in that case. Deliberately no TMDB fallback: Discover and the home
+ * page already render TMDB trending as their own section, so substituting it
+ * here would show the same data twice. activity_log is never seeded either — an
+ * activity row asserts that someone did something, and there is no honest label
+ * for a fabricated one.
  */
 export async function getTrendingOnKristin(
   limit = 12,
@@ -145,6 +152,9 @@ export async function getPopularRecommendations(
   const { data: suggestions, error } = await supabase
     .from('community_suggestions')
     .select('target_tmdb_id, target_type, vote_count')
+    // Community only. "Popular" means vote-driven, and curated rows carry no
+    // votes by design — including them would rank seeded content as popular.
+    .eq('source', 'community')
     .order('vote_count', { ascending: false })
     .limit(limit * 2); // Fetch extra to account for deduplication
 

@@ -1,8 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-import { ArrowLeftRight, ChevronUp } from 'lucide-react';
+import { useTransition } from 'react';
+import { ArrowLeftRight, ChevronUp, Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
 
 import { cn } from '@/lib/utils';
 import { posterUrl } from '@/lib/tmdb/image';
@@ -14,7 +16,10 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import type { SuggestionWithVoteStatus } from '@/actions/suggestions';
+import {
+  endorseCuratedSuggestion,
+  type SuggestionWithVoteStatus,
+} from '@/actions/suggestions';
 
 type SuggestionCardProps = {
   suggestion: SuggestionWithVoteStatus;
@@ -48,6 +53,23 @@ export function SuggestionCard({
     },
   );
 
+  const isCurated = suggestion.source === 'curated';
+  const [isEndorsing, startEndorse] = useTransition();
+
+  // Adopting a curated suggestion creates a real one under this user's name.
+  // The server action revalidates the page, so the card moves into the
+  // community section on its own — no manual refresh needed.
+  function handleEndorse() {
+    startEndorse(async () => {
+      const { error } = await endorseCuratedSuggestion(suggestion.id);
+      if (error) {
+        toast.error(error);
+      } else {
+        toast.success(t('suggestionAdopted'));
+      }
+    });
+  }
+
   return (
     <div
       className={cn(
@@ -56,42 +78,72 @@ export function SuggestionCard({
         'hover:border-primary/50 hover:shadow-lg',
       )}
     >
-      {/* Vote button */}
-      <div className="flex flex-col items-center gap-0.5">
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              onClick={isLoggedIn && !isOwnSuggestion ? toggleVote : undefined}
-              disabled={isPending || !isLoggedIn || isOwnSuggestion}
-              className={cn(
-                'flex size-8 cursor-pointer flex-col items-center justify-center rounded-lg transition-all duration-200',
-                hasVoted
-                  ? 'bg-primary text-primary-foreground shadow-primary/25 shadow-md'
-                  : 'bg-primary/5 text-muted-foreground hover:bg-primary/15 hover:text-primary',
-                (!isLoggedIn || isPending || isOwnSuggestion) &&
-                  'cursor-not-allowed opacity-50',
-              )}
-            >
-              <ChevronUp className="size-5" />
-            </button>
-          </TooltipTrigger>
-          <TooltipContent>
-            {!isLoggedIn
-              ? t('loginToVote')
-              : isOwnSuggestion
-                ? t('cannotVoteOwn')
-                : t('votes', { count: voteCount })}
-          </TooltipContent>
-        </Tooltip>
-        <span
-          className={cn(
-            'mt-2 text-sm font-bold',
-            hasVoted ? 'text-primary' : 'text-muted-foreground',
-          )}
-        >
-          {voteCount}
-        </span>
-      </div>
+      {/* Curated rows are not votable: real votes on author-less content would
+          blur the line between seeded and community suggestions. Adopting one
+          is the alternative — it becomes a real suggestion under your name. */}
+      {isCurated ? (
+        <div className="flex flex-col items-center gap-0.5">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                onClick={isLoggedIn ? handleEndorse : undefined}
+                disabled={!isLoggedIn || isEndorsing}
+                aria-label={t('suggestThisToo')}
+                className={cn(
+                  'flex size-8 cursor-pointer flex-col items-center justify-center rounded-lg transition-all duration-200',
+                  'bg-primary/5 text-muted-foreground hover:bg-primary/15 hover:text-primary',
+                  (!isLoggedIn || isEndorsing) &&
+                    'cursor-not-allowed opacity-50',
+                )}
+              >
+                <Plus className="size-5" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>
+              {!isLoggedIn ? t('loginToSuggest') : t('suggestThisTooHint')}
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      ) : (
+        /* Vote button */
+        <div className="flex flex-col items-center gap-0.5">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                onClick={
+                  isLoggedIn && !isOwnSuggestion ? toggleVote : undefined
+                }
+                disabled={isPending || !isLoggedIn || isOwnSuggestion}
+                className={cn(
+                  'flex size-8 cursor-pointer flex-col items-center justify-center rounded-lg transition-all duration-200',
+                  hasVoted
+                    ? 'bg-primary text-primary-foreground shadow-primary/25 shadow-md'
+                    : 'bg-primary/5 text-muted-foreground hover:bg-primary/15 hover:text-primary',
+                  (!isLoggedIn || isPending || isOwnSuggestion) &&
+                    'cursor-not-allowed opacity-50',
+                )}
+              >
+                <ChevronUp className="size-5" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>
+              {!isLoggedIn
+                ? t('loginToVote')
+                : isOwnSuggestion
+                  ? t('cannotVoteOwn')
+                  : t('votes', { count: voteCount })}
+            </TooltipContent>
+          </Tooltip>
+          <span
+            className={cn(
+              'mt-2 text-sm font-bold',
+              hasVoted ? 'text-primary' : 'text-muted-foreground',
+            )}
+          >
+            {voteCount}
+          </span>
+        </div>
+      )}
 
       {/* Poster thumbnail */}
       <Link
@@ -128,10 +180,22 @@ export function SuggestionCard({
           </p>
         )}
         <div className="mt-1 flex items-center gap-1.5">
-          <p className="text-muted-foreground text-[11px]">
-            {t('suggestedBy', { username: suggestion.suggestedByUsername })}
-          </p>
-          <ReputationBadge reputation={suggestion.suggestedByReputation} />
+          {/* Curated rows have no author by construction. Never fall back to a
+              placeholder name here — a seeded suggestion rendering as if a user
+              wrote it is the exact misattribution the schema prevents. */}
+          {suggestion.source === 'community' &&
+            suggestion.suggestedByUsername !== null && (
+              <>
+                <p className="text-muted-foreground text-[11px]">
+                  {t('suggestedBy', {
+                    username: suggestion.suggestedByUsername,
+                  })}
+                </p>
+                <ReputationBadge
+                  reputation={suggestion.suggestedByReputation ?? 0}
+                />
+              </>
+            )}
           {suggestion.isReverse && (
             <span
               title={t('reverseSuggestion')}

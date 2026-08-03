@@ -171,14 +171,23 @@ over 7 days and currently returns nothing.
 labelled truthfully, but an activity row asserts _someone did this_ — there is no
 honest label for a fabricated view.
 
-Instead: when the aggregate returns **fewer than 5** results, fall back to TMDB
-trending, and have the section header reflect which source is being shown. No
-seed rows, no cleanup, and it self-heals — real activity displaces the fallback
-automatically.
+**Amended during implementation: there is no TMDB fallback either.** This spec
+originally called for substituting TMDB trending when activity was thin. That was
+written without checking what those pages already render. They already show TMDB
+trending as their own section — `<TMDBTrending />` on Discover, a separate
+`getTrending('all', 'day')` call on the home page — and both guard the Kristin row
+with `kristinTrending.length > 0`, so an empty section simply does not render.
 
-5 rather than 0 deliberately: a single stray activity row should not be enough to
-replace a full trending grid with one lonely entry, which would look more broken
-than the fallback it replaced.
+A fallback would therefore have shown the same TMDB data twice on one page. The
+problem it was meant to solve did not exist. `getTrendingOnKristin` keeps its
+original signature and returns an empty list when there is no activity.
+
+One real bug was found while investigating this and is fixed:
+`getPopularRecommendations` ordered `community_suggestions` by `vote_count`
+without filtering `source`. Curated rows carry `vote_count: 0`, so once seeded
+they would surface in "Popular recommendations" — seeded content ranked as
+popular. It now filters to `source = 'community'`, because "popular" means
+vote-driven and curated rows have no votes by design.
 
 ## Seed script
 

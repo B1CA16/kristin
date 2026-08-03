@@ -10,12 +10,10 @@
     "heroRest": "o teu próximo",
     "heroUnderline": "favorito",
     "communityPowered": "Movido pela comunidade",
-
     "featured": "Destaque",
     "getStarted": "Começar",
     "browse": "Explorar",
     "seeAll": "Ver tudo",
-
     "howItWorksTitle": "Como Funciona",
     "step1Title": "Pesquisa",
     "step1Desc": "Encontra qualquer filme ou série. Cria a tua lista e regista o que já viste.",
@@ -125,7 +123,12 @@
     "alreadyExists": "Esta sugestão já existe.",
     "suggestedBy": "Sugerido por {username}",
     "reverseSuggestion": "Sugerido a partir da página do outro título",
-    "votes": "{count, plural, one {# voto} other {# votos}}"
+    "votes": "{count, plural, one {# voto} other {# votos}}",
+    "curatedTitle": "Sugestões iniciais",
+    "curatedDescription": "Geradas a partir dos dados de recomendação da TMDB, ainda não sugeridas por membros.",
+    "suggestThisToo": "Sugerir também",
+    "suggestThisTooHint": "Isto será adicionado como a tua sugestão.",
+    "suggestionAdopted": "Adicionada como a tua sugestão."
   },
   "lists": {
     "watchlist": "Lista",
@@ -158,7 +161,6 @@
     "sortPopularity": "Popularidade",
     "sortRating": "Mais Bem Avaliados",
     "sortNewest": "Mais Recentes",
-
     "movies": "Filmes",
     "tvShows": "Séries",
     "noResults": "Nenhum resultado encontrado para estes filtros.",

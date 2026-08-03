@@ -402,6 +402,8 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 - [x] Keep-alive against Supabase Free-plan 7-day pausing (GitHub Actions daily + cron-job.org backstop → `ping_keepalive()`)
 - [x] Drop the unused `media_cache` table (had reached 777 MB, past the Free plan's 500 MB read-only threshold)
 - [ ] DB integration test harness (local Supabase + RLS/trigger assertions — no DB test coverage exists yet)
+- [x] Curated suggestion seeding (`pnpm seed:curated`) — TMDB-derived cold-start content, structurally separated from user suggestions and adoptable by real users. Spec: `docs/specs/2026-08-03-curated-suggestion-seeding.md`
+- [ ] Verify TMDB API terms for commercial use (site serves AdSense)
 
 ### CDN & Edge (understanding documented)
 
