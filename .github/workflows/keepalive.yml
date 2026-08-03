@@ -1,0 +1,87 @@
+name: Supabase Keep-Alive
+
+# Supabase pauses Free-plan projects after 7 consecutive days without database
+# activity. This pings a no-op RPC to reset that timer.
+#
+# It calls Supabase directly rather than going through the app on Vercel. Routing
+# the ping through the app would make database liveness depend on the hosting
+# platform staying up — and a Vercel project can be paused for reasons of its own.
+#
+# NOTE: GitHub disables scheduled workflows in public repos after 60 days with no
+# pushes, and does so silently. That is why an independent external scheduler hits
+# the same RPC as a backstop — see the Operations section in README.md. Do not
+# treat this workflow as the only line of defence.
+
+on:
+  schedule:
+    # Daily at 03:00 UTC. Runs are free on public repos, and daily gives seven
+    # independent chances inside every 7-day window instead of one.
+    - cron: '0 3 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+# Never let two pings overlap, and don't queue a backlog if a run is slow.
+concurrency:
+  group: supabase-keepalive
+  cancel-in-progress: false
+
+jobs:
+  ping:
+    name: Ping Supabase
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Ping keepalive RPC
+        env:
+          SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          set -uo pipefail
+
+          if [ -z "${SUPABASE_URL}" ] || [ -z "${SUPABASE_ANON_KEY}" ]; then
+            echo "::error::Missing configuration. Set the NEXT_PUBLIC_SUPABASE_URL repository variable and the SUPABASE_ANON_KEY repository secret."
+            exit 1
+          fi
+
+          ENDPOINT="${SUPABASE_URL}/rest/v1/rpc/ping_keepalive"
+          MAX_RETRIES=3
+          RETRY_DELAY=30
+
+          for attempt in $(seq 1 $MAX_RETRIES); do
+            echo "Attempt ${attempt}/${MAX_RETRIES}"
+
+            RESPONSE=$(curl -s -w $'\n%{http_code}' \
+              --max-time 30 \
+              -X POST \
+              -H "apikey: ${SUPABASE_ANON_KEY}" \
+              -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+              -H "Content-Type: application/json" \
+              -d '{}' \
+              "${ENDPOINT}")
+
+            HTTP_CODE=$(printf '%s' "$RESPONSE" | tail -1)
+            BODY=$(printf '%s' "$RESPONSE" | sed '$d')
+
+            echo "Status: ${HTTP_CODE}"
+
+            if [ "$HTTP_CODE" = "200" ]; then
+              # The RPC returns the new last_ping timestamp, so a 200 with a body
+              # proves the write landed rather than merely that the host answered.
+              echo "Heartbeat written at: ${BODY}"
+              exit 0
+            fi
+
+            echo "Response: ${BODY}"
+
+            if [ "$attempt" -lt "$MAX_RETRIES" ]; then
+              echo "Retrying in ${RETRY_DELAY}s..."
+              sleep $RETRY_DELAY
+              RETRY_DELAY=$((RETRY_DELAY * 2))
+            fi
+          done
+
+          # Fail loudly, unlike the cache-cleanup job this replaced. A missed
+          # heartbeat is not harmless, and a green check on a broken keep-alive is
+          # worse than no keep-alive because we would trust it. Failing sends the
+          # standard GitHub Actions failure notification.
+          echo "::error::Keep-alive ping failed after ${MAX_RETRIES} attempts. The database may pause if this keeps failing for 7 days."
+          exit 1

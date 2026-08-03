@@ -5,11 +5,27 @@ import {
   PROFILE_SIZES,
   LOGO_SIZES,
 } from './config';
+import { IMAGE_KIND_PARAM, type TmdbImageKind } from './image-loader';
 
 type PosterSize = keyof typeof POSTER_SIZES;
 type BackdropSize = keyof typeof BACKDROP_SIZES;
 type ProfileSize = keyof typeof PROFILE_SIZES;
 type LogoSize = keyof typeof LOGO_SIZES;
+
+/**
+ * Tag a TMDB URL with its image kind.
+ *
+ * The custom `next/image` loader needs to know which size buckets TMDB serves
+ * for this image, and the file path alone doesn't say. The loader strips the tag
+ * before requesting the image; anything else consuming these URLs (OG tags,
+ * plain `<img>`) gets an unknown query parameter that TMDB ignores.
+ *
+ * The size passed here still matters: it's what non-`next/image` consumers get,
+ * and it's the floor the loader upgrades from.
+ */
+function tag(url: string, kind: TmdbImageKind): string {
+  return `${url}?${IMAGE_KIND_PARAM}=${kind}`;
+}
 
 /**
  * Build a full poster image URL.
@@ -20,7 +36,7 @@ export function posterUrl(
   size: PosterSize = 'lg',
 ): string | null {
   if (!path) return null;
-  return `${TMDB_IMAGE_BASE}/${POSTER_SIZES[size]}${path}`;
+  return tag(`${TMDB_IMAGE_BASE}/${POSTER_SIZES[size]}${path}`, 'poster');
 }
 
 /**
@@ -32,7 +48,7 @@ export function backdropUrl(
   size: BackdropSize = 'lg',
 ): string | null {
   if (!path) return null;
-  return `${TMDB_IMAGE_BASE}/${BACKDROP_SIZES[size]}${path}`;
+  return tag(`${TMDB_IMAGE_BASE}/${BACKDROP_SIZES[size]}${path}`, 'backdrop');
 }
 
 /**
@@ -44,7 +60,7 @@ export function profileUrl(
   size: ProfileSize = 'md',
 ): string | null {
   if (!path) return null;
-  return `${TMDB_IMAGE_BASE}/${PROFILE_SIZES[size]}${path}`;
+  return tag(`${TMDB_IMAGE_BASE}/${PROFILE_SIZES[size]}${path}`, 'profile');
 }
 
 /**
@@ -56,5 +72,5 @@ export function logoUrl(
   size: LogoSize = 'md',
 ): string | null {
   if (!path) return null;
-  return `${TMDB_IMAGE_BASE}/${LOGO_SIZES[size]}${path}`;
+  return tag(`${TMDB_IMAGE_BASE}/${LOGO_SIZES[size]}${path}`, 'logo');
 }

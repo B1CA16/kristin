@@ -131,7 +131,7 @@ src/
 
 ## Database
 
-9 tables with Row Level Security (RLS) enabled on all:
+10 tables with Row Level Security (RLS) enabled on all:
 
 - `profiles` — User profiles with reputation, auto-created on signup
 - `community_suggestions` — "If you like X, you'll like Y" recommendations
@@ -139,8 +139,75 @@ src/
 - `user_lists` — Watchlist, watched, favorites
 - `reviews` — Star ratings (1-10) with optional title and body
 - `review_votes` — Helpful votes on reviews
-- `media_cache` — Cached TMDB API responses
+- `media_cache` — Unused. TMDB responses now use the Next.js fetch cache; kept pending a drop migration
 - `activity_log` — Powers trending algorithm (weighted by action type)
+- `keepalive` — Singleton heartbeat row, see [Operations](#operations)
+
+## Operations
+
+### Keeping the database alive
+
+Supabase pauses Free-plan projects after **7 consecutive days without database
+activity**. Two independent schedulers prevent that by calling
+`public.ping_keepalive()`, which bumps a single row in `public.keepalive`.
+
+The RPC is executable by `anon`, so neither scheduler needs a secret — the anon
+key is already public. **Do not** switch this to the service role key: that key
+bypasses RLS on every table, and one of the two schedulers is a third party.
+
+**1. GitHub Actions** — `.github/workflows/keepalive.yml`, daily at 03:00 UTC.
+Requires:
+
+| Kind                | Name                       | Value                       |
+| ------------------- | -------------------------- | --------------------------- |
+| Repository variable | `NEXT_PUBLIC_SUPABASE_URL` | `https://<ref>.supabase.co` |
+| Repository secret   | `SUPABASE_ANON_KEY`        | The project's anon key      |
+
+**2. External backstop** — a job on [cron-job.org](https://cron-job.org) every 3
+days. This exists because **GitHub silently disables scheduled workflows in
+public repos after 60 days with no pushes**, so Actions alone is not a
+sufficient guarantee. cron-job.org rather than UptimeRobot because the RPC
+writes, so PostgREST only accepts `POST`, and UptimeRobot's free tier sends only
+`GET`/`HEAD`.
+
+```
+POST https://<ref>.supabase.co/rest/v1/rpc/ping_keepalive
+apikey: <anon key>
+Authorization: Bearer <anon key>
+Content-Type: application/json
+
+{}
+```
+
+Verify either scheduler worked — run in the Supabase SQL editor, since RLS makes
+the table unreachable through the REST API:
+
+```sql
+select last_ping, ping_count from public.keepalive;
+```
+
+If the RPC returns 404 immediately after migrating, PostgREST hasn't reloaded its
+schema cache yet: `notify pgrst, 'reload schema';`
+
+**If the project pauses anyway,** restore it from the Supabase dashboard, then
+check both schedulers before assuming the ping is at fault — a disabled GitHub
+workflow shows no failed runs at all, which reads identically to "never ran".
+
+### Image optimization
+
+TMDB images bypass Vercel's Image Optimization via a custom `next/image` loader
+(`src/lib/tmdb/image-loader.ts`) that maps requested widths onto TMDB's own size
+buckets. TMDB already serves pre-resized variants from its CDN, so optimizing
+them again spends quota — **5,000 transformations/month on Vercel Hobby** — to
+re-encode files that are already correct.
+
+This matters because exceeding that limit does not produce an obvious outage:
+new images return **HTTP 402** and `next/image` renders the alt text, so the
+symptom is "all the posters broke" and the usual misdiagnosis is a TMDB problem.
+
+Consequence to be aware of: `loaderFile` is global, so **no** images are
+optimized by Vercel any more, including local assets and Supabase avatars. Those
+are passed through and served as-is.
 
 ## License
 

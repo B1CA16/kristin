@@ -27,6 +27,15 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['framer-motion', 'lucide-react', 'sonner'],
   },
   images: {
+    // Resize on TMDB's CDN instead of Vercel's Image Optimization. TMDB already
+    // serves pre-sized variants, so optimizing them again spends transformation
+    // quota (5,000/month on Hobby) for no benefit — and once exhausted, new
+    // images return HTTP 402 and render as alt text. See src/lib/tmdb/image-loader.ts.
+    loader: 'custom',
+    loaderFile: './src/lib/tmdb/image-loader.ts',
+    // A custom loader bypasses the built-in optimizer, so remotePatterns no
+    // longer applies. It's kept because it documents the only remote host we
+    // render, and it becomes load-bearing again if the loader is ever removed.
     remotePatterns: [
       {
         protocol: 'https',

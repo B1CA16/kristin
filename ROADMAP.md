@@ -260,7 +260,8 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 - [x] Dynamic imports for heavy components (TrailerModal, ReviewForm, AddSuggestionDialog)
 - [ ] ISR with `generateStaticParams` for popular media pages (deferred — not practical for dynamic TMDB pages)
 - [ ] Client-side caching with SWR or React Query (deferred — current server actions are sufficient)
-- [ ] `media_cache` TTL cleanup (deferred — Supabase Edge Function cron)
+- [ ] `media_cache` TTL cleanup (obsolete — replaced by the Next.js fetch cache)
+- [x] TMDB images resized on TMDB's CDN via a custom `next/image` loader (avoids Vercel's 5,000 transformations/month Hobby cap)
 
 ### Accessibility
 
@@ -396,8 +397,11 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 
 - [x] Supabase connection pooling (PgBouncer enabled by default)
 - [x] Database backup strategy (Supabase daily backups, 7-day retention on free tier)
-- [x] `media_cache` TTL cleanup (GitHub Actions daily cron → `/api/cron/cleanup-cache`)
+- [x] ~~`media_cache` TTL cleanup~~ (removed — TMDB now uses the Next.js fetch cache, no DB rows to prune)
 - [x] Index analysis: all frequent queries verified against indexes
+- [x] Keep-alive against Supabase Free-plan 7-day pausing (GitHub Actions daily + cron-job.org backstop → `ping_keepalive()`)
+- [ ] Drop the unused `media_cache` table (needs a migration; destructive, so deliberate)
+- [ ] DB integration test harness (local Supabase + RLS/trigger assertions — no DB test coverage exists yet)
 
 ### CDN & Edge (understanding documented)
 
