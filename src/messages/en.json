@@ -10,12 +10,10 @@
     "heroRest": "your next",
     "heroUnderline": "favorite",
     "communityPowered": "Community-powered",
-
     "featured": "Featured",
     "getStarted": "Get Started",
     "browse": "Browse",
     "seeAll": "See all",
-
     "howItWorksTitle": "How It Works",
     "step1Title": "Search",
     "step1Desc": "Find any movie or TV show. Build your watchlist and track what you've seen.",
@@ -125,7 +123,12 @@
     "alreadyExists": "This suggestion already exists.",
     "suggestedBy": "Suggested by {username}",
     "reverseSuggestion": "Suggested from the other title's page",
-    "votes": "{count, plural, one {# vote} other {# votes}}"
+    "votes": "{count, plural, one {# vote} other {# votes}}",
+    "curatedTitle": "Starter picks",
+    "curatedDescription": "Generated from TMDB recommendation data, not suggested by members yet.",
+    "suggestThisToo": "Suggest this too",
+    "suggestThisTooHint": "This will be added as your suggestion.",
+    "suggestionAdopted": "Added as your suggestion."
   },
   "lists": {
     "watchlist": "Watchlist",
@@ -158,7 +161,6 @@
     "sortPopularity": "Popularity",
     "sortRating": "Top Rated",
     "sortNewest": "Newest",
-
     "movies": "Movies",
     "tvShows": "TV Shows",
     "noResults": "No results found for these filters.",

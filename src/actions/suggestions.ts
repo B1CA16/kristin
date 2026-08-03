@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { createClient, getUser } from '@/lib/supabase/server';
 import { sanitizeText } from '@/lib/sanitize';
 import { logActivity } from '@/actions/activity';
+import { compareSuggestions } from '@/lib/suggestions/sort';
 
 import type { MediaRef } from '@/types/media';
 
@@ -13,13 +14,17 @@ export type SuggestionWithVoteStatus = {
   targetType: 'movie' | 'tv';
   reason: string | null;
   voteCount: number;
-  suggestedBy: string;
-  suggestedByUsername: string;
-  suggestedByReputation: number;
+  /** Null for curated rows — seeded content has no author by construction. */
+  suggestedBy: string | null;
+  suggestedByUsername: string | null;
+  suggestedByReputation: number | null;
   createdAt: string;
   hasVoted: boolean;
   /** True when this suggestion was created from the other media's page. */
   isReverse: boolean;
+  source: 'community' | 'curated';
+  /** Ordering hint for curated rows. Never a vote count. */
+  curatedRank: number | null;
 };
 
 // ---------------------------------------------------------------------------
@@ -52,6 +57,8 @@ export async function getSuggestionsForMedia(
       target_type,
       reason,
       vote_count,
+      source,
+      curated_rank,
       suggested_by,
       created_at,
       profiles!community_suggestions_suggested_by_fkey (username, reputation)
@@ -75,6 +82,8 @@ export async function getSuggestionsForMedia(
       source_type,
       reason,
       vote_count,
+      source,
+      curated_rank,
       suggested_by,
       created_at,
       profiles!community_suggestions_suggested_by_fkey (username, reputation)
@@ -113,12 +122,14 @@ export async function getSuggestionsForMedia(
     voteCount: s.vote_count,
     suggestedBy: s.suggested_by,
     suggestedByUsername:
-      (s.profiles as unknown as ProfileJoin)?.username ?? 'unknown',
+      (s.profiles as unknown as ProfileJoin | null)?.username ?? null,
     suggestedByReputation:
-      (s.profiles as unknown as ProfileJoin)?.reputation ?? 0,
+      (s.profiles as unknown as ProfileJoin | null)?.reputation ?? null,
     createdAt: s.created_at,
     hasVoted: votedSuggestionIds.has(s.id),
     isReverse: false,
+    source: s.source,
+    curatedRank: s.curated_rank,
   }));
 
   // Map reverse suggestions (source becomes the "target" to display)
@@ -137,18 +148,18 @@ export async function getSuggestionsForMedia(
       voteCount: s.vote_count,
       suggestedBy: s.suggested_by,
       suggestedByUsername:
-        (s.profiles as unknown as ProfileJoin)?.username ?? 'unknown',
+        (s.profiles as unknown as ProfileJoin | null)?.username ?? null,
       suggestedByReputation:
-        (s.profiles as unknown as ProfileJoin)?.reputation ?? 0,
+        (s.profiles as unknown as ProfileJoin | null)?.reputation ?? null,
       createdAt: s.created_at,
       hasVoted: votedSuggestionIds.has(s.id),
       isReverse: true,
+      source: s.source,
+      curatedRank: s.curated_rank,
     }));
 
   // Merge and sort by vote count
-  const merged = [...forwardMapped, ...reverseMapped].sort(
-    (a, b) => b.voteCount - a.voteCount,
-  );
+  const merged = [...forwardMapped, ...reverseMapped].sort(compareSuggestions);
 
   return { data: merged, error: null };
 }
@@ -193,6 +204,10 @@ export async function createSuggestion(
     .eq('source_type', target.mediaType)
     .eq('target_tmdb_id', source.tmdbId)
     .eq('target_type', source.mediaType)
+    // Only a real suggestion blocks this. A curated placeholder in the reverse
+    // direction is removed by supersede_curated_suggestion during the insert
+    // below — it must never stop a person from contributing.
+    .eq('source', 'community')
     .limit(1);
 
   if (reverseExists && reverseExists.length > 0) {
@@ -324,5 +339,95 @@ export async function unvoteSuggestion(
   if (suggestion) {
     revalidatePath(`/${suggestion.source_type}/${suggestion.source_tmdb_id}`);
   }
+  return { error: null };
+}
+
+// ---------------------------------------------------------------------------
+// endorseCuratedSuggestion
+// ---------------------------------------------------------------------------
+
+/**
+ * Adopt a curated suggestion as your own.
+ *
+ * Curated rows are deliberately not votable — votes on author-less rows would
+ * blur the line the schema draws between seeded and real content. Adoption is
+ * the alternative: the user takes authorship of the pair, and the
+ * supersede_curated_suggestion trigger removes the placeholder in the same
+ * transaction.
+ *
+ * Reputation is unaffected here. Reputation is the sum of vote_count across a
+ * user's suggestions, so adopting grants nothing until other people vote for it
+ * — endorsement cannot be farmed.
+ */
+export async function endorseCuratedSuggestion(
+  suggestionId: string,
+): Promise<{ error: string | null }> {
+  const supabase = await createClient();
+  const user = await getUser();
+
+  if (!user) {
+    return { error: 'You must be logged in to suggest.' };
+  }
+
+  const { data: curated, error: fetchError } = await supabase
+    .from('community_suggestions')
+    .select(
+      'id, source, source_tmdb_id, source_type, target_tmdb_id, target_type',
+    )
+    .eq('id', suggestionId)
+    .single();
+
+  if (fetchError || !curated) {
+    return { error: 'This suggestion no longer exists.' };
+  }
+
+  // Guard against being handed a community row's id.
+  if (curated.source !== 'curated') {
+    return { error: 'This suggestion already belongs to someone.' };
+  }
+
+  // Same rule as createSuggestion: a community suggestion in the reverse
+  // direction makes this redundant. Curated reverse rows are excluded — the
+  // trigger removes those during the insert below.
+  const { data: reverseExists } = await supabase
+    .from('community_suggestions')
+    .select('id')
+    .eq('source_tmdb_id', curated.target_tmdb_id)
+    .eq('source_type', curated.target_type)
+    .eq('target_tmdb_id', curated.source_tmdb_id)
+    .eq('target_type', curated.source_type)
+    .eq('source', 'community')
+    .limit(1);
+
+  if (reverseExists && reverseExists.length > 0) {
+    return { error: 'This suggestion already exists.' };
+  }
+
+  const { error } = await supabase.from('community_suggestions').insert({
+    source_tmdb_id: curated.source_tmdb_id,
+    source_type: curated.source_type,
+    target_tmdb_id: curated.target_tmdb_id,
+    target_type: curated.target_type,
+    reason: null,
+    suggested_by: user.id,
+  });
+
+  if (error) {
+    // 23505: another user adopted the same pair first.
+    if (error.code === '23505') {
+      return { error: 'This suggestion already exists.' };
+    }
+    return { error: error.message };
+  }
+
+  void logActivity({
+    userId: user.id,
+    tmdbId: curated.source_tmdb_id,
+    mediaType: curated.source_type,
+    action: 'suggestion_created',
+  });
+
+  revalidatePath(`/${curated.source_type}/${curated.source_tmdb_id}`);
+  revalidatePath(`/${curated.target_type}/${curated.target_tmdb_id}`);
   return { error: null };
 }

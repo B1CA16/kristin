@@ -77,33 +77,39 @@ export type Database = {
       community_suggestions: {
         Row: {
           created_at: string;
+          curated_rank: number | null;
           id: string;
           reason: string | null;
+          source: Database['public']['Enums']['suggestion_source'];
           source_tmdb_id: number;
           source_type: Database['public']['Enums']['media_type_enum'];
-          suggested_by: string;
+          suggested_by: string | null;
           target_tmdb_id: number;
           target_type: Database['public']['Enums']['media_type_enum'];
           vote_count: number;
         };
         Insert: {
           created_at?: string;
+          curated_rank?: number | null;
           id?: string;
           reason?: string | null;
+          source?: Database['public']['Enums']['suggestion_source'];
           source_tmdb_id: number;
           source_type: Database['public']['Enums']['media_type_enum'];
-          suggested_by: string;
+          suggested_by?: string | null;
           target_tmdb_id: number;
           target_type: Database['public']['Enums']['media_type_enum'];
           vote_count?: number;
         };
         Update: {
           created_at?: string;
+          curated_rank?: number | null;
           id?: string;
           reason?: string | null;
+          source?: Database['public']['Enums']['suggestion_source'];
           source_tmdb_id?: number;
           source_type?: Database['public']['Enums']['media_type_enum'];
-          suggested_by?: string;
+          suggested_by?: string | null;
           target_tmdb_id?: number;
           target_type?: Database['public']['Enums']['media_type_enum'];
           vote_count?: number;
@@ -118,27 +124,21 @@ export type Database = {
           },
         ];
       };
-      media_cache: {
+      keepalive: {
         Row: {
-          cache_key: string;
-          created_at: string;
-          data: Json;
-          expires_at: string;
-          id: string;
+          id: number;
+          last_ping: string;
+          ping_count: number;
         };
         Insert: {
-          cache_key: string;
-          created_at?: string;
-          data: Json;
-          expires_at: string;
-          id?: string;
+          id?: number;
+          last_ping?: string;
+          ping_count?: number;
         };
         Update: {
-          cache_key?: string;
-          created_at?: string;
-          data?: Json;
-          expires_at?: string;
-          id?: string;
+          id?: number;
+          last_ping?: string;
+          ping_count?: number;
         };
         Relationships: [];
       };
@@ -340,11 +340,12 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      ping_keepalive: { Args: never; Returns: string };
     };
     Enums: {
       list_type_enum: 'watchlist' | 'watched' | 'favorite';
       media_type_enum: 'movie' | 'tv';
+      suggestion_source: 'community' | 'curated';
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -480,6 +481,7 @@ export const Constants = {
     Enums: {
       list_type_enum: ['watchlist', 'watched', 'favorite'],
       media_type_enum: ['movie', 'tv'],
+      suggestion_source: ['community', 'curated'],
     },
   },
 } as const;
