@@ -55,6 +55,12 @@ jobs:
           MAX_RETRIES=3
           RETRY_DELAY=30
 
+          # Print the target. The URL comes from a variable rather than a secret
+          # precisely so it is not masked here: a job pointed at the wrong project
+          # goes green and reports nothing, so the host is the one thing that must
+          # be visible in the log to tell a real success from a misdirected one.
+          echo "Target (${{ matrix.target }}): ${ENDPOINT}"
+
           for attempt in $(seq 1 $MAX_RETRIES); do
             echo "Attempt ${attempt}/${MAX_RETRIES}"
 
