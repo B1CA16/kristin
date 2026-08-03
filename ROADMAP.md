@@ -400,7 +400,7 @@ For the high-level feature roadmap with phases (MVP → v2.0), see `FEATURES.md`
 - [x] ~~`media_cache` TTL cleanup~~ (removed — TMDB now uses the Next.js fetch cache, no DB rows to prune)
 - [x] Index analysis: all frequent queries verified against indexes
 - [x] Keep-alive against Supabase Free-plan 7-day pausing (GitHub Actions daily + cron-job.org backstop → `ping_keepalive()`)
-- [ ] Drop the unused `media_cache` table (needs a migration; destructive, so deliberate)
+- [x] Drop the unused `media_cache` table (had reached 777 MB, past the Free plan's 500 MB read-only threshold)
 - [ ] DB integration test harness (local Supabase + RLS/trigger assertions — no DB test coverage exists yet)
 
 ### CDN & Edge (understanding documented)

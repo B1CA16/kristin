@@ -28,7 +28,7 @@ type TMDBFetchOptions = {
  * Low-level TMDB API fetch with:
  * - API key injection
  * - Locale mapping
- * - Next.js fetch cache (replaces Supabase media_cache to eliminate egress)
+ * - Next.js fetch cache (replaced a Supabase-backed cache to eliminate egress)
  * - Exponential backoff on 429 (rate limit)
  */
 async function tmdbFetch<T>(

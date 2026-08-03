@@ -131,7 +131,7 @@ src/
 
 ## Database
 
-10 tables with Row Level Security (RLS) enabled on all:
+9 tables with Row Level Security (RLS) enabled on all:
 
 - `profiles` — User profiles with reputation, auto-created on signup
 - `community_suggestions` — "If you like X, you'll like Y" recommendations
@@ -139,7 +139,6 @@ src/
 - `user_lists` — Watchlist, watched, favorites
 - `reviews` — Star ratings (1-10) with optional title and body
 - `review_votes` — Helpful votes on reviews
-- `media_cache` — Unused. TMDB responses now use the Next.js fetch cache; kept pending a drop migration
 - `activity_log` — Powers trending algorithm (weighted by action type)
 - `keepalive` — Singleton heartbeat row, see [Operations](#operations)
 
@@ -192,6 +191,42 @@ schema cache yet: `notify pgrst, 'reload schema';`
 **If the project pauses anyway,** restore it from the Supabase dashboard, then
 check both schedulers before assuming the ping is at fault — a disabled GitHub
 workflow shows no failed runs at all, which reads identically to "never ran".
+
+### Database size and read-only mode
+
+The Free plan puts a project into **read-only mode once database size exceeds
+500 MB**. Check what's using the space:
+
+```sql
+select relname, pg_size_pretty(pg_total_relation_size(c.oid)) as size
+from pg_class c
+join pg_namespace n on n.oid = c.relnamespace
+where n.nspname = 'public' and c.relkind = 'r'
+order by pg_total_relation_size(c.oid) desc;
+```
+
+Two things to know before trying to free space:
+
+- **`DELETE` frees no disk.** It only marks tuples dead. Reclaiming requires
+  `VACUUM FULL`, which needs free space roughly equal to the table it rewrites —
+  so it is precisely unavailable when you need it. `DROP TABLE` and `TRUNCATE`
+  release space immediately.
+- **DDL is blocked in read-only mode.** Override it for the session, in the same
+  SQL editor execution as the statement that needs it:
+
+  ```sql
+  set default_transaction_read_only to false;
+  drop table if exists public.some_bloated_table;
+  ```
+
+Read-write mode re-enables automatically once usage falls back under the
+threshold.
+
+This bit us once: `media_cache` reached 777 MB because its TTL pruning ran from a
+cron job that called the app on Vercel. When that deployment went down, pruning
+stopped silently. **A cache whose cleanup depends on infrastructure outside the
+database has no upper bound.** Prefer structures that cannot grow — see the
+`check (id = 1)` constraint on `keepalive` — over structures that need a janitor.
 
 ### Image optimization
 

@@ -1,0 +1,17 @@
+-- Drop the unused TMDB response cache.
+--
+-- TMDB caching moved to the Next.js fetch cache, so nothing has read or written
+-- this table since. Left in place it reached 777 MB — 96.78% of the database and
+-- well past the Free plan's 500 MB ceiling, which puts the project into
+-- read-only mode.
+--
+-- It grew unbounded because TTL pruning was done by a cron job that called the
+-- app on Vercel: when that deployment went down, pruning silently stopped. A
+-- cache whose cleanup depends on infrastructure outside the database has no
+-- upper bound on its size.
+--
+-- `if exists` because production was dropped by hand to get out of read-only
+-- mode before this migration existed; this keeps a fresh `db push` correct
+-- without failing on the already-dropped case. No `cascade` — nothing should
+-- depend on this table, and if something does, the error is the useful outcome.
+drop table if exists public.media_cache;

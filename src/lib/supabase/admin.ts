@@ -3,7 +3,7 @@ import type { Database } from '@/types/database';
 
 /**
  * Supabase admin client — bypasses all RLS policies.
- * ONLY use server-side for admin operations (e.g., reading media_cache).
+ * ONLY use server-side for admin operations (e.g., the /api/health probe).
  * Never import this in client code or expose the service role key.
  */
 export function createAdminClient() {
