@@ -105,6 +105,14 @@ A `before insert` trigger on `community_suggestions` deletes any curated row for
 the same pair when a community row arrives. One row per pair always, the unique
 constraint stays untouched, and the curated row's rank is not inherited.
 
+**It must delete both directions.** `createSuggestion` rejects B→A when A→B
+already exists, and that check is directional-blind by design. A curated B→A row
+would therefore block a real user from suggesting A→B forever — the unique
+constraint would not fire, but the application-level reverse check would. Paired
+with this: the reverse-duplicate checks in `createSuggestion` and
+`endorseCuratedSuggestion` must filter to `source = 'community'`, so a
+placeholder never blocks a person.
+
 **The trigger function must be `security definer` with `set search_path = ''`.**
 This is not stylistic. A `security invoker` function runs as `authenticated`,
 which the delete policy forbids for curated rows — and a DELETE blocked by RLS
@@ -131,8 +139,10 @@ New server action, `endorseCuratedSuggestion(suggestionId)` in
 
 1. Require an authenticated user.
 2. Load the row; verify `source = 'curated'`. Reject otherwise.
-3. Apply the same reverse-duplicate check as `createSuggestion` — if a community
-   B→A exists, block with the existing message.
+3. Apply the same reverse-duplicate check as `createSuggestion`, filtered to
+   `source = 'community'` — if a real B→A exists, block with the existing
+   message. Curated reverse rows are excluded because the trigger removes them
+   during the insert.
 4. Insert a community row for the same pair with `suggested_by = user.id`,
    `reason = null`, `source = 'community'`. The trigger removes the placeholder.
 5. `logActivity({ action: 'suggestion_created' })` — a real user action, so it
@@ -214,7 +224,7 @@ expression index over a composed key and is out of scope here.
   label stating the provenance.
 - `src/components/recommendations/suggestion-card.tsx` — support an author-less
   variant: no profile link, no vote control, "Suggest this too" action instead.
-- `src/actions/suggestions.ts` — `getSuggestionsFor` embeds
+- `src/actions/suggestions.ts` — `getSuggestionsForMedia` embeds
   `profiles!community_suggestions_suggested_by_fkey (username, reputation)`,
   which becomes `null` for curated rows. **The result type and every consumer
   must handle a null author.** This is the main place a runtime bug could hide.
